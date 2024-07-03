@@ -1,9 +1,10 @@
 import type { Metadata, NextPage } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
-import { type ReactNode } from "react";
+import { Suspense, type ReactNode } from "react";
 import Menu from "@/features/menu/components/menu";
 import Sidebar from "@/features/sidebar/components/sidebar";
+import VideoPlayer from "@/features/player/components/player";
 
 const FontSans = Inter({
     variable: "--font-sans",
@@ -35,6 +36,9 @@ const RootLayout: NextPage<Readonly<{ children: ReactNode }>> = ({
                                         <div className="col-span-3 lg:col-span-4 lg:border-l">
                                             {children}
                                         </div>
+                                        <Suspense fallback={null}>
+                                            <VideoPlayer />
+                                        </Suspense>
                                     </div>
                                 </div>
                             </div>
