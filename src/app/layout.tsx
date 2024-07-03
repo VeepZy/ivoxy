@@ -2,6 +2,8 @@ import type { Metadata, NextPage } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import { type ReactNode } from "react";
+import Menu from "@/features/menu/components/menu";
+import Sidebar from "@/features/sidebar/components/sidebar";
 
 const FontSans = Inter({
     variable: "--font-sans",
@@ -23,7 +25,21 @@ const RootLayout: NextPage<Readonly<{ children: ReactNode }>> = ({
                 className={`min-h-screen bg-background font-sans antialiased ${FontSans.variable}`}
             >
                 <div className="relative flex min-h-screen flex-col">
-                    <main className="flex-1">{children}</main>
+                    <main className="flex-1">
+                        <div className="hidden md:block">
+                            <Menu />
+                            <div className="border-t">
+                                <div className="bg-background">
+                                    <div className="grid lg:grid-cols-5">
+                                        <Sidebar />
+                                        <div className="col-span-3 lg:col-span-4 lg:border-l">
+                                            {children}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </main>
                 </div>
             </body>
         </html>
