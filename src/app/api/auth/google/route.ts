@@ -1,5 +1,4 @@
 import { getAuthenticatedClient } from "@/lib/auth";
-import { oAuth2Client } from "@/lib/client";
 import { NextApiRequest, NextApiResponse } from "next";
 import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
@@ -17,7 +16,7 @@ export const GET = async (req: NextApiRequest, res: NextApiResponse) => {
     if (query.error) {
         return NextResponse.json({ error: query.error }, { status: 400 });
     } else {
-        const client = await getAuthenticatedClient(oAuth2Client);
+        const client = await getAuthenticatedClient();
         const { tokens } = await client.getToken({
             code: query.code?.toString() ?? "",
         });
