@@ -1,8 +1,14 @@
+"use client";
+
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { cn } from "@/lib/utils";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 const Sidebar: React.FC = () => {
+    const pathname = usePathname();
+
     return (
         <div className="hidden pb-12 lg:block">
             <div className="space-y-4 py-4">
@@ -32,7 +38,10 @@ const Sidebar: React.FC = () => {
                         </Button>
                         <Button
                             variant="ghost"
-                            className="w-full justify-start"
+                            className={cn("w-full justify-start", {
+                                "text-destructive hover:text-destructive":
+                                    pathname === "/browse",
+                            })}
                         >
                             <svg
                                 xmlns="http://www.w3.org/2000/svg"
