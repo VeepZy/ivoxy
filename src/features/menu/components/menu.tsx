@@ -16,6 +16,7 @@ import {
     RegisterLink,
 } from "@kinde-oss/kinde-auth-nextjs/components";
 import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
+import Link from "next/link";
 
 const Menu: React.FC = async () => {
     const { getUser } = getKindeServerSession();
@@ -58,7 +59,9 @@ const Menu: React.FC = async () => {
                 <MenubarTrigger>Account</MenubarTrigger>
                 {user ? (
                     <MenubarContent>
-                        <MenubarItem>Profile</MenubarItem>
+                        <MenubarItem>
+                            <Link href="/profile">Profile</Link>
+                        </MenubarItem>
                         <MenubarItem>Settings</MenubarItem>
                         <MenubarItem>Logout</MenubarItem>
                     </MenubarContent>
