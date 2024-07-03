@@ -1,15 +1,12 @@
 import type { Metadata, NextPage } from "next";
-import localFont from "next/font/local";
+import { Inter } from "next/font/google";
 import "./globals.css";
 import { type ReactNode } from "react";
 
-const geistSans = localFont({
-    src: "./fonts/GeistVF.woff",
-    variable: "--font-geist-sans",
-});
-const geistMono = localFont({
-    src: "./fonts/GeistMonoVF.woff",
-    variable: "--font-geist-mono",
+const FontSans = Inter({
+    variable: "--font-sans",
+    subsets: ["latin"],
+    weight: "variable",
 });
 
 export const metadata: Metadata = {
@@ -23,9 +20,11 @@ const RootLayout: NextPage<Readonly<{ children: ReactNode }>> = ({
     return (
         <html lang="en">
             <body
-                className={`flex min-h-screen w-full flex-col bg-background font-sans antialiased ${geistSans.variable} ${geistMono.variable}`}
+                className={`min-h-screen bg-background font-sans antialiased ${FontSans.variable}`}
             >
-                {children}
+                <div className="relative flex min-h-screen flex-col">
+                    <main className="flex-1">{children}</main>
+                </div>
             </body>
         </html>
     );
