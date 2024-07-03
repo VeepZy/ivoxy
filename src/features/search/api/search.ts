@@ -1,12 +1,10 @@
 "use server";
 
 import { getAuthenticatedClient } from "@/lib/auth";
-import { oAuth2Client } from "@/lib/client";
-import { OAuth2Client } from "google-auth-library";
 import { google } from "googleapis";
 
 export const searchQuery = async (query: string) => {
-    const client = await getAuthenticatedClient(oAuth2Client);
+    const client = await getAuthenticatedClient();
 
     const youtube = google.youtube({
         auth: client,
