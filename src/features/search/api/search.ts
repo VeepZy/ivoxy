@@ -11,11 +11,10 @@ export const searchQuery = async (query: string) => {
         version: "v3",
     });
 
-    console.log(process.env.YOUTUBE_API_KEY);
-
     const response = await youtube.search.list({
         auth: client,
         part: ["snippet"],
+        type: ["video"],
         q: query,
         maxResults: 10,
     });
