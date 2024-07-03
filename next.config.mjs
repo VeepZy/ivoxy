@@ -6,7 +6,19 @@ const nextConfig = {
         },
     },
     images: {
-        domains: ["i.ytimg.com", "yt3.ggpht.com"],
+        // remotePatterns: ["i.ytimg.com", "yt3.ggpht.com"],
+        remotePatterns: [
+            {
+                pathname: "/**",
+                protocol: "https",
+                hostname: "i.ytimg.com",
+            },
+            {
+                pathname: "/**",
+                protocol: "https",
+                hostname: "yt3.ggpht.com",
+            },
+        ],
     },
 };
 
