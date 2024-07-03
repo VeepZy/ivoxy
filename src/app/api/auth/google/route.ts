@@ -32,14 +32,23 @@ export const GET = async (req: NextApiRequest, res: NextApiResponse) => {
         cookieStore.set(
             "google_access_token",
             tokens.access_token?.toString() ?? "",
+            {
+                expires: Date.now() + (tokens.expiry_date ?? 0),
+            },
         );
         cookieStore.set(
             "google_refresh_token",
             tokens.refresh_token?.toString() ?? "",
+            {
+                expires: Date.now() + (tokens.expiry_date ?? 0),
+            },
         );
         cookieStore.set(
             "google_expiry_date",
             tokens.expiry_date?.toString() ?? "",
+            {
+                expires: Date.now() + (tokens.expiry_date ?? 0),
+            },
         );
 
         return NextResponse.redirect(new URL("/", req.url));
