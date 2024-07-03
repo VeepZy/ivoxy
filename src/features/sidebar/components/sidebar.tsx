@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import Link from "next/link";
 
 const Sidebar: React.FC = () => {
     return (
@@ -72,7 +73,7 @@ const Sidebar: React.FC = () => {
                                     rx="1"
                                 />
                             </svg>
-                            Browse
+                            <Link href="/browse">Browse</Link>
                         </Button>
                         <Button
                             variant="ghost"
