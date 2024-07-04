@@ -2,7 +2,7 @@
 
 import { PlayerContext } from "@/features/player/components/context";
 import { usePlayerState } from "@/hooks/state";
-import { unescapeHTML } from "@/lib/utils";
+import { unescapeHTML } from "@/lib/utils.client";
 import { youtube_v3 } from "googleapis";
 import Image from "next/image";
 import { useContext } from "react";
@@ -10,7 +10,17 @@ import { useContext } from "react";
 const Items: React.FC<{ items: youtube_v3.Schema$SearchResult[] }> = ({
     items,
 }) => {
-    const { setUrl } = useContext(PlayerContext);
+    const { setUrl, setTitle } = useContext(PlayerContext);
+
+    const onSubmit = (item: youtube_v3.Schema$SearchResult) => {
+        setTitle(
+            item.snippet?.title ?? "",
+            item.snippet?.channelTitle ?? "",
+        );
+        setUrl(
+            `https://www.youtube.com/embed/${item.id?.videoId ?? null}`,
+        );
+    };
 
     return (
         <div className="grid grid-cols-1 gap-x-4 gap-y-6 sm:grid-cols-2 lg:grid-cols-3">
@@ -18,11 +28,7 @@ const Items: React.FC<{ items: youtube_v3.Schema$SearchResult[] }> = ({
                 <div key={item.etag} className="w-[320px] space-y-3">
                     <button
                         className="overflow-hidden rounded-md ring-2 ring-destructive"
-                        onClick={() =>
-                            setUrl(
-                                `https://www.youtube.com/embed/${item.id?.videoId ?? null}`,
-                            )
-                        }
+                        onClick={() => onSubmit(item)}
                     >
                         <Image
                             src={
