@@ -12,6 +12,8 @@ export const initialState = {
     muted: false,
     played: 0,
     loaded: 0,
+    title: "",
+    channelTitle: "",
 };
 
 export type PlayerContextType = {
@@ -24,15 +26,19 @@ export type PlayerContextType = {
         muted: boolean;
         played: number;
         loaded: number;
+        title: string;
+        channelTitle: string;
     };
     setUrl: (newUrl: string) => void;
     setState: Dispatch<SetStateAction<PlayerContextType["state"]>>;
+    setTitle: (title: string, channelTitle: string) => void;
 };
 
 export const PlayerContext = createContext<PlayerContextType>({
     state: initialState,
     setState: () => {},
     setUrl: () => {},
+    setTitle: () => {},
 });
 
 const PlayerProvider: React.FC<{ children: ReactNode }> = ({
@@ -47,7 +53,15 @@ const PlayerProvider: React.FC<{ children: ReactNode }> = ({
             url: newUrl,
             played: 0,
             loaded: 0,
-            playing: false,
+            playing: true,
+        }));
+    };
+
+    const setTitle = (title: string, channelTitle: string) => {
+        setState((prevState) => ({
+            ...prevState,
+            title,
+            channelTitle,
         }));
     };
 
@@ -57,6 +71,7 @@ const PlayerProvider: React.FC<{ children: ReactNode }> = ({
                 state,
                 setState,
                 setUrl,
+                setTitle,
             }}
         >
             {children}
