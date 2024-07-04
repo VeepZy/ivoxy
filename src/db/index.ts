@@ -30,21 +30,10 @@ export const createAdminDBClient = () =>
         },
     });
 
-export const createServerDBClient = async () => {
+export const createServerDBClient = () => {
     const cookieStore = cookies();
-    const { getIdToken } = getKindeServerSession();
-    const idToken = await getIdToken();
-
-    console.log(idToken, process.env.SUPABASE_JWT_SECRET);
-
-    const token = jwt.sign(idToken, process.env.SUPABASE_JWT_SECRET ?? "");
 
     return createServerClient<Database>(SUPABASE_URL, ANON_KEY, {
-        global: {
-            headers: {
-                Authorization: `Bearer ${token}`,
-            },
-        },
         cookies: {
             getAll() {
                 return cookieStore.getAll();
