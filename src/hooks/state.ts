@@ -12,6 +12,8 @@ export const usePlayerState = () => {
         muted: false,
         played: 0,
         loaded: 0,
+        title: "",
+        channelTitle: "",
     }));
 
     return [state, setState] as const;
