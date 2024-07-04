@@ -1,11 +1,10 @@
 "use server";
 
 import { createServerDBClient } from "@/db";
-import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
+import { getUser } from "@/db/queries";
 
 export const createPlaylist = async (playlist: string) => {
-    const db = await createServerDBClient();
-    const { getUser } = getKindeServerSession();
+    const db = createServerDBClient();
     const user = await getUser();
 
     if (!user) {
@@ -16,7 +15,8 @@ export const createPlaylist = async (playlist: string) => {
         .from("playlists")
         .insert({
             name: playlist,
-            user_id: user.id,
+            user: user.id,
+            urls: [],
         })
         .select("*");
 
