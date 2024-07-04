@@ -1,14 +1,16 @@
 "use client";
 
+import { PlayerContext } from "@/features/player/components/context";
 import { usePlayerState } from "@/hooks/state";
 import { unescapeHTML } from "@/lib/utils";
 import { youtube_v3 } from "googleapis";
 import Image from "next/image";
+import { useContext } from "react";
 
 const Items: React.FC<{ items: youtube_v3.Schema$SearchResult[] }> = ({
     items,
 }) => {
-    const { setUrl } = usePlayerState();
+    const { setUrl } = useContext(PlayerContext);
 
     return (
         <div className="grid grid-cols-1 gap-x-4 gap-y-6 sm:grid-cols-2 lg:grid-cols-3">
