@@ -13,6 +13,7 @@ import {
 } from "@/components/ui/menubar";
 import {
     LoginLink,
+    LogoutLink,
     RegisterLink,
 } from "@kinde-oss/kinde-auth-nextjs/components";
 import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
@@ -63,7 +64,9 @@ const Menu: React.FC = async () => {
                             <Link href="/profile">Profile</Link>
                         </MenubarItem>
                         <MenubarItem>Settings</MenubarItem>
-                        <MenubarItem>Logout</MenubarItem>
+                        <MenubarItem>
+                            <LogoutLink>Logout</LogoutLink>
+                        </MenubarItem>
                     </MenubarContent>
                 ) : (
                     <MenubarContent>
