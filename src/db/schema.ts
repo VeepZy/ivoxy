@@ -14,48 +14,57 @@ export type Database = {
           created_at: string
           id: number
           name: string
-          urls: string[] | null
-          user_id: string
+          urls: string[]
+          user: string | null
         }
         Insert: {
           created_at?: string
           id?: number
           name: string
-          urls?: string[] | null
-          user_id: string
+          urls: string[]
+          user?: string | null
         }
         Update: {
           created_at?: string
           id?: number
           name?: string
-          urls?: string[] | null
-          user_id?: string
+          urls?: string[]
+          user?: string | null
         }
         Relationships: [
           {
-            foreignKeyName: "playlists_user_id_fkey"
-            columns: ["user_id"]
+            foreignKeyName: "playlists_user_fkey"
+            columns: ["user"]
             isOneToOne: false
             referencedRelation: "users"
-            referencedColumns: ["user_id"]
+            referencedColumns: ["id"]
           },
         ]
       }
       users: {
         Row: {
+          avatar_url: string
           created_at: string
-          id: number
-          user_id: string
+          email: string
+          id: string
+          name: string
+          username: string
         }
         Insert: {
+          avatar_url: string
           created_at?: string
-          id?: number
-          user_id: string
+          email: string
+          id?: string
+          name: string
+          username: string
         }
         Update: {
+          avatar_url?: string
           created_at?: string
-          id?: number
-          user_id?: string
+          email?: string
+          id?: string
+          name?: string
+          username?: string
         }
         Relationships: []
       }
@@ -64,10 +73,7 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      get_user_id: {
-        Args: Record<PropertyKey, never>
-        Returns: string
-      }
+      [_ in never]: never
     }
     Enums: {
       [_ in never]: never
