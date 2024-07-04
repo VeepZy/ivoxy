@@ -2,11 +2,14 @@
 
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { Database } from "@/db/schema";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
-const Sidebar: React.FC = () => {
+type Playlist = Database["public"]["Tables"]["playlists"]["Row"];
+
+const Sidebar: React.FC<{ playlists: Playlist[] }> = ({ playlists }) => {
     const pathname = usePathname();
 
     return (
@@ -221,28 +224,30 @@ const Sidebar: React.FC = () => {
                     </h2>
                     <ScrollArea className="h-[300px] px-1">
                         <div className="space-y-1 p-2">
-                            <Button
-                                variant="ghost"
-                                className="w-full justify-start font-normal"
-                            >
-                                <svg
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    viewBox="0 0 24 24"
-                                    fill="none"
-                                    stroke="currentColor"
-                                    strokeWidth="2"
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                    className="mr-2 h-4 w-4"
+                            {playlists.map((playlist) => (
+                                <Button
+                                    variant="ghost"
+                                    className="w-full justify-start font-normal"
                                 >
-                                    <path d="M21 15V6" />
-                                    <path d="M18.5 18a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5Z" />
-                                    <path d="M12 12H3" />
-                                    <path d="M16 6H3" />
-                                    <path d="M12 18H3" />
-                                </svg>
-                                Playlist
-                            </Button>
+                                    <svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        viewBox="0 0 24 24"
+                                        fill="none"
+                                        stroke="currentColor"
+                                        strokeWidth="2"
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                        className="mr-2 h-4 w-4"
+                                    >
+                                        <path d="M21 15V6" />
+                                        <path d="M18.5 18a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5Z" />
+                                        <path d="M12 12H3" />
+                                        <path d="M16 6H3" />
+                                        <path d="M12 18H3" />
+                                    </svg>
+                                    {playlist.name}
+                                </Button>
+                            ))}
                         </div>
                     </ScrollArea>
                 </div>
