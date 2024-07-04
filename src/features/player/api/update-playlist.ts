@@ -1,14 +1,14 @@
 "use server";
 
 import { createServerDBClient } from "@/db";
+import { getUser } from "@/db/queries";
 import { Database } from "@/db/schema";
 import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
 
 type Playlist = Database["public"]["Tables"]["playlists"]["Row"];
 
 export const updatePlaylist = async (playlist: Playlist) => {
-    const db = await createServerDBClient();
-    const { getUser } = getKindeServerSession();
+    const db = createServerDBClient();
     const user = await getUser();
 
     if (!user) {
@@ -21,7 +21,7 @@ export const updatePlaylist = async (playlist: Playlist) => {
             name: playlist.name,
             urls: playlist.urls,
         })
-        .eq("user_id", user.id)
+        .eq("user", user.id)
         .eq("id", playlist.id)
         .select("*");
 
