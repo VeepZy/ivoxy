@@ -5,6 +5,7 @@ import { Suspense, type ReactNode } from "react";
 import Menu from "@/features/menu/components/menu";
 import Sidebar from "@/features/sidebar/components/sidebar";
 import VideoPlayer from "@/features/player/components/player";
+import PlayerProvider from "@/features/player/components/context";
 
 const FontSans = Inter({
     variable: "--font-sans",
@@ -31,15 +32,17 @@ const RootLayout: NextPage<Readonly<{ children: ReactNode }>> = ({
                             <Menu />
                             <div className="border-t">
                                 <div className="bg-background">
-                                    <div className="grid lg:grid-cols-5">
-                                        <Sidebar />
-                                        <div className="col-span-3 lg:col-span-4 lg:border-l">
-                                            {children}
+                                    <PlayerProvider>
+                                        <div className="grid lg:grid-cols-5">
+                                            <Sidebar />
+                                            <div className="col-span-3 lg:col-span-4 lg:border-l">
+                                                {children}
+                                            </div>
+                                            <Suspense fallback={null}>
+                                                <VideoPlayer />
+                                            </Suspense>
                                         </div>
-                                        <Suspense fallback={null}>
-                                            <VideoPlayer />
-                                        </Suspense>
-                                    </div>
+                                    </PlayerProvider>
                                 </div>
                             </div>
                         </div>
