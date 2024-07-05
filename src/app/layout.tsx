@@ -4,10 +4,10 @@ import "./globals.css";
 import { type ReactNode, Suspense } from "react";
 
 import { getPlaylists } from "@/db/queries";
-import Menu from "@/features/menu/components/menu";
-import PlayerProvider from "@/features/player/components/context";
-import VideoPlayer from "@/features/player/components/player";
-import Sidebar from "@/features/sidebar/components/sidebar";
+import { Menu } from "@/features/menu/components/menu";
+import { PlayerProvider } from "@/features/player/components/context";
+import { VideoPlayer } from "@/features/player/components/player";
+import { Sidebar } from "@/features/sidebar/components/sidebar";
 
 const FontSans = Inter({
     variable: "--font-sans",
