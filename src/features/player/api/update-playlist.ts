@@ -2,8 +2,7 @@
 
 import { createServerDBClient } from "@/db";
 import { getUser } from "@/db/queries";
-import { Database } from "@/db/schema";
-import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
+import { type Database } from "@/db/schema";
 
 type Playlist = Database["public"]["Tables"]["playlists"]["Row"];
 
