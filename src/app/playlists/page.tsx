@@ -36,7 +36,7 @@ const PlaylistsRoute: NextPage = async () => {
                                 {playlist.name}
                             </h3>
                             <p className="text-sm text-muted-foreground">
-                                {playlist.urls.length} songs
+                                {playlist.data.length} songs
                             </p>
                         </div>
                     </div>
