@@ -7,13 +7,20 @@ export const usePlayerState = () => {
         playing: false,
         duration: 0,
         loop: false,
-        url: ["https://www.youtube.com/embed/cbuRqNCy5k8"],
+        data: [
+            {
+                title: "Eminem - Tobey",
+                channelTitle: "Eminem",
+                url: "https://www.youtube.com/embed/cbuRqNCy5k8",
+            },
+        ],
+        index: 0,
         volume: 0.5,
         muted: false,
         played: 0,
         loaded: 0,
-        title: "",
-        channelTitle: "",
+        canNext: false,
+        canPrev: false,
     }));
 
     return [state, setState] as const;
