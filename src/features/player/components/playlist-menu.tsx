@@ -1,65 +1,85 @@
 "use client";
 
+import { ChevronDownIcon, PlusIcon, XIcon } from "lucide-react";
 import {
-    Popover,
-    PopoverTrigger,
-    PopoverContent,
-} from "@/components/ui/popover";
-import { Button } from "@/components/ui/button";
-import {
-    Select,
-    SelectTrigger,
-    SelectValue,
-    SelectContent,
-    SelectItem,
-} from "@/components/ui/select";
-import { Input } from "@/components/ui/input";
+    useCallback,
+    useContext,
+    useEffect,
+    useState,
+    useTransition,
+} from "react";
 import { useForm } from "react-hook-form";
-import { useState, useTransition } from "react";
+
+import { Button } from "@/components/ui/button";
 import {
     Form,
     FormField,
     FormItem,
     FormMessage,
 } from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import {
+    Popover,
+    PopoverContent,
+    PopoverTrigger,
+} from "@/components/ui/popover";
+import {
+    Select,
+    SelectContent,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
+} from "@/components/ui/select";
+import { type Playlist } from "@/db/types";
+
 import { createPlaylist } from "../api/create-playlist";
-import { Database } from "@/db/schema";
 import { updatePlaylist } from "../api/update-playlist";
 
-type Playlist = Database["public"]["Tables"]["playlists"]["Row"];
+import { PlayerContext } from "./context";
 
 const PlaylistMenu: React.FC<{
     playlists: Playlist[];
     currentSong: string;
 }> = ({ playlists, currentSong }) => {
     const [pending, startTransition] = useTransition();
-    const [open, setOpen] = useState(false);
-    const [currentPlaylists, setPlaylists] = useState<Playlist[] | []>(
-        playlists.filter((p) => !p.urls?.includes(currentSong)),
-    );
-    const [selectedPlaylist, setSelectedPlaylist] = useState<string>(
-        currentPlaylists[0]?.name ?? "",
-    );
+    const [open, setOpen] = useState<boolean>(false);
+
+    const { state } = useContext(PlayerContext);
+
+    const [currentPlaylists, setCurrentPlaylists] = useState<
+        Playlist[] | []
+    >([]);
+
+    const [selectedPlaylist, setSelectedPlaylist] = useState<string>("");
 
     const form = useForm({
-        defaultValues: {
-            playlist: "",
-        },
+        defaultValues: { name: "" },
     });
 
-    const onNewPlaylist = (values: { playlist: string }) => {
-        console.log(values);
+    const filter = useCallback(
+        (playlists: Playlist[], current: string) => {
+            return playlists.filter(
+                (p) => !p.data.some((item) => item.url === current),
+            );
+        },
+        [],
+    );
+
+    useEffect(() => {
+        setCurrentPlaylists(filter(playlists, currentSong));
+    }, [playlists, currentSong, filter]);
+
+    const onNewPlaylist = (values: { name: string }) => {
         startTransition(async () => {
-            const data = await createPlaylist(values.playlist);
-            setPlaylists(data);
+            const data = await createPlaylist(values.name);
+            setCurrentPlaylists(data);
+            setSelectedPlaylist(values.name);
         });
     };
 
-    const onUpdatePlaylist = (playlist: string) => {
+    const onUpdatePlaylist = (name: string) => {
         startTransition(async () => {
-            const current = currentPlaylists.find(
-                (p) => p.name === playlist,
-            );
+            const current = currentPlaylists.find((p) => p.name === name);
 
             if (!current) {
                 return;
@@ -67,9 +87,16 @@ const PlaylistMenu: React.FC<{
 
             const data = await updatePlaylist({
                 ...current,
-                urls: [...(current.urls ?? []), currentSong],
+                data: [
+                    ...current.data,
+                    {
+                        title: state.data[state.index].title,
+                        url: state.data[state.index].url,
+                        channelTitle: state.data[state.index].channelTitle,
+                    },
+                ],
             });
-            setPlaylists(data);
+            setCurrentPlaylists(filter(data, currentSong));
         });
     };
 
@@ -87,8 +114,8 @@ const PlaylistMenu: React.FC<{
                         Add to Playlist
                     </h3>
                     <Button
-                        variant="ghost"
                         size="icon"
+                        variant="ghost"
                         onClick={() => setOpen(false)}
                     >
                         <XIcon className="h-5 w-5" />
@@ -107,8 +134,8 @@ const PlaylistMenu: React.FC<{
                         <SelectContent>
                             {currentPlaylists.map((playlist) => (
                                 <SelectItem
-                                    value={playlist.name}
                                     key={playlist.id}
+                                    value={playlist.name}
                                 >
                                     {playlist.name}
                                 </SelectItem>
@@ -118,12 +145,12 @@ const PlaylistMenu: React.FC<{
 
                     <Form {...form}>
                         <form
-                            onSubmit={form.handleSubmit(onNewPlaylist)}
                             className="flex items-center gap-2"
+                            onSubmit={form.handleSubmit(onNewPlaylist)}
                         >
                             <FormField
                                 control={form.control}
-                                name="playlist"
+                                name="name"
                                 render={({ field }) => (
                                     <FormItem className="flex-1">
                                         <Input
@@ -136,10 +163,10 @@ const PlaylistMenu: React.FC<{
                             />
 
                             <Button
-                                variant="outline"
+                                disabled={pending}
                                 size="icon"
                                 type="submit"
-                                disabled={pending}
+                                variant="outline"
                             >
                                 <PlusIcon className="h-4 w-4" />
                             </Button>
@@ -154,6 +181,7 @@ const PlaylistMenu: React.FC<{
                         Cancel
                     </Button>
                     <Button
+                        disabled={pending}
                         onClick={() => onUpdatePlaylist(selectedPlaylist)}
                     >
                         Add to Playlist
@@ -164,63 +192,63 @@ const PlaylistMenu: React.FC<{
     );
 };
 
-export default PlaylistMenu;
+export { PlaylistMenu };
 
-function ChevronDownIcon(props) {
-    return (
-        <svg
-            {...props}
-            xmlns="http://www.w3.org/2000/svg"
-            width="24"
-            height="24"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-        >
-            <path d="m6 9 6 6 6-6" />
-        </svg>
-    );
-}
+// const ChevronDownIcon = (props) => {
+//     return (
+//         <svg
+//             {...props}
+//             fill="none"
+//             height="24"
+//             stroke="currentColor"
+//             strokeLinecap="round"
+//             strokeLinejoin="round"
+//             strokeWidth="2"
+//             viewBox="0 0 24 24"
+//             width="24"
+//             xmlns="http://www.w3.org/2000/svg"
+//         >
+//             <path d="m6 9 6 6 6-6" />
+//         </svg>
+//     );
+// };
 
-function PlusIcon(props) {
-    return (
-        <svg
-            {...props}
-            xmlns="http://www.w3.org/2000/svg"
-            width="24"
-            height="24"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-        >
-            <path d="M5 12h14" />
-            <path d="M12 5v14" />
-        </svg>
-    );
-}
+// const PlusIcon = (props) => {
+//     return (
+//         <svg
+//             {...props}
+//             fill="none"
+//             height="24"
+//             stroke="currentColor"
+//             strokeLinecap="round"
+//             strokeLinejoin="round"
+//             strokeWidth="2"
+//             viewBox="0 0 24 24"
+//             width="24"
+//             xmlns="http://www.w3.org/2000/svg"
+//         >
+//             <path d="M5 12h14" />
+//             <path d="M12 5v14" />
+//         </svg>
+//     );
+// };
 
-function XIcon(props) {
-    return (
-        <svg
-            {...props}
-            xmlns="http://www.w3.org/2000/svg"
-            width="24"
-            height="24"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-        >
-            <path d="M18 6 6 18" />
-            <path d="m6 6 12 12" />
-        </svg>
-    );
-}
+// const XIcon = (props) => {
+//     return (
+//         <svg
+//             {...props}
+//             fill="none"
+//             height="24"
+//             stroke="currentColor"
+//             strokeLinecap="round"
+//             strokeLinejoin="round"
+//             strokeWidth="2"
+//             viewBox="0 0 24 24"
+//             width="24"
+//             xmlns="http://www.w3.org/2000/svg"
+//         >
+//             <path d="M18 6 6 18" />
+//             <path d="m6 6 12 12" />
+//         </svg>
+//     );
+// };
