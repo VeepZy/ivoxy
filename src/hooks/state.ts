@@ -7,7 +7,7 @@ export const usePlayerState = () => {
         playing: false,
         duration: 0,
         loop: false,
-        url: "https://www.youtube.com/embed/cbuRqNCy5k8",
+        url: ["https://www.youtube.com/embed/cbuRqNCy5k8"],
         volume: 0.5,
         muted: false,
         played: 0,
