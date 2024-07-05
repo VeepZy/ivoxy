@@ -23,6 +23,30 @@ export const getUser = cache(async () => {
     return user;
 });
 
+export const getPlaylist = cache(async (id: string) => {
+    const db = createServerDBClient();
+
+    const user = await getUser();
+
+    if (!user) {
+        throw new Error("User not found");
+    }
+
+    const { data, error } = await db
+        .from("playlists")
+        .select("*")
+        .eq("id", Number(id))
+        .eq("user", user.id)
+        .returns<Playlist[]>()
+        .single();
+
+    if (error) {
+        throw new Error(`Playlist query error: ${error.message}`);
+    }
+
+    return data;
+});
+
 export const getPlaylists = cache(async () => {
     const db = createServerDBClient();
 
