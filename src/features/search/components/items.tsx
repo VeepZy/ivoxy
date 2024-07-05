@@ -28,6 +28,7 @@ const Items: React.FC<{ items: Youtube.Schema$SearchResult[] }> = ({
                 title: item.snippet?.title ?? "",
                 channelTitle: item.snippet?.channelTitle ?? "",
                 url: `https://www.youtube.com/embed/${item.id.videoId}`,
+                thumbnail: item.snippet?.thumbnails?.medium?.url ?? "",
             },
         ]);
     };
