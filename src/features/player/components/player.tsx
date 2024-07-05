@@ -1,33 +1,26 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
-import { Progress } from "@/components/ui/progress";
-import { usePlayerState } from "@/hooks/state";
 import {
     PauseIcon,
     PlayIcon,
-    Repeat1Icon,
     Repeat2Icon,
-    RepeatIcon,
+    SkipBackIcon,
+    SkipForwardIcon,
     Volume2Icon,
     VolumeXIcon,
 } from "lucide-react";
-import {
-    FormEvent,
-    FormEventHandler,
-    MouseEvent,
-    MouseEventHandler,
-    Suspense,
-    useContext,
-    useRef,
-} from "react";
+import { type MouseEvent, Suspense, useContext, useRef } from "react";
 import ReactPlayer from "react-player";
-import { PlayerContext } from "./context";
+
+import { Button } from "@/components/ui/button";
+import { Progress } from "@/components/ui/progress";
 import { Slider } from "@/components/ui/slider";
+import { type Database } from "@/db/schema";
 import { formatDuration } from "@/lib/utils";
 import { unescapeHTML } from "@/lib/utils.client";
-import PlaylistMenu from "./playlist-menu";
-import { Database } from "@/db/schema";
+
+import { PlayerContext } from "./context";
+import { PlaylistMenu } from "./playlist-menu";
 
 type Playlist = Database["public"]["Tables"]["playlists"]["Row"];
 
@@ -35,7 +28,7 @@ const VideoPlayer: React.FC<{ playlists: Playlist[] }> = ({
     playlists,
 }) => {
     const player = useRef<ReactPlayer>(null);
-    const { state, setState, setUrl } = useContext(PlayerContext);
+    const { state, setState } = useContext(PlayerContext);
 
     const onPlay = () =>
         setState((prevState) => ({
@@ -91,6 +84,36 @@ const VideoPlayer: React.FC<{ playlists: Playlist[] }> = ({
         const progress = Math.floor((x / width) * state.duration);
         player.current?.seekTo(progress, "seconds");
     };
+    const onNext = () => {
+        const next = state.url[1];
+
+        if (!next) {
+            return;
+        }
+
+        setState((prevState) => ({
+            ...prevState,
+            url: [next, ...prevState.url.slice(1)],
+            played: 0,
+            loaded: 0,
+            playing: true,
+        }));
+    };
+    const onPrev = () => {
+        const prev = state.url[state.url.length - 2];
+
+        if (!prev) {
+            return;
+        }
+
+        setState((prevState) => ({
+            ...prevState,
+            url: [prev, ...prevState.url.slice(0, -1)],
+            played: 0,
+            loaded: 0,
+            playing: true,
+        }));
+    };
 
     return (
         <div className="fixed bottom-0 left-0 right-0 flex h-16 w-full items-center border-t bg-card px-4 shadow-lg">
@@ -103,12 +126,18 @@ const VideoPlayer: React.FC<{ playlists: Playlist[] }> = ({
                 </p>
             </div>
             <div className="flex flex-1 items-center justify-center gap-4">
+                <Button size="icon" variant="ghost" onClick={onPrev}>
+                    <SkipBackIcon className="h-4 w-4" />
+                </Button>
                 <Button
                     size="icon"
                     variant="ghost"
                     onClick={() => (state.playing ? onPause() : onPlay())}
                 >
                     {state.playing ? <PauseIcon /> : <PlayIcon />}
+                </Button>
+                <Button size="icon" variant="ghost" onClick={onNext}>
+                    <SkipForwardIcon className="h-4 w-4" />
                 </Button>
                 <Button size="icon" variant="ghost" onClick={onLoop}>
                     {state.loop ? (
@@ -118,12 +147,12 @@ const VideoPlayer: React.FC<{ playlists: Playlist[] }> = ({
                     )}
                 </Button>
                 <Slider
-                    defaultValue={[state.volume]}
-                    onValueChange={onVolume}
-                    min={0}
-                    max={1}
-                    step={0.05}
                     className="max-w-[150px]"
+                    defaultValue={[state.volume]}
+                    max={1}
+                    min={0}
+                    step={0.05}
+                    onValueChange={onVolume}
                 />
                 <Button size="icon" variant="ghost" onClick={onMute}>
                     {state.muted ? (
@@ -140,16 +169,16 @@ const VideoPlayer: React.FC<{ playlists: Playlist[] }> = ({
                 </div>
 
                 <PlaylistMenu
+                    currentSong={state.url[0]}
                     playlists={playlists}
-                    currentSong={state.url}
                 />
             </div>
 
             <div className="absolute bottom-16 left-0 right-0">
                 <Progress
-                    value={state.played}
-                    max={state.duration}
                     className="h-2 rounded-none border-none"
+                    max={state.duration}
+                    value={state.played}
                     onClick={onProgressChange}
                 />
             </div>
@@ -158,18 +187,18 @@ const VideoPlayer: React.FC<{ playlists: Playlist[] }> = ({
                 <div className="absolute bottom-24 right-10 hidden">
                     <ReactPlayer
                         ref={player}
-                        width="100%"
                         height="100%"
-                        onPlay={onPlay}
+                        loop={state.loop}
+                        muted={state.muted}
+                        playing={state.playing}
+                        url={state.url}
+                        volume={state.volume}
+                        width="100%"
+                        onDuration={onDuration}
                         onEnded={onEnded}
                         onPause={onPause}
-                        url={state.url}
-                        playing={state.playing}
-                        loop={state.loop}
-                        volume={state.volume}
-                        muted={state.muted}
+                        onPlay={onPlay}
                         onProgress={onProgress}
-                        onDuration={onDuration}
                     />
                 </div>
             </Suspense>
@@ -177,4 +206,4 @@ const VideoPlayer: React.FC<{ playlists: Playlist[] }> = ({
     );
 };
 
-export default VideoPlayer;
+export { VideoPlayer };
