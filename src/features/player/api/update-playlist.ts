@@ -2,9 +2,7 @@
 
 import { createServerDBClient } from "@/db";
 import { getUser } from "@/db/queries";
-import { type Database } from "@/db/schema";
-
-type Playlist = Database["public"]["Tables"]["playlists"]["Row"];
+import { type Playlist } from "@/db/types";
 
 export const updatePlaylist = async (playlist: Playlist) => {
     const db = createServerDBClient();
@@ -18,11 +16,12 @@ export const updatePlaylist = async (playlist: Playlist) => {
         .from("playlists")
         .update({
             name: playlist.name,
-            urls: playlist.urls,
+            data: playlist.data,
         })
         .eq("user", user.id)
         .eq("id", playlist.id)
-        .select("*");
+        .select("*")
+        .returns<Playlist[]>();
 
     if (error) {
         throw new Error(error.message);

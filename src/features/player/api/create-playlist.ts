@@ -2,6 +2,7 @@
 
 import { createServerDBClient } from "@/db";
 import { getUser } from "@/db/queries";
+import { type Playlist } from "@/db/types";
 
 export const createPlaylist = async (playlist: string) => {
     const db = createServerDBClient();
@@ -16,9 +17,10 @@ export const createPlaylist = async (playlist: string) => {
         .insert({
             name: playlist,
             user: user.id,
-            urls: [],
+            data: [],
         })
-        .select("*");
+        .select("*")
+        .returns<Playlist[]>();
 
     if (error) {
         throw new Error(error.message);
