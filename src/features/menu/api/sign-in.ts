@@ -1,7 +1,8 @@
 "use server";
 
-import { createServerDBClient } from "@/db";
 import { redirect } from "next/navigation";
+
+import { createServerDBClient } from "@/db";
 
 export const signIn = async () => {
     const db = createServerDBClient();
