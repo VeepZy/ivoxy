@@ -1,5 +1,9 @@
 "use client";
 
+import { type youtube_v3 as Youtube } from "googleapis";
+import { useState } from "react";
+import { useForm } from "react-hook-form";
+
 import {
     Form,
     FormControl,
@@ -8,17 +12,14 @@ import {
     FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { useForm } from "react-hook-form";
-import { searchQuery } from "../api/search";
-import { useState } from "react";
-import { youtube_v3 } from "googleapis";
-import Items from "./items";
 import { Separator } from "@/components/ui/separator";
 
+import { searchQuery } from "../api/search";
+
+import { Items } from "./items";
+
 const Search: React.FC = () => {
-    const [items, setItems] = useState<youtube_v3.Schema$SearchResult[]>(
-        [],
-    );
+    const [items, setItems] = useState<Youtube.Schema$SearchResult[]>([]);
 
     const form = useForm({
         defaultValues: {
@@ -46,8 +47,8 @@ const Search: React.FC = () => {
                                     <FormControl>
                                         <Input
                                             {...field}
+                                            className=""
                                             placeholder="Search"
-                                            className="w-max-[300px]"
                                         />
                                     </FormControl>
                                     <FormMessage />
@@ -73,4 +74,4 @@ const Search: React.FC = () => {
     );
 };
 
-export default Search;
+export { Search };
