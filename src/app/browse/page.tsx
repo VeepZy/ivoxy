@@ -1,16 +1,14 @@
 "use server";
 
-import Search from "@/features/search/components/search";
-
 import type { NextPage } from "next";
 
-const BrowseRoute: NextPage = async () => {
+import Search from "@/features/search/components/search";
+
+const BrowseRoute: NextPage = () => {
     return (
-        <>
-            <div className="h-full px-4 py-6 lg:px-8">
-                <Search />
-            </div>
-        </>
+        <div className="h-full px-4 py-6 lg:px-8">
+            <Search />
+        </div>
     );
 };
 
