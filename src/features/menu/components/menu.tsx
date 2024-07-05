@@ -1,5 +1,7 @@
 "use server";
 
+import Link from "next/link";
+
 import {
     Menubar,
     MenubarContent,
@@ -11,19 +13,9 @@ import {
     MenubarSubTrigger,
     MenubarTrigger,
 } from "@/components/ui/menubar";
-import { createServerDBClient } from "@/db";
 import { getUser } from "@/db/queries";
-import {
-    LoginLink,
-    LogoutLink,
-    RegisterLink,
-} from "@kinde-oss/kinde-auth-nextjs/components";
-import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
-import Link from "next/link";
-import { redirect } from "next/navigation";
-import { signIn } from "../api/sign-in";
-import SignIn from "./sign-in";
-import SignOut from "./sign-out";
+import { SignIn } from "./sign-in";
+import { SignOut } from "./sign-out";
 
 const Menu: React.FC = async () => {
     const user = await getUser();
@@ -76,9 +68,6 @@ const Menu: React.FC = async () => {
                     <MenubarContent>
                         <SignIn />
                         <MenubarSeparator />
-                        <MenubarItem>
-                            <RegisterLink>Register</RegisterLink>
-                        </MenubarItem>
                     </MenubarContent>
                 )}
             </MenubarMenu>
@@ -86,4 +75,4 @@ const Menu: React.FC = async () => {
     );
 };
 
-export default Menu;
+export { Menu };
