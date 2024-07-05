@@ -2,7 +2,7 @@
 
 import type { NextPage } from "next";
 
-import Search from "@/features/search/components/search";
+import { Search } from "@/features/search/components/search";
 
 const BrowseRoute: NextPage = () => {
     return (
