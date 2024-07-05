@@ -13,13 +13,20 @@ export const initialState = {
     playing: false,
     duration: 0,
     loop: false,
-    url: ["https://www.youtube.com/embed/cbuRqNCy5k8"],
+    data: [
+        {
+            title: "Eminem - Tobey",
+            channelTitle: "Eminem",
+            url: "https://www.youtube.com/embed/cbuRqNCy5k8",
+        },
+    ],
+    index: 0,
     volume: 0.5,
     muted: false,
     played: 0,
     loaded: 0,
-    title: "",
-    channelTitle: "",
+    canNext: false,
+    canPrev: false,
 };
 
 export interface PlayerContextType {
@@ -27,15 +34,26 @@ export interface PlayerContextType {
         playing: boolean;
         duration: number;
         loop: boolean;
-        url: string[];
+        data: {
+            title: string;
+            channelTitle: string;
+            url: string;
+        }[];
+        index: number;
         volume: number;
         muted: boolean;
         played: number;
         loaded: number;
-        title: string;
-        channelTitle: string;
+        canNext: boolean;
+        canPrev: boolean;
     };
-    setUrl: (newUrl: string[]) => void;
+    setUrl: (
+        song: {
+            title: string;
+            channelTitle: string;
+            url: string;
+        }[],
+    ) => void;
     setState: Dispatch<SetStateAction<PlayerContextType["state"]>>;
     setTitle: (title: string, channelTitle: string) => void;
 }
@@ -52,11 +70,17 @@ const PlayerProvider: React.FC<{ children: ReactNode }> = ({
 }) => {
     const [state, setState] = usePlayerState();
 
-    const setUrl = (newUrl: string[]) => {
-        console.log("SET URL", state.url, newUrl);
+    const setUrl = (
+        songs: {
+            title: string;
+            channelTitle: string;
+            url: string;
+        }[],
+    ) => {
         setState((prevState) => ({
             ...prevState,
-            url: newUrl,
+            data: songs,
+            index: prevState.data.length - 1,
             played: 0,
             loaded: 0,
             playing: true,
