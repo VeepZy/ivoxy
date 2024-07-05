@@ -14,6 +14,7 @@ import {
     MenubarTrigger,
 } from "@/components/ui/menubar";
 import { getUser } from "@/db/queries";
+
 import { SignIn } from "./sign-in";
 import { SignOut } from "./sign-out";
 
