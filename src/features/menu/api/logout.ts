@@ -1,9 +1,10 @@
 "use client";
 
-import { createBrowserDBClient } from "@/db/browser";
 import { useRouter } from "next/navigation";
 
-export const logout = async () => {
+import { createBrowserDBClient } from "@/db/browser";
+
+export const useLogout = async () => {
     const db = createBrowserDBClient();
     const router = useRouter();
 
