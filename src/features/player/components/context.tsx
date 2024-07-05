@@ -1,13 +1,19 @@
 "use client";
 
+import {
+    type Dispatch,
+    type ReactNode,
+    type SetStateAction,
+    createContext,
+} from "react";
+
 import { usePlayerState } from "@/hooks/state";
-import { createContext, Dispatch, ReactNode, SetStateAction } from "react";
 
 export const initialState = {
     playing: false,
     duration: 0,
     loop: false,
-    url: "https://www.youtube.com/embed/cbuRqNCy5k8",
+    url: ["https://www.youtube.com/embed/cbuRqNCy5k8"],
     volume: 0.5,
     muted: false,
     played: 0,
@@ -16,12 +22,12 @@ export const initialState = {
     channelTitle: "",
 };
 
-export type PlayerContextType = {
+export interface PlayerContextType {
     state: {
         playing: boolean;
         duration: number;
         loop: boolean;
-        url: string;
+        url: string[];
         volume: number;
         muted: boolean;
         played: number;
@@ -29,10 +35,10 @@ export type PlayerContextType = {
         title: string;
         channelTitle: string;
     };
-    setUrl: (newUrl: string) => void;
+    setUrl: (newUrl: string[]) => void;
     setState: Dispatch<SetStateAction<PlayerContextType["state"]>>;
     setTitle: (title: string, channelTitle: string) => void;
-};
+}
 
 export const PlayerContext = createContext<PlayerContextType>({
     state: initialState,
@@ -46,7 +52,7 @@ const PlayerProvider: React.FC<{ children: ReactNode }> = ({
 }) => {
     const [state, setState] = usePlayerState();
 
-    const setUrl = (newUrl: string) => {
+    const setUrl = (newUrl: string[]) => {
         console.log("SET URL", state.url, newUrl);
         setState((prevState) => ({
             ...prevState,
@@ -79,4 +85,4 @@ const PlayerProvider: React.FC<{ children: ReactNode }> = ({
     );
 };
 
-export default PlayerProvider;
+export { PlayerProvider };
