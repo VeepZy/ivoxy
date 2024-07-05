@@ -1,8 +1,9 @@
 "use client";
 
+import { type NextPage } from "next";
+
 import { Button } from "@/components/ui/button";
 import { auth } from "@/lib/auth";
-import { NextPage } from "next";
 
 const ProfileRoute: NextPage = () => {
     return (
