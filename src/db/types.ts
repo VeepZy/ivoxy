@@ -6,5 +6,6 @@ export interface Playlist extends Omit<PlaylistRow, "data"> {
         title: string;
         url: string;
         channelTitle: string;
+        thumbnail: string;
     }[];
 }
