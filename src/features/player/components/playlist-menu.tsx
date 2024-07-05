@@ -93,6 +93,7 @@ const PlaylistMenu: React.FC<{
                         title: state.data[state.index].title,
                         url: state.data[state.index].url,
                         channelTitle: state.data[state.index].channelTitle,
+                        thumbnail: state.data[state.index].thumbnail,
                     },
                 ],
             });
