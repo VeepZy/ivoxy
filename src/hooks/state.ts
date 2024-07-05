@@ -12,6 +12,8 @@ export const usePlayerState = () => {
                 title: "Eminem - Tobey",
                 channelTitle: "Eminem",
                 url: "https://www.youtube.com/embed/cbuRqNCy5k8",
+                thumbnail:
+                    "https://i.ytimg.com/vi/cbuRqNCy5k8/hqdefault.jpg",
             },
         ],
         index: 0,
