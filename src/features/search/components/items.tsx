@@ -6,21 +6,30 @@ import Image from "next/image";
 import { useContext } from "react";
 
 import { PlayerContext } from "@/features/player/components/context";
+import { useMounted } from "@/hooks/mounted";
 import { unescapeHTML } from "@/lib/utils.client";
 
 const Items: React.FC<{ items: Youtube.Schema$SearchResult[] }> = ({
     items,
 }) => {
-    const { setUrl, setTitle } = useContext(PlayerContext);
+    const { setUrl } = useContext(PlayerContext);
+
+    const isMounted = useMounted();
+
+    if (!isMounted) {
+        return null;
+    }
 
     const onSubmit = (item: Youtube.Schema$SearchResult) => {
         if (!item.id?.videoId) return;
 
-        setTitle(
-            item.snippet?.title ?? "",
-            item.snippet?.channelTitle ?? "",
-        );
-        setUrl([`https://www.youtube.com/embed/${item.id.videoId}`]);
+        setUrl([
+            {
+                title: item.snippet?.title ?? "",
+                channelTitle: item.snippet?.channelTitle ?? "",
+                url: `https://www.youtube.com/embed/${item.id.videoId}`,
+            },
+        ]);
     };
 
     return (
@@ -28,8 +37,8 @@ const Items: React.FC<{ items: Youtube.Schema$SearchResult[] }> = ({
             {items.map((item) => (
                 <div key={item.etag} className="w-[320px] space-y-3">
                     <button
-                        type="button"
                         className="relative overflow-hidden rounded-md ring-2 ring-destructive"
+                        type="button"
                         onClick={() => onSubmit(item)}
                     >
                         <Image
