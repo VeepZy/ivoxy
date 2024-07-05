@@ -1,7 +1,8 @@
 "use server";
 
-import { getAuthenticatedClient } from "@/lib/auth";
 import { google } from "googleapis";
+
+import { getAuthenticatedClient } from "@/lib/auth";
 
 export const searchQuery = async (query: string) => {
     const client = await getAuthenticatedClient();
