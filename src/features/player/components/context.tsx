@@ -18,6 +18,7 @@ export const initialState = {
             title: "Eminem - Tobey",
             channelTitle: "Eminem",
             url: "https://www.youtube.com/embed/cbuRqNCy5k8",
+            thumbnail: "https://i.ytimg.com/vi/cbuRqNCy5k8/hqdefault.jpg",
         },
     ],
     index: 0,
@@ -38,6 +39,7 @@ export interface PlayerContextType {
             title: string;
             channelTitle: string;
             url: string;
+            thumbnail: string;
         }[];
         index: number;
         volume: number;
@@ -52,6 +54,7 @@ export interface PlayerContextType {
             title: string;
             channelTitle: string;
             url: string;
+            thumbnail: string;
         }[],
     ) => void;
     setState: Dispatch<SetStateAction<PlayerContextType["state"]>>;
@@ -75,6 +78,7 @@ const PlayerProvider: React.FC<{ children: ReactNode }> = ({
             title: string;
             channelTitle: string;
             url: string;
+            thumbnail: string;
         }[],
     ) => {
         setState((prevState) => ({
