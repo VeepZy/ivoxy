@@ -1,8 +1,8 @@
 "use server";
 
-import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
 import { createServerDBClient } from ".";
 import { cache } from "react";
+import { Playlist } from "./types";
 
 export const getUser = cache(async () => {
     const db = createServerDBClient();
@@ -35,7 +35,8 @@ export const getPlaylists = cache(async () => {
     const { data, error } = await db
         .from("playlists")
         .select("*")
-        .eq("user", user.id);
+        .eq("user", user.id)
+        .returns<Playlist[]>();
 
     if (error) {
         throw new Error(`Playlist query error: ${error.message}`);
