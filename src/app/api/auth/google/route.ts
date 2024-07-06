@@ -1,6 +1,6 @@
 import url from "node:url";
 
-import { type NextApiRequest, type NextApiResponse } from "next";
+import { type NextApiRequest } from "next";
 import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
 
