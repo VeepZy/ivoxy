@@ -7,9 +7,9 @@ import { getUser } from "@/db/queries";
 import { Menu } from "@/features/menu/components/menu";
 import { SignIn } from "@/features/menu/components/sign-in";
 import { PlayerProvider } from "@/features/player/components/context";
+import { ThemeProvider } from "@/features/theme/components/context";
 
 import { Wrapper } from "./wrapper";
-
 
 const FontSans = Inter({
     variable: "--font-sans",
@@ -41,20 +41,22 @@ const RootLayout: NextPage<Readonly<{ children: ReactNode }>> = async ({
 
     return (
         <html lang="en">
-            <body
-                className={`dark min-h-screen bg-background font-sans antialiased ${FontSans.variable}`}
-            >
-                <div className="relative flex min-h-screen flex-col">
-                    <main className="hidden md:flex md:flex-1 md:flex-col">
-                        <Menu />
-                        <div className="flex flex-1 border-t">
-                            <PlayerProvider>
-                                <Wrapper>{children}</Wrapper>
-                            </PlayerProvider>
-                        </div>
-                    </main>
-                </div>
-            </body>
+            <ThemeProvider>
+                <body
+                    className={`min-h-screen bg-background font-sans antialiased ${FontSans.variable}`}
+                >
+                    <div className="relative flex min-h-screen flex-col">
+                        <main className="hidden md:flex md:flex-1 md:flex-col">
+                            <Menu />
+                            <div className="flex flex-1 border-t">
+                                <PlayerProvider>
+                                    <Wrapper>{children}</Wrapper>
+                                </PlayerProvider>
+                            </div>
+                        </main>
+                    </div>
+                </body>
+            </ThemeProvider>
         </html>
     );
 };
