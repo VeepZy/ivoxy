@@ -1,8 +1,8 @@
 "use server";
 
 import { OAuth2Client } from "google-auth-library";
-import { redirect } from "next/navigation";
 import { cookies } from "next/headers";
+import { redirect } from "next/navigation";
 
 export const getAuthenticatedClient = async () => {
     const client = await new OAuth2Client(
@@ -11,15 +11,15 @@ export const getAuthenticatedClient = async () => {
         process.env.YOUTUBE_REDIRECT_URI ?? "",
     );
 
-    const acccess_token = cookies().get("google_access_token");
-    const refresh_token = cookies().get("google_refresh_token");
-    const expiry_date = cookies().get("google_expiry_date");
+    const accessToken = cookies().get("google_access_token");
+    const refreshToken = cookies().get("google_refresh_token");
+    const expiryDate = cookies().get("google_expiry_date");
 
-    if (acccess_token && refresh_token && expiry_date) {
+    if (accessToken && refreshToken && expiryDate) {
         client.setCredentials({
-            access_token: acccess_token.value,
-            refresh_token: refresh_token.value,
-            expiry_date: Number(expiry_date.value),
+            access_token: accessToken.value,
+            refresh_token: refreshToken.value,
+            expiry_date: Number(expiryDate.value),
         });
     }
 
