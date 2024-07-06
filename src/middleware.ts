@@ -1,4 +1,5 @@
-import { NextRequest } from "next/server";
+import { type NextRequest } from "next/server";
+
 import { updateSession } from "./db";
 
 export const middleware = async (request: NextRequest) => {

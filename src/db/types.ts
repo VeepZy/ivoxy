@@ -1,4 +1,4 @@
-import { Database } from "./schema";
+import { type Database } from "./schema";
 
 type PlaylistRow = Database["public"]["Tables"]["playlists"]["Row"];
 type SongRow = Database["public"]["Tables"]["songs"]["Row"];

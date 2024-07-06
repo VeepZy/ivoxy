@@ -1,8 +1,9 @@
+import { PlayIcon } from "lucide-react";
+import { type NextPage } from "next";
+import Image from "next/image";
+
 import { Title } from "@/components/title";
 import { getSongs } from "@/db/queries";
-import { PlayIcon } from "lucide-react";
-import { NextPage } from "next";
-import Image from "next/image";
 
 const SongsRoute: NextPage = async () => {
     const songs = await getSongs();
@@ -28,8 +29,8 @@ const SongsRoute: NextPage = async () => {
                                 alt={item.data.title}
                                 className="aspect-square h-[180px] w-[320px] object-cover transition-all hover:scale-105"
                                 height={180}
-                                width={320}
                                 src={item.data.thumbnail}
+                                width={320}
                             />
                             <div className="absolute inset-0 flex items-center justify-center rounded-lg bg-black/50 opacity-0 transition-opacity group-hover:opacity-100">
                                 <PlayIcon className="h-10 w-10 text-white" />

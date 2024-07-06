@@ -4,8 +4,8 @@ import { PlayIcon } from "lucide-react";
 import { useContext } from "react";
 
 import { Button } from "@/components/ui/button";
+import { type Playlist } from "@/db/types";
 import { PlayerContext } from "@/features/player/components/context";
-import { Playlist } from "@/db/types";
 
 const PlayPlaylist: React.FC<{ playlist: Playlist }> = ({ playlist }) => {
     const { setUrl } = useContext(PlayerContext);

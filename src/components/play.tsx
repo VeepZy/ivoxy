@@ -1,10 +1,12 @@
 "use client";
 
-import type { PlaylistData, SongData } from "@/db/types";
-import { Button } from "./ui/button";
 import { PlayIcon } from "lucide-react";
 import React, { useContext } from "react";
+
+import type { PlaylistData, SongData } from "@/db/types";
 import { PlayerContext } from "@/features/player/components/context";
+
+import { Button } from "./ui/button";
 
 const SongPlayButton: React.FC<{ song: SongData }> = ({ song }) => {
     const { setUrl } = useContext(PlayerContext);

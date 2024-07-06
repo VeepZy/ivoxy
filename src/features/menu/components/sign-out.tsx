@@ -1,9 +1,9 @@
 "use client";
 
-import { MenubarItem } from "@/components/ui/menubar";
-
-import { createBrowserDBClient } from "@/db/browser";
 import { useRouter } from "next/navigation";
+
+import { MenubarItem } from "@/components/ui/menubar";
+import { createBrowserDBClient } from "@/db/browser";
 
 const SignOut: React.FC = () => {
     const router = useRouter();

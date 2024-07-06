@@ -5,11 +5,11 @@ import { type ReactNode } from "react";
 
 import { getUser } from "@/db/queries";
 import { Menu } from "@/features/menu/components/menu";
+import { SignIn } from "@/features/menu/components/sign-in";
 import { PlayerProvider } from "@/features/player/components/context";
 
 import { Wrapper } from "./wrapper";
 
-import { SignIn } from "@/features/menu/components/sign-in";
 
 const FontSans = Inter({
     variable: "--font-sans",

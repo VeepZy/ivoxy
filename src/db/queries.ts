@@ -1,8 +1,10 @@
 "use server";
 
-import { createServerDBClient } from ".";
 import { cache } from "react";
-import { Playlist, Song } from "./types";
+
+import { type Playlist, type Song } from "./types";
+
+import { createServerDBClient } from ".";
 
 export const getUser = cache(async () => {
     const db = createServerDBClient();

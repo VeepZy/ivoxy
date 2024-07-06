@@ -1,7 +1,8 @@
+import { type ReactNode, Suspense } from "react";
+
 import { getPlaylists, getSongs } from "@/db/queries";
 import { VideoPlayer } from "@/features/player/components/player";
 import { Sidebar } from "@/features/sidebar/components/sidebar";
-import { Suspense, type ReactNode } from "react";
 
 const Wrapper: React.FC<{ children: ReactNode }> = async ({
     children,

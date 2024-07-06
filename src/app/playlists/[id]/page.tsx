@@ -1,9 +1,10 @@
-import { getPlaylist } from "@/db/queries";
 import { PlayIcon } from "lucide-react";
-import { NextPage } from "next";
+import { type NextPage } from "next";
 import Image from "next/image";
+
 import { PlaylistPlayButton, SongPlayButton } from "@/components/play";
 import { Title } from "@/components/title";
+import { getPlaylist } from "@/db/queries";
 
 const PlaylistRoute: NextPage<{ params: { id: string } }> = async ({
     params,
@@ -35,8 +36,8 @@ const PlaylistRoute: NextPage<{ params: { id: string } }> = async ({
                                 alt={item.title}
                                 className="aspect-square h-14 w-14 object-cover transition-all hover:scale-105"
                                 height={120}
-                                width={312}
                                 src={item.thumbnail}
+                                width={312}
                             />
                             <div className="absolute inset-0 flex items-center justify-center rounded-lg bg-black/50 opacity-0 transition-opacity group-hover:opacity-100">
                                 <PlayIcon className="h-10 w-10 text-white" />

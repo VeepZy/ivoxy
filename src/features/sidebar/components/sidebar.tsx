@@ -1,5 +1,6 @@
 "use client";
 
+import { LayoutGridIcon, ListMusicIcon, Music2Icon } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
@@ -7,12 +8,6 @@ import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { type Database } from "@/db/schema";
 import { cn } from "@/lib/utils";
-import {
-    Grid2X2Icon,
-    LayoutGridIcon,
-    ListMusicIcon,
-    Music2Icon,
-} from "lucide-react";
 
 type Playlist = Database["public"]["Tables"]["playlists"]["Row"];
 
@@ -90,11 +85,11 @@ const Sidebar: React.FC<{ playlists: Playlist[] }> = ({ playlists }) => {
                     <div className="space-y-1">
                         <Button
                             asChild
+                            variant="ghost"
                             className={cn("w-full justify-start", {
                                 "text-primary hover:text-primary":
                                     pathname === "/playlists",
                             })}
-                            variant="ghost"
                         >
                             <Link href="/playlists">
                                 <ListMusicIcon className="mr-2 mt-0.5 h-4 w-4" />
@@ -102,12 +97,12 @@ const Sidebar: React.FC<{ playlists: Playlist[] }> = ({ playlists }) => {
                             </Link>
                         </Button>
                         <Button
+                            asChild
+                            variant="ghost"
                             className={cn("w-full justify-start", {
                                 "text-primary hover:text-primary":
                                     pathname === "/songs",
                             })}
-                            variant="ghost"
-                            asChild
                         >
                             <Link href="/songs">
                                 <Music2Icon className="mr-2 mt-0.5 h-4 w-4" />
@@ -125,6 +120,8 @@ const Sidebar: React.FC<{ playlists: Playlist[] }> = ({ playlists }) => {
                             {playlists.map((playlist) => (
                                 <Button
                                     key={playlist.id}
+                                    asChild
+                                    variant="ghost"
                                     className={cn(
                                         "w-full justify-start font-normal",
                                         {
@@ -133,8 +130,6 @@ const Sidebar: React.FC<{ playlists: Playlist[] }> = ({ playlists }) => {
                                                 `/playlists/${playlist.id}`,
                                         },
                                     )}
-                                    variant="ghost"
-                                    asChild
                                 >
                                     <Link
                                         href={`/playlists/${playlist.id}`}
