@@ -63,9 +63,9 @@ export interface PlayerContextType {
 
 export const PlayerContext = createContext<PlayerContextType>({
     state: initialState,
-    setState: () => {},
-    setUrl: () => {},
-    setTitle: () => {},
+    setState: () => undefined,
+    setUrl: () => undefined,
+    setTitle: () => undefined,
 });
 
 const PlayerProvider: React.FC<{ children: ReactNode }> = ({
