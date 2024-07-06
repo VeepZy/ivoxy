@@ -1,6 +1,9 @@
 import { getPlaylist } from "@/db/queries";
+import { unescapeHTML } from "@/lib/utils.client";
+import { PlayIcon } from "lucide-react";
 import { NextPage } from "next";
 import Image from "next/image";
+import PlaylistTitle from "./title";
 
 const PlaylistRoute: NextPage<{ params: { id: string } }> = async ({
     params,
@@ -17,25 +20,25 @@ const PlaylistRoute: NextPage<{ params: { id: string } }> = async ({
                     {playlist.data.length} songs
                 </p>
             </header>
-            <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5">
-                {playlist.data.map((song) => (
-                    <div key={song.title} className="group">
-                        <div className="relative">
-                            {/* <PlaySong song={song} /> */}
+            <div className="flex w-full flex-row flex-wrap gap-8">
+                {playlist.data.map((item) => (
+                    <div key={item.title} className="w-[320px] space-y-3">
+                        <div className="relative overflow-hidden rounded-md border border-primary/50 shadow-lg">
                             <Image
-                                alt={song.title}
-                                className="aspect-square w-full rounded-lg object-cover transition-opacity group-hover:opacity-80"
+                                alt={item.title}
+                                className="aspect-square h-[180px] w-[320px] object-cover transition-all hover:scale-105"
                                 height={180}
-                                src={song.thumbnail}
                                 width={320}
+                                src={item.thumbnail}
                             />
+                            <div className="absolute inset-0 flex items-center justify-center rounded-lg bg-black/50 opacity-0 transition-opacity group-hover:opacity-100">
+                                <PlayIcon className="h-10 w-10 text-white" />
+                            </div>
                         </div>
-                        <div className="mt-2 text-center">
-                            <h3 className="text-base font-medium">
-                                {song.title}
-                            </h3>
-                            <p className="text-sm text-muted-foreground">
-                                {song.channelTitle}
+                        <div className="space-y-1 text-sm">
+                            <PlaylistTitle title={item.title} />
+                            <p className="text-xs text-muted-foreground">
+                                {item.channelTitle}
                             </p>
                         </div>
                     </div>
