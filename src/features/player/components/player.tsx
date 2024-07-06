@@ -200,12 +200,9 @@ const VideoPlayer: React.FC<{ playlists: Playlist[] }> = ({
                     <p>:</p>
                     <p>{formatDuration(state.duration)}</p>
                 </div>
-
-                <PlaylistMenu
-                    currentSong={state.data[state.index].url}
-                    playlists={playlists}
-                />
             </div>
+
+            <PlaylistMenu playlists={playlists} />
 
             <div className="absolute bottom-16 left-0 right-0">
                 <Progress
