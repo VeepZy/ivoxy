@@ -21,14 +21,14 @@ import ReactPlayer from "react-player";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { Slider } from "@/components/ui/slider";
-import { Song, type Playlist } from "@/db/types";
+import { type Playlist, type Song } from "@/db/types";
 import { useMounted } from "@/hooks/mounted";
 import { cn, formatDuration } from "@/lib/utils";
 import { unescapeHTML } from "@/lib/utils.client";
 
+import { AddSong } from "./add-song";
 import { PlayerContext } from "./context";
 import { PlaylistMenu } from "./playlist-menu";
-import { AddSong } from "./add-song";
 
 const VideoPlayer: React.FC<{ playlists: Playlist[]; songs: Song[] }> = ({
     playlists,
@@ -45,7 +45,7 @@ const VideoPlayer: React.FC<{ playlists: Playlist[]; songs: Song[] }> = ({
             canNext: state.index < state.data.length - 1,
             canPrev: state.index > 0,
         }));
-    }, [state.data, state.index]);
+    }, [state.data, state.index, setState]);
 
     if (!isMounted) {
         return null;
@@ -62,20 +62,21 @@ const VideoPlayer: React.FC<{ playlists: Playlist[]; songs: Song[] }> = ({
             playing: false,
         }));
     const onEnded = () => {
-        const next = state.data[state.index + 1];
+        setState((prevState) => {
+            const next = prevState.index + 1;
 
-        if (!next) {
-            setState((prevState) => ({
+            if (next >= prevState.data.length) {
+                return {
+                    ...prevState,
+                    playing: false,
+                };
+            }
+
+            return {
                 ...prevState,
-                playing: false,
-            }));
-            return;
-        }
-
-        setState((prevState) => ({
-            ...prevState,
-            index: state.index + 1,
-        }));
+                index: state.index + 1,
+            };
+        });
     };
 
     const onProgress = (event: {
@@ -98,7 +99,6 @@ const VideoPlayer: React.FC<{ playlists: Playlist[]; songs: Song[] }> = ({
         }));
     };
     const onVolume = (event: number[]) => {
-        console.log(event);
         setState((prevState) => ({
             ...prevState,
             volume: (prevState.volume = event[0]),
@@ -150,10 +150,10 @@ const VideoPlayer: React.FC<{ playlists: Playlist[]; songs: Song[] }> = ({
             </div>
             <div className="flex flex-1 items-center justify-center gap-4">
                 <Button
+                    disabled={!state.canPrev}
                     size="icon"
                     variant="ghost"
                     onClick={onPrev}
-                    disabled={!state.canPrev}
                 >
                     <SkipBackIcon className="h-4 w-4" />
                 </Button>
@@ -165,10 +165,10 @@ const VideoPlayer: React.FC<{ playlists: Playlist[]; songs: Song[] }> = ({
                     {state.playing ? <PauseIcon /> : <PlayIcon />}
                 </Button>
                 <Button
+                    disabled={!state.canNext}
                     size="icon"
                     variant="ghost"
                     onClick={onNext}
-                    disabled={!state.canNext}
                 >
                     <SkipForwardIcon className="h-4 w-4" />
                 </Button>
