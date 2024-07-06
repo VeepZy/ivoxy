@@ -42,19 +42,15 @@ const RootLayout: NextPage<Readonly<{ children: ReactNode }>> = async ({
     return (
         <html lang="en">
             <body
-                className={`min-h-screen bg-background font-sans antialiased ${FontSans.variable}`}
+                className={`dark min-h-screen bg-background font-sans antialiased ${FontSans.variable}`}
             >
                 <div className="relative flex min-h-screen flex-col">
-                    <main className="flex-1">
-                        <div className="hidden md:block">
-                            <Menu />
-                            <div className="border-t">
-                                <div className="bg-background">
-                                    <PlayerProvider>
-                                        <Wrapper children={children} />
-                                    </PlayerProvider>
-                                </div>
-                            </div>
+                    <main className="hidden md:flex md:flex-1 md:flex-col">
+                        <Menu />
+                        <div className="flex flex-1 border-t">
+                            <PlayerProvider>
+                                <Wrapper children={children} />
+                            </PlayerProvider>
                         </div>
                     </main>
                 </div>
