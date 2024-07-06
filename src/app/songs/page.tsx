@@ -1,9 +1,8 @@
-import { getPlaylist, getSongs } from "@/db/queries";
-import { unescapeHTML } from "@/lib/utils.client";
+import { Title } from "@/components/title";
+import { getSongs } from "@/db/queries";
 import { PlayIcon } from "lucide-react";
 import { NextPage } from "next";
 import Image from "next/image";
-import PlaylistTitle from "../playlists/[id]/title";
 
 const SongsRoute: NextPage = async () => {
     const songs = await getSongs();
@@ -37,7 +36,7 @@ const SongsRoute: NextPage = async () => {
                             </div>
                         </div>
                         <div className="space-y-1 text-sm">
-                            <PlaylistTitle title={item.data.title} />
+                            <Title title={item.data.title} />
                             <p className="text-xs text-muted-foreground">
                                 {item.data.channelTitle}
                             </p>
