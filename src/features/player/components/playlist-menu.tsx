@@ -112,7 +112,7 @@ const PlaylistMenu: React.FC<{
                     <ChevronDownIcon className="ml-2 h-4 w-4" />
                 </Button>
             </PopoverTrigger>
-            <PopoverContent className="w-80 space-y-4 p-4" align="end">
+            <PopoverContent align="end" className="w-80 space-y-4 p-4">
                 <div className="flex items-center justify-between">
                     <h3 className="text-lg font-medium">
                         Add to Playlist
@@ -197,62 +197,3 @@ const PlaylistMenu: React.FC<{
 };
 
 export { PlaylistMenu };
-
-// const ChevronDownIcon = (props) => {
-//     return (
-//         <svg
-//             {...props}
-//             fill="none"
-//             height="24"
-//             stroke="currentColor"
-//             strokeLinecap="round"
-//             strokeLinejoin="round"
-//             strokeWidth="2"
-//             viewBox="0 0 24 24"
-//             width="24"
-//             xmlns="http://www.w3.org/2000/svg"
-//         >
-//             <path d="m6 9 6 6 6-6" />
-//         </svg>
-//     );
-// };
-
-// const PlusIcon = (props) => {
-//     return (
-//         <svg
-//             {...props}
-//             fill="none"
-//             height="24"
-//             stroke="currentColor"
-//             strokeLinecap="round"
-//             strokeLinejoin="round"
-//             strokeWidth="2"
-//             viewBox="0 0 24 24"
-//             width="24"
-//             xmlns="http://www.w3.org/2000/svg"
-//         >
-//             <path d="M5 12h14" />
-//             <path d="M12 5v14" />
-//         </svg>
-//     );
-// };
-
-// const XIcon = (props) => {
-//     return (
-//         <svg
-//             {...props}
-//             fill="none"
-//             height="24"
-//             stroke="currentColor"
-//             strokeLinecap="round"
-//             strokeLinejoin="round"
-//             strokeWidth="2"
-//             viewBox="0 0 24 24"
-//             width="24"
-//             xmlns="http://www.w3.org/2000/svg"
-//         >
-//             <path d="M18 6 6 18" />
-//             <path d="m6 6 12 12" />
-//         </svg>
-//     );
-// };
