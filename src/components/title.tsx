@@ -11,9 +11,9 @@ const Title: React.FC<{ title: string }> = ({ title }) => {
     }
 
     return (
-        <h1 className="text-3xl font-bold tracking-tight">
+        <h3 className="font-semibold tracking-tight">
             {unescapeHTML(title)}
-        </h1>
+        </h3>
     );
 };
 
