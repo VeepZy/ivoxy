@@ -24,7 +24,11 @@ const Sidebar: React.FC<{ playlists: Playlist[] }> = ({ playlists }) => {
                     <div className="space-y-1">
                         <Button
                             className="w-full justify-start"
-                            variant="secondary"
+                            variant={
+                                pathname === "/listen"
+                                    ? "secondary"
+                                    : "ghost"
+                            }
                         >
                             <svg
                                 className="mr-2 h-4 w-4"
@@ -43,11 +47,12 @@ const Sidebar: React.FC<{ playlists: Playlist[] }> = ({ playlists }) => {
                         </Button>
                         <Button
                             asChild
-                            variant="ghost"
-                            className={cn("w-full justify-start", {
-                                "text-primary hover:text-primary":
-                                    pathname === "/browse",
-                            })}
+                            className="w-full justify-start"
+                            variant={
+                                pathname === "/browse"
+                                    ? "secondary"
+                                    : "ghost"
+                            }
                         >
                             <Link href="/browse">
                                 <LayoutGridIcon className="mr-2 mt-0.5 h-4 w-4" />
@@ -85,11 +90,12 @@ const Sidebar: React.FC<{ playlists: Playlist[] }> = ({ playlists }) => {
                     <div className="space-y-1">
                         <Button
                             asChild
-                            variant="ghost"
-                            className={cn("w-full justify-start", {
-                                "text-primary hover:text-primary":
-                                    pathname === "/playlists",
-                            })}
+                            className="w-full justify-start"
+                            variant={
+                                pathname === "/playlists"
+                                    ? "secondary"
+                                    : "ghost"
+                            }
                         >
                             <Link href="/playlists">
                                 <ListMusicIcon className="mr-2 mt-0.5 h-4 w-4" />
@@ -98,11 +104,12 @@ const Sidebar: React.FC<{ playlists: Playlist[] }> = ({ playlists }) => {
                         </Button>
                         <Button
                             asChild
-                            variant="ghost"
-                            className={cn("w-full justify-start", {
-                                "text-primary hover:text-primary":
-                                    pathname === "/songs",
-                            })}
+                            className="w-full justify-start"
+                            variant={
+                                pathname === "/songs"
+                                    ? "secondary"
+                                    : "ghost"
+                            }
                         >
                             <Link href="/songs">
                                 <Music2Icon className="mr-2 mt-0.5 h-4 w-4" />
@@ -121,15 +128,13 @@ const Sidebar: React.FC<{ playlists: Playlist[] }> = ({ playlists }) => {
                                 <Button
                                     key={playlist.id}
                                     asChild
-                                    variant="ghost"
-                                    className={cn(
-                                        "w-full justify-start font-normal",
-                                        {
-                                            "text-primary hover:text-primary":
-                                                pathname ===
-                                                `/playlists/${playlist.id}`,
-                                        },
-                                    )}
+                                    className="w-full justify-start"
+                                    variant={
+                                        pathname ===
+                                        `/playlists/${playlist.id}`
+                                            ? "secondary"
+                                            : "ghost"
+                                    }
                                 >
                                     <Link
                                         href={`/playlists/${playlist.id}`}
