@@ -1,10 +1,13 @@
 "use client";
 
 import { useContext, useEffect, useState, useTransition } from "react";
-import { PlayerContext } from "./context";
+
 import { Button } from "@/components/ui/button";
+import { type Song } from "@/db/types";
+
 import { addSong } from "../api/add-song";
-import { Song } from "@/db/types";
+
+import { PlayerContext } from "./context";
 
 const AddSong: React.FC<{ songs: Song[] }> = ({ songs }) => {
     const [existing, setExisting] = useState<boolean>(false);
@@ -21,7 +24,7 @@ const AddSong: React.FC<{ songs: Song[] }> = ({ songs }) => {
         } else {
             setExisting(false);
         }
-    }, [state.data, state.index]);
+    }, [state.data, state.index, songs]);
 
     const onSubmit = () => {
         startTransition(async () => {
@@ -31,8 +34,8 @@ const AddSong: React.FC<{ songs: Song[] }> = ({ songs }) => {
 
     return (
         <Button
-            variant="outline"
             disabled={pending || existing}
+            variant="outline"
             onClick={onSubmit}
         >
             Add Song
