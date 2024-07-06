@@ -49,7 +49,7 @@ const RootLayout: NextPage<Readonly<{ children: ReactNode }>> = async ({
                         <Menu />
                         <div className="flex flex-1 border-t">
                             <PlayerProvider>
-                                <Wrapper children={children} />
+                                <Wrapper>{children}</Wrapper>
                             </PlayerProvider>
                         </div>
                     </main>
