@@ -2,12 +2,26 @@
 
 import { MenubarItem } from "@/components/ui/menubar";
 
-import { useLogout } from "../api/logout";
+import { createBrowserDBClient } from "@/db/browser";
+import { useRouter } from "next/navigation";
 
 const SignOut: React.FC = () => {
-    const logout = useLogout();
+    const router = useRouter();
 
-    return <MenubarItem onClick={() => logout}>Sign Out</MenubarItem>;
+    const logout = async () => {
+        const db = createBrowserDBClient();
+
+        const {
+            data: { user },
+        } = await db.auth.getUser();
+
+        if (user) {
+            await db.auth.signOut();
+            router.push("/");
+        }
+    };
+
+    return <MenubarItem onClick={() => logout()}>Sign Out</MenubarItem>;
 };
 
 export { SignOut };
