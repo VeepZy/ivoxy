@@ -12,20 +12,16 @@ export const updatePlaylist = async (playlist: Playlist) => {
         throw new Error("User not found");
     }
 
-    const { data, error } = await db
+    const { error } = await db
         .from("playlists")
         .update({
             name: playlist.name,
             data: playlist.data,
         })
         .eq("user", user.id)
-        .eq("id", playlist.id)
-        .select("*")
-        .returns<Playlist[]>();
+        .eq("id", playlist.id);
 
     if (error) {
         throw new Error(error.message);
     }
-
-    return data;
 };
