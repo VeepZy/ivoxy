@@ -21,16 +21,18 @@ import ReactPlayer from "react-player";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { Slider } from "@/components/ui/slider";
-import { type Playlist } from "@/db/types";
+import { Song, type Playlist } from "@/db/types";
 import { useMounted } from "@/hooks/mounted";
 import { cn, formatDuration } from "@/lib/utils";
 import { unescapeHTML } from "@/lib/utils.client";
 
 import { PlayerContext } from "./context";
 import { PlaylistMenu } from "./playlist-menu";
+import { AddSong } from "./add-song";
 
-const VideoPlayer: React.FC<{ playlists: Playlist[] }> = ({
+const VideoPlayer: React.FC<{ playlists: Playlist[]; songs: Song[] }> = ({
     playlists,
+    songs,
 }) => {
     const player = useRef<ReactPlayer>(null);
     const { state, setState } = useContext(PlayerContext);
@@ -202,7 +204,10 @@ const VideoPlayer: React.FC<{ playlists: Playlist[] }> = ({
                 </div>
             </div>
 
-            <PlaylistMenu playlists={playlists} />
+            <div className="flex gap-2">
+                <AddSong songs={songs} />
+                <PlaylistMenu playlists={playlists} />
+            </div>
 
             <div className="absolute bottom-16 left-0 right-0">
                 <Progress
