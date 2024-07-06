@@ -38,7 +38,10 @@ const Search: React.FC = () => {
         <div className="h-full space-y-6">
             <div className="space-between flex items-center">
                 <Form {...form}>
-                    <form onSubmit={form.handleSubmit(onSubmit)}>
+                    <form
+                        onSubmit={form.handleSubmit(onSubmit)}
+                        className="w-full"
+                    >
                         <FormField
                             control={form.control}
                             name="search"
@@ -58,18 +61,9 @@ const Search: React.FC = () => {
                     </form>
                 </Form>
             </div>
-            <div className="flex flex-col">
-                <div className="space-y-1">
-                    <h2 className="text-2xl font-semibold tracking-tight">
-                        Search results
-                    </h2>
-                    <p className="text-muted-foreground">
-                        {items.length} results found
-                    </p>
-                </div>
-                <Separator className="my-4" />
-                <Items items={items} />
-            </div>
+
+            <Separator className="my-4" />
+            <Items items={items} />
         </div>
     );
 };
