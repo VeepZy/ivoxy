@@ -2,8 +2,8 @@ import { getPlaylist } from "@/db/queries";
 import { PlayIcon } from "lucide-react";
 import { NextPage } from "next";
 import Image from "next/image";
-import PlaylistTitle from "./title";
 import { PlaylistPlayButton, SongPlayButton } from "@/components/play";
+import { Title } from "@/components/title";
 
 const PlaylistRoute: NextPage<{ params: { id: string } }> = async ({
     params,
@@ -43,7 +43,7 @@ const PlaylistRoute: NextPage<{ params: { id: string } }> = async ({
                             </div>
                         </div>
                         <div className="grid gap-1">
-                            <PlaylistTitle title={item.title} />
+                            <Title title={item.title} />
                             <p className="text-xs text-muted-foreground">
                                 {item.channelTitle}
                             </p>
