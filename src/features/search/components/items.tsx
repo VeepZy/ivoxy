@@ -34,11 +34,11 @@ const Items: React.FC<{ items: Youtube.Schema$SearchResult[] }> = ({
     };
 
     return (
-        <div className="grid grid-cols-1 gap-x-4 gap-y-6 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="flex w-full flex-row flex-wrap gap-8">
             {items.map((item) => (
                 <div key={item.etag} className="w-[320px] space-y-3">
                     <button
-                        className="relative overflow-hidden rounded-md ring-2 ring-destructive"
+                        className="relative overflow-hidden rounded-md border border-primary/50 shadow-lg"
                         type="button"
                         onClick={() => onSubmit(item)}
                     >
