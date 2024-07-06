@@ -9,7 +9,7 @@ const PlaylistsRoute: NextPage = async () => {
     const playlists = await getPlaylists();
 
     return (
-        <div className="mx-auto w-full px-4 py-8 md:px-6 md:py-12">
+        <div className="mx-auto w-full px-4 pt-6 md:px-6">
             <header className="mb-8 md:mb-12">
                 <h1 className="text-3xl font-bold tracking-tight sm:text-4xl md:text-5xl">
                     Playlists
