@@ -17,7 +17,7 @@ export const searchQuery = async (query: string) => {
         part: ["snippet"],
         type: ["video"],
         q: query,
-        maxResults: 10,
+        maxResults: 40,
     });
 
     return response.data.items;
