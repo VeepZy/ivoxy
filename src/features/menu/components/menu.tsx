@@ -67,7 +67,7 @@ const Menu: React.FC = async () => {
                     </MenubarContent>
                 ) : (
                     <MenubarContent>
-                        <SignIn />
+                        <SignIn item />
                         <MenubarSeparator />
                     </MenubarContent>
                 )}
