@@ -1,9 +1,9 @@
 import { getPlaylist } from "@/db/queries";
-import { unescapeHTML } from "@/lib/utils.client";
 import { PlayIcon } from "lucide-react";
 import { NextPage } from "next";
 import Image from "next/image";
 import PlaylistTitle from "./title";
+import { PlaylistPlayButton, SongPlayButton } from "@/components/play";
 
 const PlaylistRoute: NextPage<{ params: { id: string } }> = async ({
     params,
@@ -12,34 +12,44 @@ const PlaylistRoute: NextPage<{ params: { id: string } }> = async ({
 
     return (
         <div className="mx-auto w-full px-4 py-8 md:px-6 md:py-12">
-            <header className="mb-8 md:mb-12">
-                <h1 className="text-3xl font-bold tracking-tight sm:text-4xl md:text-5xl">
-                    {playlist.name}
-                </h1>
-                <p className="mt-2 text-lg text-muted-foreground md:text-xl">
-                    {playlist.data.length} songs
-                </p>
-            </header>
-            <div className="flex w-full flex-row flex-wrap gap-8">
+            <div className="mb-12 flex items-center justify-between">
+                <div className="space-y-1">
+                    <h2 className="text-2xl font-bold tracking-tight md:text-3xl">
+                        {playlist.name}
+                    </h2>
+                    <p className="text-muted-foreground">
+                        Includes {playlist.data.length} songs.
+                    </p>
+                </div>
+
+                <PlaylistPlayButton playlist={playlist.data} />
+            </div>
+            <div className="grid gap-4">
                 {playlist.data.map((item) => (
-                    <div key={item.title} className="w-[320px] space-y-3">
-                        <div className="relative overflow-hidden rounded-md border border-primary/50 shadow-lg">
+                    <div
+                        key={item.title}
+                        className="grid grid-cols-[48px_1fr_auto] items-center gap-4"
+                    >
+                        <div className="relative overflow-hidden rounded-md border border-primary/50 shadow-lg dark:border-primary/30">
                             <Image
                                 alt={item.title}
-                                className="aspect-square h-[180px] w-[320px] object-cover transition-all hover:scale-105"
-                                height={180}
-                                width={320}
+                                className="aspect-square h-14 w-14 object-cover transition-all hover:scale-105"
+                                height={120}
+                                width={312}
                                 src={item.thumbnail}
                             />
                             <div className="absolute inset-0 flex items-center justify-center rounded-lg bg-black/50 opacity-0 transition-opacity group-hover:opacity-100">
                                 <PlayIcon className="h-10 w-10 text-white" />
                             </div>
                         </div>
-                        <div className="space-y-1 text-sm">
+                        <div className="grid gap-1">
                             <PlaylistTitle title={item.title} />
                             <p className="text-xs text-muted-foreground">
                                 {item.channelTitle}
                             </p>
+                        </div>
+                        <div className="flex items-center gap-2">
+                            <SongPlayButton song={item} />
                         </div>
                     </div>
                 ))}
