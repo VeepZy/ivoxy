@@ -39,8 +39,7 @@ import { PlayerContext } from "./context";
 
 const PlaylistMenu: React.FC<{
     playlists: Playlist[];
-    currentSong: string;
-}> = ({ playlists, currentSong }) => {
+}> = ({ playlists }) => {
     const [pending, startTransition] = useTransition();
     const [open, setOpen] = useState<boolean>(false);
 
@@ -66,8 +65,10 @@ const PlaylistMenu: React.FC<{
     );
 
     useEffect(() => {
-        setCurrentPlaylists(filter(playlists, currentSong));
-    }, [playlists, currentSong, filter]);
+        setCurrentPlaylists(
+            filter(playlists, state.data[state.index].url),
+        );
+    }, [playlists, state.data, state.index, filter]);
 
     const onNewPlaylist = (values: { name: string }) => {
         startTransition(async () => {
@@ -85,7 +86,7 @@ const PlaylistMenu: React.FC<{
                 return;
             }
 
-            const data = await updatePlaylist({
+            await updatePlaylist({
                 ...current,
                 data: [
                     ...current.data,
@@ -97,7 +98,9 @@ const PlaylistMenu: React.FC<{
                     },
                 ],
             });
-            setCurrentPlaylists(filter(data, currentSong));
+            setCurrentPlaylists(
+                filter(playlists, state.data[state.index].url),
+            );
         });
     };
 
@@ -109,7 +112,7 @@ const PlaylistMenu: React.FC<{
                     <ChevronDownIcon className="ml-2 h-4 w-4" />
                 </Button>
             </PopoverTrigger>
-            <PopoverContent className="w-80 space-y-4 p-4">
+            <PopoverContent className="w-80 space-y-4 p-4" align="end">
                 <div className="flex items-center justify-between">
                     <h3 className="text-lg font-medium">
                         Add to Playlist
