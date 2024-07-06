@@ -2,7 +2,7 @@
 
 import { createServerDBClient } from ".";
 import { cache } from "react";
-import { Playlist } from "./types";
+import { Playlist, Song } from "./types";
 
 export const getUser = cache(async () => {
     const db = createServerDBClient();
@@ -64,6 +64,28 @@ export const getPlaylists = cache(async () => {
 
     if (error) {
         throw new Error(`Playlist query error: ${error.message}`);
+    }
+
+    return data;
+});
+
+export const getSongs = cache(async () => {
+    const db = createServerDBClient();
+
+    const user = await getUser();
+
+    if (!user) {
+        throw new Error("User not found");
+    }
+
+    const { data, error } = await db
+        .from("songs")
+        .select("*")
+        .eq("user", user.id)
+        .returns<Song[]>();
+
+    if (error) {
+        throw new Error(`Song query error: ${error.message}`);
     }
 
     return data;
