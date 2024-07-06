@@ -1,13 +1,15 @@
 import type { Metadata, NextPage } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
-import { type ReactNode, Suspense } from "react";
+import { type ReactNode } from "react";
 
-import { getPlaylists } from "@/db/queries";
+import { getUser } from "@/db/queries";
 import { Menu } from "@/features/menu/components/menu";
 import { PlayerProvider } from "@/features/player/components/context";
-import { VideoPlayer } from "@/features/player/components/player";
-import { Sidebar } from "@/features/sidebar/components/sidebar";
+
+import { Wrapper } from "./wrapper";
+
+import { SignIn } from "@/features/menu/components/sign-in";
 
 const FontSans = Inter({
     variable: "--font-sans",
@@ -23,7 +25,19 @@ export const metadata: Metadata = {
 const RootLayout: NextPage<Readonly<{ children: ReactNode }>> = async ({
     children,
 }) => {
-    const playlists = await getPlaylists();
+    const user = await getUser();
+
+    if (!user) {
+        return (
+            <html lang="en">
+                <body className="min-h-screen bg-background font-sans antialiased">
+                    <div className="relative flex min-h-screen flex-col items-center justify-center">
+                        <SignIn />
+                    </div>
+                </body>
+            </html>
+        );
+    }
 
     return (
         <html lang="en">
@@ -37,19 +51,7 @@ const RootLayout: NextPage<Readonly<{ children: ReactNode }>> = async ({
                             <div className="border-t">
                                 <div className="bg-background">
                                     <PlayerProvider>
-                                        <div className="grid lg:grid-cols-5">
-                                            <Sidebar
-                                                playlists={playlists}
-                                            />
-                                            <div className="col-span-3 lg:col-span-4 lg:border-l">
-                                                {children}
-                                            </div>
-                                            <Suspense fallback={null}>
-                                                <VideoPlayer
-                                                    playlists={playlists}
-                                                />
-                                            </Suspense>
-                                        </div>
+                                        <Wrapper children={children} />
                                     </PlayerProvider>
                                 </div>
                             </div>
