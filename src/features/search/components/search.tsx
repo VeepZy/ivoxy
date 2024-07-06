@@ -29,8 +29,11 @@ const Search: React.FC = () => {
 
     const onSubmit = async (data: { search: string }) => {
         const response = await searchQuery(data.search);
-        if (!response) return;
-        console.log(response);
+
+        if (!response) {
+            return;
+        }
+
         setItems(response);
     };
 
@@ -39,8 +42,8 @@ const Search: React.FC = () => {
             <div className="space-between flex items-center">
                 <Form {...form}>
                     <form
-                        onSubmit={form.handleSubmit(onSubmit)}
                         className="w-full"
+                        onSubmit={form.handleSubmit(onSubmit)}
                     >
                         <FormField
                             control={form.control}
