@@ -17,6 +17,7 @@ import { getUser } from "@/db/queries";
 
 import { SignIn } from "./sign-in";
 import { SignOut } from "./sign-out";
+import { ThemeToggle } from "./theme-toggle";
 
 const Menu: React.FC = async () => {
     const user = await getUser();
@@ -52,6 +53,7 @@ const Menu: React.FC = async () => {
                     <MenubarItem>Show Playing Next</MenubarItem>
                     <MenubarItem>Hide Sidebar</MenubarItem>
                     <MenubarItem>Enter Full Screen</MenubarItem>
+                    <ThemeToggle />
                 </MenubarContent>
             </MenubarMenu>
             <MenubarMenu>
