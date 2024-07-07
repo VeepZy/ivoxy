@@ -82,11 +82,14 @@ const VideoPlayer: React.FC<{ playlists: Playlist[]; songs: Song[] }> = ({
     const onProgress = (event: {
         playedSeconds: number;
         loadedSeconds: number;
-    }) =>
+    }) => {
+        console.log(event, state);
         setState((prevState) => ({
             ...prevState,
+            loaded: event.loadedSeconds,
             played: event.playedSeconds,
         }));
+    };
     const onDuration = (duration: number) =>
         setState((prevState) => ({
             ...prevState,
@@ -213,7 +216,10 @@ const VideoPlayer: React.FC<{ playlists: Playlist[]; songs: Song[] }> = ({
                 <Progress
                     className="h-2 rounded-none border-none"
                     max={state.duration}
-                    value={state.played}
+                    segments={[
+                        { value: state.played },
+                        { value: state.loaded, load: true },
+                    ]}
                     onClick={onProgressChange}
                 />
             </div>
