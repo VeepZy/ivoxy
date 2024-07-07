@@ -7,9 +7,15 @@ import { usePathname } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Playlist } from "@/db/types";
+import { useSidebar } from "@/hooks/sidebar";
 
 const Sidebar: React.FC<{ playlists: Playlist[] }> = ({ playlists }) => {
+    const [state] = useSidebar();
     const pathname = usePathname();
+
+    if (state === "false") {
+        return null;
+    }
 
     return (
         <div className="hidden pb-20 lg:block">
