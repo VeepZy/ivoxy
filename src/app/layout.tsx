@@ -1,5 +1,5 @@
 import type { Metadata, NextPage } from "next";
-import { Inter } from "next/font/google";
+import { DM_Sans, Inter, Work_Sans } from "next/font/google";
 import "./globals.css";
 import { type ReactNode } from "react";
 
@@ -11,10 +11,11 @@ import { ThemeProvider } from "@/features/theme/components/context";
 
 import { Wrapper } from "./wrapper";
 
-const FontSans = Inter({
+const FontSans = DM_Sans({
     variable: "--font-sans",
     subsets: ["latin"],
     weight: "variable",
+    display: "swap",
 });
 
 export const metadata: Metadata = {
