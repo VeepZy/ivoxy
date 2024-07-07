@@ -44,13 +44,18 @@ export const ThemeProvider: React.FC<{ children: ReactNode }> = ({
     }, [setTheme, getMediaQueryPreference]);
 
     useEffect(() => {
-        if (theme === "dark") {
-            document.documentElement.classList.add("dark");
-        } else {
-            document.documentElement.classList.remove("dark");
+        switch (theme) {
+            case "dark":
+                document.documentElement.classList.add("dark");
+                localStorage.setItem("theme", theme);
+                break;
+            case "light":
+                document.documentElement.classList.remove("dark");
+                localStorage.setItem("theme", theme);
+                break;
+            default:
+                break;
         }
-
-        localStorage.setItem("theme", theme!);
     }, [theme]);
 
     const toggleTheme = () => {
