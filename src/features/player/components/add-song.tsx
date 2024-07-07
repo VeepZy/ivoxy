@@ -29,6 +29,7 @@ const AddSong: React.FC<{ songs: Song[] }> = ({ songs }) => {
     const onSubmit = () => {
         startTransition(async () => {
             await addSong(state.data[state.index]);
+            setExisting(true);
         });
     };
 
