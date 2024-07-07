@@ -4,6 +4,7 @@ import Image from "next/image";
 import { Title } from "@/components/title";
 import { getSongs } from "@/db/queries";
 import { SongPlayButton } from "@/components/play";
+import { SongMoreButton } from "./more";
 
 const SongsRoute: NextPage = async () => {
     const songs = await getSongs();
@@ -32,15 +33,20 @@ const SongsRoute: NextPage = async () => {
                                 src={item.data.thumbnail}
                                 width={320}
                             />
+
                             <div className="absolute inset-0 flex items-center justify-center rounded-lg bg-black/50 opacity-0 transition-opacity group-hover:cursor-pointer group-hover:opacity-100">
                                 <SongPlayButton song={item.data} />
                             </div>
                         </div>
-                        <div className="space-y-1 text-sm">
-                            <Title title={item.data.title} />
-                            <p className="text-xs text-muted-foreground">
-                                {item.data.channelTitle}
-                            </p>
+
+                        <div className="flex items-center">
+                            <div className="flex-1 space-y-1 text-sm">
+                                <Title title={item.data.title} />
+                                <p className="text-xs text-muted-foreground">
+                                    {item.data.channelTitle}
+                                </p>
+                            </div>
+                            <SongMoreButton song={item} />
                         </div>
                     </div>
                 ))}
