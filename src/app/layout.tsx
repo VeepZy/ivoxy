@@ -31,11 +31,15 @@ const RootLayout: NextPage<Readonly<{ children: ReactNode }>> = async ({
     if (!user) {
         return (
             <html lang="en">
-                <body className="min-h-screen bg-background font-sans antialiased">
-                    <div className="relative flex min-h-screen flex-col items-center justify-center">
-                        <SignIn />
-                    </div>
-                </body>
+                <ThemeProvider>
+                    <body
+                        className={`min-h-screen bg-background font-sans antialiased ${FontSans.variable}`}
+                    >
+                        <div className="relative flex min-h-screen flex-col items-center justify-center">
+                            <SignIn />
+                        </div>
+                    </body>
+                </ThemeProvider>
             </html>
         );
     }
