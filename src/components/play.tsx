@@ -16,7 +16,12 @@ const SongPlayButton: React.FC<{ song: SongData }> = ({ song }) => {
     };
 
     return (
-        <Button size="icon" variant="ghost" onClick={handlePlay}>
+        <Button
+            size="icon"
+            variant="ghost"
+            onClick={handlePlay}
+            className="hover:bg-transparent"
+        >
             <span className="sr-only">Play</span>
             <PlayIcon className="h-5 w-5" />
         </Button>
