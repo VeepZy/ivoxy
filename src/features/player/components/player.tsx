@@ -83,7 +83,6 @@ const VideoPlayer: React.FC<{ playlists: Playlist[]; songs: Song[] }> = ({
         playedSeconds: number;
         loadedSeconds: number;
     }) => {
-        console.log(event, state);
         setState((prevState) => ({
             ...prevState,
             loaded: event.loadedSeconds,
