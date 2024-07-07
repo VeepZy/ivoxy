@@ -1,12 +1,14 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+    experimental: {
+        reactCompiler: true,
+    },
     logging: {
         fetches: {
             fullUrl: true,
         },
     },
     images: {
-        // remotePatterns: ["i.ytimg.com", "yt3.ggpht.com"],
         remotePatterns: [
             {
                 pathname: "/**",
