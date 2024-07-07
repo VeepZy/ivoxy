@@ -6,10 +6,7 @@ import { usePathname } from "next/navigation";
 
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { type Database } from "@/db/schema";
-import { cn } from "@/lib/utils";
-
-type Playlist = Database["public"]["Tables"]["playlists"]["Row"];
+import { Playlist } from "@/db/types";
 
 const Sidebar: React.FC<{ playlists: Playlist[] }> = ({ playlists }) => {
     const pathname = usePathname();
