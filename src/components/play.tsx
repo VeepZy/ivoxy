@@ -41,7 +41,7 @@ const PlaylistPlayButton: React.FC<{ playlist: PlaylistData }> = ({
     const { setUrl } = useContext(PlayerContext);
 
     const handlePlay = () => {
-        setUrl(playlist);
+        setUrl(playlist, true);
     };
 
     return (
