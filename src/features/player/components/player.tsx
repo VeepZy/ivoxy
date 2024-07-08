@@ -29,6 +29,7 @@ import { unescapeHTML } from "@/lib/utils.client";
 import { AddSong } from "./add-song";
 import { PlayerContext } from "./context";
 import { PlaylistMenu } from "./playlist-menu";
+import { CurrentSongs } from "./current-songs";
 
 const VideoPlayer: React.FC<{ playlists: Playlist[]; songs: Song[] }> = ({
     playlists,
@@ -219,6 +220,7 @@ const VideoPlayer: React.FC<{ playlists: Playlist[]; songs: Song[] }> = ({
             <div className="flex gap-2">
                 <AddSong songs={songs} />
                 <PlaylistMenu playlists={playlists} />
+                <CurrentSongs />
             </div>
 
             <Suspense fallback={<div>Loading...</div>}>
