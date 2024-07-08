@@ -55,7 +55,7 @@ export const getPlaylists = cache(async () => {
     const user = await getUser();
 
     if (!user) {
-        throw new Error("User not found");
+        return [];
     }
 
     const { data, error } = await db
@@ -77,7 +77,7 @@ export const getSongs = cache(async () => {
     const user = await getUser();
 
     if (!user) {
-        throw new Error("User not found");
+        return [];
     }
 
     const { data, error } = await db
