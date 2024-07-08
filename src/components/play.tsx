@@ -20,7 +20,7 @@ const SongPlayButton: React.FC<{ song: SongData }> = ({ song }) => {
             size="icon"
             variant="ghost"
             onClick={handlePlay}
-            className="hover:bg-transparent"
+            className="group-hover:bg-primary"
         >
             <span className="sr-only">Play</span>
             <PlayIcon className="h-5 w-5" />
@@ -38,7 +38,12 @@ const PlaylistPlayButton: React.FC<{ playlist: PlaylistData }> = ({
     };
 
     return (
-        <Button size="icon" variant="ghost" onClick={handlePlay}>
+        <Button
+            size="icon"
+            variant="ghost"
+            onClick={handlePlay}
+            className="group-hover:bg-primary"
+        >
             <span className="sr-only">Play</span>
             <PlayIcon className="h-5 w-5" />
         </Button>
