@@ -5,20 +5,13 @@ import { Title } from "@/components/title";
 import { getSongs } from "@/db/queries";
 import { SongPlayButton } from "@/components/play";
 import { SongMoreButton } from "./more";
+import { ScrollArea } from "@/components/ui/scroll-area";
 
 const SongsRoute: NextPage = async () => {
     const songs = await getSongs();
 
     return (
-        <div className="mx-auto w-full px-4 py-8 md:px-6 md:py-12">
-            <header className="mb-8 md:mb-12">
-                <h1 className="text-3xl font-bold tracking-tight sm:text-4xl md:text-5xl">
-                    Songs
-                </h1>
-                <p className="mt-2 text-lg text-muted-foreground md:text-xl">
-                    {songs.length} songs
-                </p>
-            </header>
+        <ScrollArea className="max-h-[calc(100vh-100px)] overflow-y-auto p-6">
             <div className="flex w-full flex-row flex-wrap gap-8">
                 {songs.map((item) => (
                     <div
@@ -51,7 +44,7 @@ const SongsRoute: NextPage = async () => {
                     </div>
                 ))}
             </div>
-        </div>
+        </ScrollArea>
     );
 };
 
