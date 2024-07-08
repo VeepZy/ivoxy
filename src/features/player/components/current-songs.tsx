@@ -1,5 +1,10 @@
 "use client";
 
+import { ListMusicIcon, PlayIcon } from "lucide-react";
+import Image from "next/image";
+import { useContext } from "react";
+
+import { Title } from "@/components/title";
 import { Button } from "@/components/ui/button";
 import {
     Popover,
@@ -7,11 +12,10 @@ import {
     PopoverTrigger,
 } from "@/components/ui/popover";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { ListMusicIcon, PlayIcon } from "lucide-react";
-import { useContext } from "react";
+
 import { PlayerContext } from "./context";
-import Image from "next/image";
-import { Title } from "@/components/title";
+
+
 
 const CurrentSongs: React.FC = () => {
     const { state, setState } = useContext(PlayerContext);
@@ -27,13 +31,13 @@ const CurrentSongs: React.FC = () => {
         <Popover>
             <PopoverTrigger asChild>
                 <Button
-                    variant="outline"
                     disabled={state.data.length === 1}
+                    variant="outline"
                 >
                     <ListMusicIcon className="h-5 w-5" />
                 </Button>
             </PopoverTrigger>
-            <PopoverContent className="w-80" align="end">
+            <PopoverContent align="end" className="w-80">
                 <ScrollArea className="max-h-96">
                     <ul className="space-y-2">
                         {state.data.map((item, index) => (
@@ -52,8 +56,8 @@ const CurrentSongs: React.FC = () => {
                                 </div>
                                 <div className="grid">
                                     <Title
-                                        title={item.title}
                                         className="text-sm"
+                                        title={item.title}
                                     />
                                     <p className="text-xs text-muted-foreground">
                                         {item.channelTitle}
@@ -61,8 +65,8 @@ const CurrentSongs: React.FC = () => {
                                 </div>
                                 <div className="flex items-center gap-2">
                                     <Button
-                                        variant="ghost"
                                         size="icon"
+                                        variant="ghost"
                                         onClick={() => onSubmit(index)}
                                     >
                                         <PlayIcon className="h-4 w-4" />
