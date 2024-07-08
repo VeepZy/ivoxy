@@ -2,8 +2,8 @@
 
 import type { NextPage } from "next";
 
-import { Search } from "@/features/search/components/search";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { Search } from "@/features/search/components/search";
 
 const BrowseRoute: NextPage = () => {
     return (
