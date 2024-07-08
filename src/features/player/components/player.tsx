@@ -142,9 +142,9 @@ const VideoPlayer: React.FC<{ playlists: Playlist[]; songs: Song[] }> = ({
     };
 
     return (
-        <div className="flex h-full w-full items-center border-t bg-card px-4 shadow-lg">
+        <div className="flex h-full flex-col">
             <Progress
-                className="absolute bottom-16 left-0 right-0 z-50 h-2 rounded-none border-none"
+                className="h-2 rounded-none border-none"
                 max={state.duration}
                 segments={[
                     { value: state.played },
@@ -152,96 +152,99 @@ const VideoPlayer: React.FC<{ playlists: Playlist[]; songs: Song[] }> = ({
                 ]}
                 onClick={onProgressChange}
             />
-
-            <div className="space-y-1 text-sm">
-                <h3 className="font-semibold leading-none">
-                    {unescapeHTML(state.data[state.index].title)}
-                </h3>
-                <p className="text-xs text-muted-foreground">
-                    {state.data[state.index].channelTitle}
-                </p>
-            </div>
-            <div className="flex flex-1 items-center justify-center gap-4">
-                <Button
-                    disabled={!state.canPrev}
-                    size="icon"
-                    variant="ghost"
-                    onClick={onPrev}
-                >
-                    <SkipBackIcon className="h-4 w-4" />
-                </Button>
-                <Button
-                    size="icon"
-                    variant="ghost"
-                    onClick={() => (state.playing ? onPause() : onPlay())}
-                >
-                    {state.playing ? <PauseIcon /> : <PlayIcon />}
-                </Button>
-                <Button
-                    disabled={!state.canNext}
-                    size="icon"
-                    variant="ghost"
-                    onClick={onNext}
-                >
-                    <SkipForwardIcon className="h-4 w-4" />
-                </Button>
-                <Button size="icon" variant="ghost" onClick={onLoop}>
-                    <Repeat2Icon
-                        className={cn(
-                            state.loop
-                                ? "text-destructive"
-                                : "text-muted-foreground",
+            <div className="flex w-full flex-1 items-center border-t bg-card px-4 shadow-lg">
+                <div className="space-y-1 text-sm">
+                    <h3 className="font-semibold leading-none">
+                        {unescapeHTML(state.data[state.index].title)}
+                    </h3>
+                    <p className="text-xs text-muted-foreground">
+                        {state.data[state.index].channelTitle}
+                    </p>
+                </div>
+                <div className="flex flex-1 items-center justify-center gap-4">
+                    <Button
+                        disabled={!state.canPrev}
+                        size="icon"
+                        variant="ghost"
+                        onClick={onPrev}
+                    >
+                        <SkipBackIcon className="h-4 w-4" />
+                    </Button>
+                    <Button
+                        size="icon"
+                        variant="ghost"
+                        onClick={() =>
+                            state.playing ? onPause() : onPlay()
+                        }
+                    >
+                        {state.playing ? <PauseIcon /> : <PlayIcon />}
+                    </Button>
+                    <Button
+                        disabled={!state.canNext}
+                        size="icon"
+                        variant="ghost"
+                        onClick={onNext}
+                    >
+                        <SkipForwardIcon className="h-4 w-4" />
+                    </Button>
+                    <Button size="icon" variant="ghost" onClick={onLoop}>
+                        <Repeat2Icon
+                            className={cn(
+                                state.loop
+                                    ? "text-destructive"
+                                    : "text-muted-foreground",
+                            )}
+                        />
+                    </Button>
+                    <Slider
+                        className="max-w-[150px]"
+                        defaultValue={[state.volume]}
+                        max={1}
+                        min={0}
+                        step={0.05}
+                        onValueChange={onVolume}
+                    />
+                    <Button size="icon" variant="ghost" onClick={onMute}>
+                        {state.muted ? (
+                            <VolumeXIcon className="text-muted-foreground/40" />
+                        ) : (
+                            <Volume2Icon />
                         )}
-                    />
-                </Button>
-                <Slider
-                    className="max-w-[150px]"
-                    defaultValue={[state.volume]}
-                    max={1}
-                    min={0}
-                    step={0.05}
-                    onValueChange={onVolume}
-                />
-                <Button size="icon" variant="ghost" onClick={onMute}>
-                    {state.muted ? (
-                        <VolumeXIcon className="text-muted-foreground/40" />
-                    ) : (
-                        <Volume2Icon />
-                    )}
-                </Button>
+                    </Button>
 
-                <div className="flex gap-1">
-                    <p>{formatDuration(state.played)}</p>
-                    <p>:</p>
-                    <p>{formatDuration(state.duration)}</p>
+                    <div className="flex gap-1">
+                        <p>{formatDuration(state.played)}</p>
+                        <p>:</p>
+                        <p>{formatDuration(state.duration)}</p>
+                    </div>
                 </div>
-            </div>
 
-            <div className="flex gap-2">
-                <AddSong songs={songs} />
-                <PlaylistMenu playlists={playlists} />
-                <CurrentSongs />
-            </div>
-
-            <Suspense fallback={<div>Loading...</div>}>
-                <div className="absolute bottom-24 right-10 hidden">
-                    <ReactPlayer
-                        ref={player}
-                        height="100%"
-                        loop={state.loop}
-                        muted={state.muted}
-                        playing={state.playing}
-                        url={state.data[state.index].url}
-                        volume={state.volume}
-                        width="100%"
-                        onDuration={onDuration}
-                        onEnded={onEnded}
-                        onPause={onPause}
-                        onPlay={onPlay}
-                        onProgress={onProgress}
-                    />
+                <div className="flex gap-2">
+                    <AddSong songs={songs} />
+                    <PlaylistMenu playlists={playlists} />
+                    <CurrentSongs />
                 </div>
-            </Suspense>
+
+                <Suspense fallback={<div>Loading...</div>}>
+                    <div className="absolute bottom-24 right-10 hidden">
+                        <ReactPlayer
+                            ref={player}
+                            height="100%"
+                            loop={state.loop}
+                            muted={state.muted}
+                            playing={state.playing}
+                            url={state.data[state.index].url}
+                            volume={state.volume}
+                            width="100%"
+                            onDuration={onDuration}
+                            onEnded={onEnded}
+                            onPause={onPause}
+                            onPlay={onPlay}
+                            onProgress={onProgress}
+                        />
+                    </div>
+                </Suspense>
+            </div>
         </div>
     );
 };
