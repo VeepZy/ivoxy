@@ -56,6 +56,7 @@ export interface PlayerContextType {
             url: string;
             thumbnail: string;
         }[],
+        playlist?: boolean,
     ) => void;
     setState: Dispatch<SetStateAction<PlayerContextType["state"]>>;
     setTitle: (title: string, channelTitle: string) => void;
@@ -80,11 +81,12 @@ const PlayerProvider: React.FC<{ children: ReactNode }> = ({
             url: string;
             thumbnail: string;
         }[],
+        playlist?: boolean,
     ) => {
         setState((prevState) => ({
             ...prevState,
             data: songs,
-            index: prevState.data.length - 1,
+            index: playlist ? 0 : songs.length - 1,
             played: 0,
             loaded: 0,
             playing: true,
