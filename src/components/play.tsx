@@ -1,18 +1,25 @@
 "use client";
 
 import { PlayIcon } from "lucide-react";
-import React, { useContext } from "react";
+import { useContext } from "react";
 
 import type { PlaylistData, SongData } from "@/db/types";
 import { PlayerContext } from "@/features/player/components/context";
 
 import { Button } from "./ui/button";
 
-const SongPlayButton: React.FC<{ song: SongData }> = ({ song }) => {
-    const { setUrl } = useContext(PlayerContext);
+const SongPlayButton: React.FC<{ song: SongData; keep?: boolean }> = ({
+    song,
+    keep = false,
+}) => {
+    const { state, setUrl } = useContext(PlayerContext);
 
     const handlePlay = () => {
-        setUrl([song]);
+        if (keep) {
+            setUrl([...state.data, song]);
+        } else {
+            setUrl([song]);
+        }
     };
 
     return (
