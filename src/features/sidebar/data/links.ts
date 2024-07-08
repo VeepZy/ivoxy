@@ -6,10 +6,10 @@ import {
     RadioIcon,
 } from "lucide-react";
 
-type Playlist = {
+interface Playlist {
     id: number;
     name: string;
-};
+}
 
 const Links = (playlist?: Playlist) => ({
     playlists: {
@@ -18,7 +18,7 @@ const Links = (playlist?: Playlist) => ({
         label: "Playlists",
     },
     playlist: {
-        href: `/playlists/${playlist?.id}`,
+        href: `/playlists/${playlist?.id.toString() ?? "0"}`,
         icon: ListMusicIcon,
         label: playlist?.name ?? "",
     },
