@@ -22,14 +22,13 @@ import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { Slider } from "@/components/ui/slider";
 import { type Playlist, type Song } from "@/db/types";
-import { useMounted } from "@/hooks/mounted";
 import { cn, formatDuration } from "@/lib/utils";
-import { unescapeHTML } from "@/lib/utils.client";
 
 import { AddSong } from "./add-song";
 import { PlayerContext } from "./context";
 import { PlaylistMenu } from "./playlist-menu";
 import { CurrentSongs } from "./current-songs";
+import { Title } from "@/components/title";
 
 const VideoPlayer: React.FC<{ playlists: Playlist[]; songs: Song[] }> = ({
     playlists,
@@ -38,8 +37,6 @@ const VideoPlayer: React.FC<{ playlists: Playlist[]; songs: Song[] }> = ({
     const player = useRef<ReactPlayer>(null);
     const { state, setState } = useContext(PlayerContext);
 
-    const isMounted = useMounted();
-
     useEffect(() => {
         setState((prevState) => ({
             ...prevState,
@@ -47,10 +44,6 @@ const VideoPlayer: React.FC<{ playlists: Playlist[]; songs: Song[] }> = ({
             canPrev: state.index > 0,
         }));
     }, [state.data, state.index, setState]);
-
-    if (!isMounted) {
-        return null;
-    }
 
     const onPlay = () =>
         setState((prevState) => ({
@@ -154,9 +147,7 @@ const VideoPlayer: React.FC<{ playlists: Playlist[]; songs: Song[] }> = ({
             />
             <div className="flex w-full flex-1 items-center border-t bg-card px-4 shadow-lg">
                 <div className="space-y-1 text-sm">
-                    <h3 className="font-semibold leading-none">
-                        {unescapeHTML(state.data[state.index].title)}
-                    </h3>
+                    <Title title={state.data[state.index].title} />
                     <p className="text-xs text-muted-foreground">
                         {state.data[state.index].channelTitle}
                     </p>
