@@ -1,9 +1,12 @@
 "use client";
 
 import { type youtube_v3 as Youtube } from "googleapis";
-import { useState } from "react";
+import { SearchIcon } from "lucide-react";
+import { usePathname, useSearchParams } from "next/navigation";
+import { useEffect, useMemo, useState, useTransition } from "react";
 import { useForm } from "react-hook-form";
 
+import { Button } from "@/components/ui/button";
 import {
     Form,
     FormControl,
@@ -12,13 +15,16 @@ import {
     FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { Separator } from "@/components/ui/separator";
 
 import { searchQuery } from "../api/search";
 
 import { Items } from "./items";
 
 const Search: React.FC = () => {
+    const searchParams = useSearchParams();
+    const pathname = usePathname();
+
+    const [pending, startTransition] = useTransition();
     const [items, setItems] = useState<Youtube.Schema$SearchResult[]>([]);
 
     const form = useForm({
@@ -27,45 +33,81 @@ const Search: React.FC = () => {
         },
     });
 
-    const onSubmit = async (data: { search: string }) => {
-        const response = await searchQuery(data.search);
+    const createQueryString = useMemo(
+        () => (query: string) => {
+            const params = new URLSearchParams(searchParams.toString());
+            params.set("search", query);
 
-        if (!response) {
-            return;
-        }
+            return params.toString();
+        },
+        [searchParams],
+    );
 
-        setItems(response);
+    const handleSearch = useMemo(
+        () => (query: string) => {
+            startTransition(async () => {
+                const response = await searchQuery(query);
+
+                setItems(response ?? []);
+            });
+        },
+        [startTransition],
+    );
+
+    const onSubmit = (data: { search: string }) => {
+        const url = `${pathname}?${createQueryString(data.search)}`;
+
+        window.history.pushState(null, "", url);
     };
 
-    return (
-        <div className="h-full space-y-6">
-            <div className="space-between flex items-center">
-                <Form {...form}>
-                    <form
-                        className="w-full"
-                        onSubmit={form.handleSubmit(onSubmit)}
-                    >
-                        <FormField
-                            control={form.control}
-                            name="search"
-                            render={({ field }) => (
-                                <FormItem>
-                                    <FormControl>
-                                        <Input
-                                            {...field}
-                                            className=""
-                                            placeholder="Search"
-                                        />
-                                    </FormControl>
-                                    <FormMessage />
-                                </FormItem>
-                            )}
-                        />
-                    </form>
-                </Form>
-            </div>
+    useEffect(() => {
+        const query = searchParams.get("search");
 
-            <Separator className="my-4" />
+        if (query) {
+            form.setValue("search", query);
+
+            handleSearch(query);
+        }
+    }, [searchParams, handleSearch, form]);
+
+    return (
+        <div className="flex flex-col space-y-6 p-6">
+            <Form {...form}>
+                <form
+                    className="flex flex-1 items-center rounded-md border pl-4"
+                    onSubmit={form.handleSubmit(onSubmit)}
+                >
+                    <SearchIcon className="mr-2 h-4 w-4 text-muted-foreground" />
+
+                    <FormField
+                        control={form.control}
+                        name="search"
+                        render={({ field }) => (
+                            <FormItem className="flex-1">
+                                <FormControl>
+                                    <Input
+                                        {...field}
+                                        className="w-full border-none focus-visible:ring-0 focus-visible:ring-offset-0"
+                                        disabled={pending}
+                                        placeholder="Search"
+                                    />
+                                </FormControl>
+                                <FormMessage />
+                            </FormItem>
+                        )}
+                    />
+
+                    <Button
+                        className="ml-2 rounded-bl-none rounded-tl-none"
+                        disabled={pending}
+                        type="submit"
+                        variant="ghost"
+                    >
+                        Search
+                    </Button>
+                </form>
+            </Form>
+
             <Items items={items} />
         </div>
     );
