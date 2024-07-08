@@ -26,7 +26,10 @@ const CurrentSongs: React.FC = () => {
     return (
         <Popover>
             <PopoverTrigger asChild>
-                <Button variant="outline">
+                <Button
+                    variant="outline"
+                    disabled={state.data.length === 1}
+                >
                     <ListMusicIcon className="h-5 w-5" />
                 </Button>
             </PopoverTrigger>
