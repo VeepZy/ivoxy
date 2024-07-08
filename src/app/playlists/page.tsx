@@ -3,46 +3,47 @@ import Image from "next/image";
 
 import { getPlaylists } from "@/db/queries";
 
-import { PlayPlaylist } from "./play";
+import { PlaylistPlayButton } from "@/components/play";
+import { Title } from "@/components/title";
+import { ScrollArea } from "@/components/ui/scroll-area";
 
 const PlaylistsRoute: NextPage = async () => {
     const playlists = await getPlaylists();
 
     return (
-        <div className="mx-auto w-full px-4 pt-6 md:px-6">
-            <header className="mb-8 md:mb-12">
-                <h1 className="text-3xl font-bold tracking-tight sm:text-4xl md:text-5xl">
-                    Playlists
-                </h1>
-                <p className="mt-2 text-lg text-muted-foreground md:text-xl">
-                    Manage your playlists
-                </p>
-            </header>
-            <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5">
+        <ScrollArea className="max-h-[calc(100vh-100px)] overflow-y-auto p-6">
+            <div className="flex w-full flex-row flex-wrap gap-8">
                 {playlists.map((playlist) => (
-                    <div key={playlist.id} className="group">
-                        <div className="relative">
-                            <PlayPlaylist playlist={playlist} />
+                    <div key={playlist.id} className="w-[320px] space-y-3">
+                        <div className="group relative overflow-hidden rounded-md border border-primary/50 shadow-lg">
                             <Image
                                 alt={playlist.name}
-                                className="aspect-square w-full rounded-lg object-cover transition-opacity group-hover:opacity-80"
+                                className="aspect-square h-[180px] w-[320px] object-cover transition-all hover:scale-105"
                                 height={180}
                                 src={playlist.image_src ?? ""}
                                 width={320}
                             />
+
+                            <div className="absolute inset-0 flex items-center justify-center rounded-lg bg-black/50 opacity-0 transition-opacity group-hover:cursor-pointer group-hover:opacity-100">
+                                <PlaylistPlayButton
+                                    playlist={playlist.data}
+                                />
+                            </div>
                         </div>
-                        <div className="mt-2 text-center">
-                            <h3 className="text-base font-medium">
-                                {playlist.name}
-                            </h3>
-                            <p className="text-sm text-muted-foreground">
-                                {playlist.data.length} songs
-                            </p>
+
+                        <div className="flex items-center">
+                            <div className="flex-1 space-y-1 text-sm">
+                                <Title title={playlist.name} />
+                                <p className="text-xs text-muted-foreground">
+                                    {playlist.data.length} songs
+                                </p>
+                            </div>
+                            {/* <SongMoreButton song={item} /> */}
                         </div>
                     </div>
                 ))}
             </div>
-        </div>
+        </ScrollArea>
     );
 };
 
