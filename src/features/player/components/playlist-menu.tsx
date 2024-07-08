@@ -1,6 +1,11 @@
 "use client";
 
-import { ChevronDownIcon, PlusIcon, XIcon } from "lucide-react";
+import {
+    ChevronDownIcon,
+    ListPlusIcon,
+    PlusIcon,
+    XIcon,
+} from "lucide-react";
 import {
     useCallback,
     useContext,
@@ -108,8 +113,7 @@ const PlaylistMenu: React.FC<{
         <Popover open={open} onOpenChange={setOpen}>
             <PopoverTrigger asChild>
                 <Button variant="outline">
-                    Add to Playlist
-                    <ChevronDownIcon className="ml-2 h-4 w-4" />
+                    <ListPlusIcon className="h-4 w-4" />
                 </Button>
             </PopoverTrigger>
             <PopoverContent align="end" className="w-80 space-y-4 p-4">
@@ -132,7 +136,10 @@ const PlaylistMenu: React.FC<{
                             setSelectedPlaylist(value)
                         }
                     >
-                        <SelectTrigger className="w-full">
+                        <SelectTrigger
+                            className="w-full"
+                            disabled={!currentPlaylists.length}
+                        >
                             <SelectValue placeholder="Select playlist" />
                         </SelectTrigger>
                         <SelectContent>
