@@ -1,5 +1,5 @@
 import type { Metadata, NextPage } from "next";
-import { DM_Sans, Inter, Work_Sans } from "next/font/google";
+import { DM_Sans } from "next/font/google";
 import "./globals.css";
 import { type ReactNode } from "react";
 
@@ -9,7 +9,13 @@ import { SignIn } from "@/features/menu/components/sign-in";
 import { PlayerProvider } from "@/features/player/components/context";
 import { ThemeProvider } from "@/features/theme/components/context";
 
-import { Wrapper } from "./wrapper";
+import {
+    ResizablePanel,
+    ResizablePanelGroup,
+} from "@/components/ui/resizable";
+
+import { PlayerWrapper } from "@/features/player/components/player-wrapper";
+import { Content } from "@/components/content";
 
 const FontSans = DM_Sans({
     variable: "--font-sans",
@@ -50,16 +56,32 @@ const RootLayout: NextPage<Readonly<{ children: ReactNode }>> = async ({
                 <body
                     className={`min-h-screen bg-background font-sans antialiased ${FontSans.variable}`}
                 >
-                    <div className="relative flex min-h-screen flex-col">
-                        <main className="hidden md:flex md:flex-1 md:flex-col">
-                            <Menu />
-                            <div className="flex flex-1 border-t">
-                                <PlayerProvider>
-                                    <Wrapper>{children}</Wrapper>
-                                </PlayerProvider>
-                            </div>
-                        </main>
-                    </div>
+                    <PlayerProvider>
+                        <ResizablePanelGroup
+                            direction="vertical"
+                            className="min-h-screen"
+                        >
+                            <ResizablePanel
+                                minSize={6}
+                                defaultSize={6}
+                                className="border-b"
+                            >
+                                <div className="flex h-full items-center">
+                                    <Menu />
+                                </div>
+                            </ResizablePanel>
+
+                            <ResizablePanel defaultSize={94}>
+                                <ResizablePanelGroup direction="horizontal">
+                                    <Content>{children}</Content>
+                                </ResizablePanelGroup>
+                            </ResizablePanel>
+                        </ResizablePanelGroup>
+
+                        <div className="absolute bottom-0 left-0 right-0 z-50 h-16">
+                            <PlayerWrapper />
+                        </div>
+                    </PlayerProvider>
                 </body>
             </ThemeProvider>
         </html>
