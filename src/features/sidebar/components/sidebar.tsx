@@ -11,9 +11,9 @@ const Sidebar: React.FC<{ playlists: Playlist[] }> = ({ playlists }) => {
                         Discover
                     </h2>
                     <div className="space-y-1">
-                        <SidebarLink link={Links()["listenNow"]} />
-                        <SidebarLink link={Links()["browse"]} />
-                        <SidebarLink link={Links()["radio"]} />
+                        <SidebarLink link={Links().listenNow} />
+                        <SidebarLink link={Links().browse} />
+                        <SidebarLink link={Links().radio} />
                     </div>
                 </div>
                 <div className="px-3 py-2">
@@ -21,8 +21,8 @@ const Sidebar: React.FC<{ playlists: Playlist[] }> = ({ playlists }) => {
                         Library
                     </h2>
                     <div className="space-y-1">
-                        <SidebarLink link={Links()["playlists"]} />
-                        <SidebarLink link={Links()["songs"]} />
+                        <SidebarLink link={Links().playlists} />
+                        <SidebarLink link={Links().songs} />
                     </div>
                 </div>
                 <div className="px-3 py-2">
@@ -34,7 +34,7 @@ const Sidebar: React.FC<{ playlists: Playlist[] }> = ({ playlists }) => {
                         {playlists.map((playlist) => (
                             <SidebarLink
                                 key={playlist.id}
-                                link={Links(playlist)["playlist"]}
+                                link={Links(playlist).playlist}
                             />
                         ))}
                     </div>
