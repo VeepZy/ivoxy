@@ -1,20 +1,32 @@
 "use client";
 
 import { useMounted } from "@/hooks/mounted";
+import { cn } from "@/lib/utils";
 import { unescapeHTML } from "@/lib/utils.client";
+import { forwardRef } from "react";
 
-const Title: React.FC<{ title: string }> = ({ title }) => {
-    const mounted = useMounted();
+interface TitleProps extends React.HTMLAttributes<HTMLHeadingElement> {
+    title: string;
+}
 
-    if (!mounted) {
-        return null;
-    }
+const Title = forwardRef<HTMLHeadingElement, TitleProps>(
+    ({ className, title }, ref) => {
+        const mounted = useMounted();
 
-    return (
-        <h3 className="font-semibold tracking-tight">
-            {unescapeHTML(title)}
-        </h3>
-    );
-};
+        if (!mounted) {
+            return null;
+        }
+
+        return (
+            <h3
+                className={cn("font-semibold tracking-tight", className)}
+                ref={ref}
+            >
+                {unescapeHTML(title)}
+            </h3>
+        );
+    },
+);
+Title.displayName = "Title";
 
 export { Title };
