@@ -1,10 +1,11 @@
 "use server";
 
 import { google } from "googleapis";
+import { cache } from "react";
 
 import { getAuthenticatedClient } from "@/lib/auth";
 
-export const searchQuery = async (query: string) => {
+export const searchQuery = cache(async (query: string) => {
     const client = await getAuthenticatedClient();
 
     const youtube = google.youtube({
@@ -20,5 +21,7 @@ export const searchQuery = async (query: string) => {
         maxResults: 40,
     });
 
+    console.log("YOUTUBE API CALL", response);
+
     return response.data.items;
-};
+});
