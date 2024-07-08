@@ -6,13 +6,13 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { ForwardRefExoticComponent, RefAttributes } from "react";
 
-type LinkProps = {
+interface LinkProps {
     href: string;
     icon: ForwardRefExoticComponent<
         Omit<LucideProps, "ref"> & RefAttributes<SVGSVGElement>
     >;
     label: string;
-};
+}
 
 const SidebarLink: React.FC<{ link: LinkProps }> = ({ link }) => {
     const pathname = usePathname();
