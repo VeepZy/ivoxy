@@ -1,5 +1,5 @@
 import type { Metadata, NextPage } from "next";
-import { DM_Sans } from "next/font/google";
+import { DM_Sans as dmSans } from "next/font/google";
 import "./globals.css";
 import { type ReactNode } from "react";
 
@@ -17,7 +17,7 @@ import {
 import { PlayerWrapper } from "@/features/player/components/player-wrapper";
 import { Content } from "@/components/content";
 
-const FontSans = DM_Sans({
+const FontSans = dmSans({
     variable: "--font-sans",
     subsets: ["latin"],
     weight: "variable",
@@ -78,6 +78,7 @@ const RootLayout: NextPage<Readonly<{ children: ReactNode }>> = async ({
                             </ResizablePanel>
 
                             <ResizablePanel
+                                minSize={7}
                                 defaultSize={7}
                                 className="border-t"
                             >
