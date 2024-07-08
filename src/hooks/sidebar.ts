@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useSyncExternalStore } from "react";
+import { useEffect, useMemo, useSyncExternalStore } from "react";
 import { useMounted } from "./mounted";
 
 const useSidebar = () => {
@@ -32,8 +32,10 @@ const useSidebar = () => {
         },
     };
 
+    const memoizedStore = useMemo(() => store, []);
+
     useEffect(() => {
-        if (mounted && !store.getSnapshot()) {
+        if (mounted && !memoizedStore.getSnapshot()) {
             window.localStorage.setItem("showSidebar", "true");
         }
     }, [store, mounted]);
