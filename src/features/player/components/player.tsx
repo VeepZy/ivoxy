@@ -9,15 +9,10 @@ import {
     Volume2Icon,
     VolumeXIcon,
 } from "lucide-react";
-import {
-    type MouseEvent,
-    Suspense,
-    useContext,
-    useEffect,
-    useRef,
-} from "react";
+import { type MouseEvent, useContext, useEffect, useRef } from "react";
 import ReactPlayer from "react-player";
 
+import { Title } from "@/components/title";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { Slider } from "@/components/ui/slider";
@@ -26,9 +21,8 @@ import { cn, formatDuration } from "@/lib/utils";
 
 import { AddSong } from "./add-song";
 import { PlayerContext } from "./context";
-import { PlaylistMenu } from "./playlist-menu";
 import { CurrentSongs } from "./current-songs";
-import { Title } from "@/components/title";
+import { PlaylistMenu } from "./playlist-menu";
 
 const VideoPlayer: React.FC<{ playlists: Playlist[]; songs: Song[] }> = ({
     playlists,
@@ -216,25 +210,23 @@ const VideoPlayer: React.FC<{ playlists: Playlist[]; songs: Song[] }> = ({
                     <CurrentSongs />
                 </div>
 
-                <Suspense fallback={<div>Loading...</div>}>
-                    <div className="absolute bottom-24 right-10 hidden">
-                        <ReactPlayer
-                            ref={player}
-                            height="100%"
-                            loop={state.loop}
-                            muted={state.muted}
-                            playing={state.playing}
-                            url={state.data[state.index].url}
-                            volume={state.volume}
-                            width="100%"
-                            onDuration={onDuration}
-                            onEnded={onEnded}
-                            onPause={onPause}
-                            onPlay={onPlay}
-                            onProgress={onProgress}
-                        />
-                    </div>
-                </Suspense>
+                <div className="absolute bottom-24 left-10 hidden">
+                    <ReactPlayer
+                        ref={player}
+                        height="100%"
+                        loop={state.loop}
+                        muted={state.muted}
+                        playing={state.playing}
+                        url={state.data[state.index].url}
+                        volume={state.volume}
+                        width="100%"
+                        onDuration={onDuration}
+                        onEnded={onEnded}
+                        onPause={onPause}
+                        onPlay={onPlay}
+                        onProgress={onProgress}
+                    />
+                </div>
             </div>
         </div>
     );
