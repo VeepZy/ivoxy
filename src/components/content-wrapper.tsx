@@ -1,11 +1,13 @@
 "use client";
 
-import { useSidebar } from "@/hooks/sidebar";
 import { useEffect, useRef } from "react";
-import { ImperativePanelHandle } from "react-resizable-panels";
-import { ResizableHandle, ResizablePanel } from "./ui/resizable";
+import { type ImperativePanelHandle } from "react-resizable-panels";
+
+import { type Playlist } from "@/db/types";
 import { Sidebar } from "@/features/sidebar/components/sidebar";
-import { Playlist } from "@/db/types";
+import { useSidebar } from "@/hooks/sidebar";
+
+import { ResizableHandle, ResizablePanel } from "./ui/resizable";
 
 const ContentWrapper: React.FC<{
     playlists: Playlist[];
@@ -25,15 +27,15 @@ const ContentWrapper: React.FC<{
     return (
         <>
             <ResizablePanel
-                defaultSize={20}
-                collapsible
                 ref={ref}
+                collapsible
+                defaultSize={20}
                 minSize={15}
             >
                 <Sidebar playlists={playlists} />
             </ResizablePanel>
             {state === "true" && <ResizableHandle withHandle />}
-            <ResizablePanel defaultSize={100} minSize={70}>
+            <ResizablePanel defaultSize={80} minSize={70}>
                 {children}
             </ResizablePanel>
         </>
