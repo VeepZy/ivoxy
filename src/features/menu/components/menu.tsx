@@ -15,10 +15,10 @@ import {
 } from "@/components/ui/menubar";
 import { getUser } from "@/db/queries";
 
+import { SidebarToggle } from "./sidebar-toggle";
 import { SignIn } from "./sign-in";
 import { SignOut } from "./sign-out";
 import { ThemeToggle } from "./theme-toggle";
-import { SidebarToggle } from "./sidebar-toggle";
 
 const Menu: React.FC = async () => {
     const user = await getUser();

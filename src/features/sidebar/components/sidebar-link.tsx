@@ -1,10 +1,11 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
-import { LucideProps } from "lucide-react";
+import { type LucideProps } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { ForwardRefExoticComponent, RefAttributes } from "react";
+import { type ForwardRefExoticComponent, type RefAttributes } from "react";
+
+import { Button } from "@/components/ui/button";
 
 interface LinkProps {
     href: string;

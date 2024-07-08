@@ -1,6 +1,8 @@
-import { SidebarLink } from "./sidebar-link";
+import { type Playlist } from "@/db/types";
+
 import { Links } from "../data/links";
-import { Playlist } from "@/db/types";
+
+import { SidebarLink } from "./sidebar-link";
 
 const Sidebar: React.FC<{ playlists: Playlist[] }> = ({ playlists }) => {
     return (

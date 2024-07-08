@@ -1,4 +1,5 @@
 import { getPlaylists, getSongs } from "@/db/queries";
+
 import { VideoPlayer } from "./player";
 
 const PlayerWrapper: React.FC = async () => {
