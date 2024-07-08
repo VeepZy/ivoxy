@@ -12,7 +12,7 @@ const useSidebar = () => {
             window.dispatchEvent(
                 new StorageEvent("storage", {
                     key: "showSidebar",
-                    newValue: newValue,
+                    newValue,
                 }),
             );
         }
@@ -25,7 +25,7 @@ const useSidebar = () => {
             if (mounted) {
                 window.addEventListener("storage", listener);
                 return () =>
-                    void window.removeEventListener("storage", listener);
+                    window.removeEventListener("storage", listener);
             }
 
             return () => void 0;
@@ -36,7 +36,7 @@ const useSidebar = () => {
         if (mounted && !store.getSnapshot()) {
             window.localStorage.setItem("showSidebar", "true");
         }
-    }, [mounted]);
+    }, [store, mounted]);
 
     const state = useSyncExternalStore(
         store.subscribe,
