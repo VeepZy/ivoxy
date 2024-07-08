@@ -3,19 +3,17 @@ import { DM_Sans as dmSans } from "next/font/google";
 import "./globals.css";
 import { type ReactNode } from "react";
 
-import { getUser } from "@/db/queries";
-import { Menu } from "@/features/menu/components/menu";
-import { SignIn } from "@/features/menu/components/sign-in";
-import { PlayerProvider } from "@/features/player/components/context";
-import { ThemeProvider } from "@/features/theme/components/context";
-
+import { Content } from "@/components/content";
 import {
     ResizablePanel,
     ResizablePanelGroup,
 } from "@/components/ui/resizable";
-
+import { getUser } from "@/db/queries";
+import { Menu } from "@/features/menu/components/menu";
+import { SignIn } from "@/features/menu/components/sign-in";
+import { PlayerProvider } from "@/features/player/components/context";
 import { PlayerWrapper } from "@/features/player/components/player-wrapper";
-import { Content } from "@/components/content";
+import { ThemeProvider } from "@/features/theme/components/context";
 
 const FontSans = dmSans({
     variable: "--font-sans",
@@ -58,13 +56,13 @@ const RootLayout: NextPage<Readonly<{ children: ReactNode }>> = async ({
                 >
                     <PlayerProvider>
                         <ResizablePanelGroup
-                            direction="vertical"
                             className="min-h-screen"
+                            direction="vertical"
                         >
                             <ResizablePanel
-                                minSize={6}
-                                defaultSize={6}
                                 className="border-b"
+                                defaultSize={6}
+                                minSize={6}
                             >
                                 <div className="flex h-full items-center">
                                     <Menu />
@@ -78,9 +76,9 @@ const RootLayout: NextPage<Readonly<{ children: ReactNode }>> = async ({
                             </ResizablePanel>
 
                             <ResizablePanel
-                                minSize={7}
-                                defaultSize={7}
                                 className="border-t"
+                                defaultSize={7}
+                                minSize={7}
                             >
                                 <PlayerWrapper />
                             </ResizablePanel>
