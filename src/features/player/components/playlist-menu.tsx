@@ -185,7 +185,7 @@ const PlaylistMenu: React.FC<{
                         Cancel
                     </Button>
                     <Button
-                        disabled={pending}
+                        disabled={pending || !selectedPlaylist}
                         onClick={() => onUpdatePlaylist(selectedPlaylist)}
                     >
                         Add to Playlist
