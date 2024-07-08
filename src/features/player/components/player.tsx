@@ -141,7 +141,17 @@ const VideoPlayer: React.FC<{ playlists: Playlist[]; songs: Song[] }> = ({
     };
 
     return (
-        <div className="fixed bottom-0 left-0 right-0 flex h-16 w-full items-center border-t bg-card px-4 shadow-lg">
+        <div className="flex h-full w-full items-center border-t bg-card px-4 shadow-lg">
+            <Progress
+                className="absolute bottom-16 left-0 right-0 z-50 h-2 rounded-none border-none"
+                max={state.duration}
+                segments={[
+                    { value: state.played },
+                    { value: state.loaded, load: true },
+                ]}
+                onClick={onProgressChange}
+            />
+
             <div className="space-y-1 text-sm">
                 <h3 className="font-semibold leading-none">
                     {unescapeHTML(state.data[state.index].title)}
@@ -209,18 +219,6 @@ const VideoPlayer: React.FC<{ playlists: Playlist[]; songs: Song[] }> = ({
             <div className="flex gap-2">
                 <AddSong songs={songs} />
                 <PlaylistMenu playlists={playlists} />
-            </div>
-
-            <div className="absolute bottom-16 left-0 right-0">
-                <Progress
-                    className="h-2 rounded-none border-none"
-                    max={state.duration}
-                    segments={[
-                        { value: state.played },
-                        { value: state.loaded, load: true },
-                    ]}
-                    onClick={onProgressChange}
-                />
             </div>
 
             <Suspense fallback={<div>Loading...</div>}>
