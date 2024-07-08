@@ -71,16 +71,19 @@ const RootLayout: NextPage<Readonly<{ children: ReactNode }>> = async ({
                                 </div>
                             </ResizablePanel>
 
-                            <ResizablePanel defaultSize={94}>
+                            <ResizablePanel defaultSize={87}>
                                 <ResizablePanelGroup direction="horizontal">
                                     <Content>{children}</Content>
                                 </ResizablePanelGroup>
                             </ResizablePanel>
-                        </ResizablePanelGroup>
 
-                        <div className="absolute bottom-0 left-0 right-0 z-50 h-16">
-                            <PlayerWrapper />
-                        </div>
+                            <ResizablePanel
+                                defaultSize={7}
+                                className="border-t"
+                            >
+                                <PlayerWrapper />
+                            </ResizablePanel>
+                        </ResizablePanelGroup>
                     </PlayerProvider>
                 </body>
             </ThemeProvider>
