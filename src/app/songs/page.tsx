@@ -1,11 +1,13 @@
 import { type NextPage } from "next";
 import Image from "next/image";
 
-import { Title } from "@/components/title";
-import { getSongs } from "@/db/queries";
 import { SongPlayButton } from "@/components/play";
-import { SongMoreButton } from "./more";
+import { Title } from "@/components/title";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { getSongs } from "@/db/queries";
+
+import { SongMoreButton } from "./more";
+
 
 const SongsRoute: NextPage = async () => {
     const songs = await getSongs();

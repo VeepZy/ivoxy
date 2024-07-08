@@ -1,11 +1,11 @@
 import { type NextPage } from "next";
 import Image from "next/image";
 
-import { getPlaylists } from "@/db/queries";
 
 import { PlaylistPlayButton } from "@/components/play";
 import { Title } from "@/components/title";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { getPlaylists } from "@/db/queries";
 
 const PlaylistsRoute: NextPage = async () => {
     const playlists = await getPlaylists();

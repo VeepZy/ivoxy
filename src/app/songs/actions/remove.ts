@@ -1,7 +1,8 @@
 "use server";
 
-import { createServerDBClient } from "@/db";
 import { revalidatePath } from "next/cache";
+
+import { createServerDBClient } from "@/db";
 import { type Song } from "@/db/types";
 
 export const removeSong = async (song: Song) => {

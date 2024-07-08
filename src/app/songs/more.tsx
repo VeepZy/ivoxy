@@ -1,6 +1,10 @@
 "use client";
 
+import { MoreVerticalIcon } from "lucide-react";
 import { useTransition } from "react";
+
+import { type Song } from "@/db/types";
+
 import {
     DropdownMenu,
     DropdownMenuContent,
@@ -9,8 +13,7 @@ import {
     DropdownMenuSeparator,
     DropdownMenuTrigger,
 } from "../../components/ui/dropdown-menu";
-import { MoreVerticalIcon } from "lucide-react";
-import { Song } from "@/db/types";
+
 import { removeSong } from "./actions/remove";
 
 const SongMoreButton: React.FC<{ song: Song }> = ({ song }) => {
