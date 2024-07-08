@@ -3,7 +3,7 @@
 import { useMounted } from "@/hooks/mounted";
 import { cn } from "@/lib/utils";
 import { unescapeHTML } from "@/lib/utils.client";
-import { forwardRef } from "react";
+import { forwardRef, useCallback } from "react";
 
 interface TitleProps extends React.HTMLAttributes<HTMLHeadingElement> {
     title: string;
@@ -12,6 +12,18 @@ interface TitleProps extends React.HTMLAttributes<HTMLHeadingElement> {
 const Title = forwardRef<HTMLHeadingElement, TitleProps>(
     ({ className, title }, ref) => {
         const mounted = useMounted();
+
+        const truncate = (str: string) => {
+            const title = unescapeHTML(str);
+            const maxLength = 50;
+
+            if (str.length > maxLength) {
+                const truncated = title.slice(0, maxLength).trim();
+                return truncated + "...";
+            } else {
+                return title;
+            }
+        };
 
         if (!mounted) {
             return null;
@@ -22,7 +34,7 @@ const Title = forwardRef<HTMLHeadingElement, TitleProps>(
                 className={cn("font-semibold tracking-tight", className)}
                 ref={ref}
             >
-                {unescapeHTML(title)}
+                {truncate(title)}
             </h3>
         );
     },
