@@ -3,12 +3,13 @@
 import type { NextPage } from "next";
 
 import { Search } from "@/features/search/components/search";
+import { ScrollArea } from "@/components/ui/scroll-area";
 
 const BrowseRoute: NextPage = () => {
     return (
-        <div className="h-full px-4 pt-6 lg:px-8">
+        <ScrollArea className="max-h-full overflow-y-auto">
             <Search />
-        </div>
+        </ScrollArea>
     );
 };
 
