@@ -70,7 +70,10 @@ const Search: React.FC = () => {
         startTransition(async () => {
             const response = await searchMore(query, nextPageToken ?? "");
 
-            setItems([...items, ...(response.items ?? [])]);
+            setItems((prevState) => [
+                ...prevState,
+                ...(response.items ?? []),
+            ]);
             setNextPageToken(response.pageToken ?? null);
         });
     }, [startTransition, form, nextPageToken, items]);
