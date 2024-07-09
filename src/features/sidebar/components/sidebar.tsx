@@ -15,7 +15,6 @@ const Sidebar: React.FC<{ playlists: Playlist[] }> = ({ playlists }) => {
                     <div className="space-y-1">
                         <SidebarLink link={Links().listenNow} />
                         <SidebarLink link={Links().browse} />
-                        <SidebarLink link={Links().radio} />
                     </div>
                 </div>
                 <div className="px-3 py-2">
