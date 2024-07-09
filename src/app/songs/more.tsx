@@ -36,7 +36,12 @@ const SongMoreButton: React.FC<{ song: Song }> = ({ song }) => {
                 <DropdownMenuItem>Profile</DropdownMenuItem>
                 <DropdownMenuItem>Billing</DropdownMenuItem>
                 <DropdownMenuItem>Team</DropdownMenuItem>
-                <DropdownMenuItem onClick={() => onRemove()}>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem
+                    disabled={pending}
+                    onClick={() => onRemove()}
+                    className="text-destructive"
+                >
                     Remove
                 </DropdownMenuItem>
             </DropdownMenuContent>
