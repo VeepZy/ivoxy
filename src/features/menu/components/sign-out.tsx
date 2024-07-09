@@ -18,6 +18,7 @@ const SignOut: React.FC = () => {
         if (user) {
             await db.auth.signOut();
             router.push("/");
+            router.refresh();
         }
     };
 
