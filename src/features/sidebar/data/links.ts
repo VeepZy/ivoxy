@@ -37,11 +37,6 @@ const Links = (playlist?: Playlist) => ({
         icon: CirclePlayIcon,
         label: "Listen Now",
     },
-    radio: {
-        href: "/radio",
-        icon: RadioIcon,
-        label: "Radio",
-    },
 });
 
 export { Links };
