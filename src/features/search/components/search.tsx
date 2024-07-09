@@ -3,8 +3,14 @@
 import { type youtube_v3 as Youtube } from "googleapis";
 import { SearchIcon } from "lucide-react";
 import { usePathname, useSearchParams } from "next/navigation";
-import { useEffect, useMemo, useState, useTransition } from "react";
-import { useForm } from "react-hook-form";
+import {
+    useCallback,
+    useEffect,
+    useMemo,
+    useState,
+    useTransition,
+} from "react";
+import { set, useForm } from "react-hook-form";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -16,7 +22,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 
-import { searchQuery } from "../api/search";
+import { searchMore, searchQuery } from "../api/search";
 
 import { Items } from "./items";
 
@@ -26,6 +32,9 @@ const Search: React.FC = () => {
 
     const [pending, startTransition] = useTransition();
     const [items, setItems] = useState<Youtube.Schema$SearchResult[]>([]);
+    const [nextPageToken, setNextPageToken] = useState<string | null>(
+        null,
+    );
 
     const form = useForm({
         defaultValues: {
@@ -48,11 +57,23 @@ const Search: React.FC = () => {
             startTransition(async () => {
                 const response = await searchQuery(query);
 
-                setItems(response ?? []);
+                setItems(response.items ?? []);
+                setNextPageToken(response.pageToken ?? null);
             });
         },
         [startTransition],
     );
+
+    const handleMore = useCallback(() => {
+        const query = form.getValues("search");
+
+        startTransition(async () => {
+            const response = await searchMore(query, nextPageToken ?? "");
+
+            setItems([...items, ...(response.items ?? [])]);
+            setNextPageToken(response.pageToken ?? null);
+        });
+    }, [startTransition, form, nextPageToken, items]);
 
     const onSubmit = (data: { search: string }) => {
         const url = `${pathname}?${createQueryString(data.search)}`;
@@ -108,7 +129,7 @@ const Search: React.FC = () => {
                 </form>
             </Form>
 
-            <Items items={items} />
+            <Items items={items} more={handleMore} pending={pending} />
         </div>
     );
 };
