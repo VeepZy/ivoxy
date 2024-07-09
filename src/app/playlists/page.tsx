@@ -1,7 +1,6 @@
 import { type NextPage } from "next";
 import Image from "next/image";
 
-
 import { PlaylistPlayButton } from "@/components/play";
 import { Title } from "@/components/title";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -20,7 +19,10 @@ const PlaylistsRoute: NextPage = async () => {
                                 alt={playlist.name}
                                 className="aspect-square h-[180px] w-[320px] object-cover transition-all hover:scale-105"
                                 height={180}
-                                src={playlist.image_src ?? ""}
+                                src={
+                                    playlist.image_src ??
+                                    "/thumbnail-placeholder.jpg"
+                                }
                                 width={320}
                             />
 

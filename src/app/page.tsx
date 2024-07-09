@@ -65,7 +65,10 @@ const HomeRoute: NextPage = async () => {
                                     className="aspect-square h-[180px] w-[320px] object-cover transition-all hover:scale-105"
                                     height={180}
                                     width={320}
-                                    src={item.image_src ?? ""}
+                                    src={
+                                        item.image_src ??
+                                        "/thumbnail-placeholder.jpg"
+                                    }
                                 />
 
                                 <div className="absolute inset-0 flex items-center justify-center rounded-lg bg-black/50 opacity-0 transition-opacity group-hover:cursor-pointer group-hover:opacity-100">
