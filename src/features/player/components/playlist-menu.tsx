@@ -36,6 +36,7 @@ import { createPlaylist } from "../api/create-playlist";
 import { updatePlaylist } from "../api/update-playlist";
 
 import { PlayerContext } from "./context";
+import { usePlaylists } from "../hooks/playlists";
 
 const PlaylistMenu: React.FC<{
     playlists: Playlist[];
@@ -43,66 +44,38 @@ const PlaylistMenu: React.FC<{
     const [pending, startTransition] = useTransition();
     const [open, setOpen] = useState<boolean>(false);
 
-    const { state } = useContext(PlayerContext);
-
-    const [currentPlaylists, setCurrentPlaylists] = useState<
-        Playlist[] | []
-    >([]);
-
-    const [selectedPlaylist, setSelectedPlaylist] = useState<string>("");
+    const { state, current, handleUpdate, selected, setSelected } =
+        usePlaylists(playlists);
 
     const form = useForm({
         defaultValues: { name: "" },
     });
 
-    const filter = useCallback(
-        (playlists: Playlist[], current: string) => {
-            return playlists.filter(
-                (p) => !p.data.some((item) => item.url === current),
-            );
-        },
-        [],
-    );
-
-    useEffect(() => {
-        setCurrentPlaylists(
-            filter(playlists, state.data[state.index].url),
-        );
-    }, [playlists, state.data, state.index, filter]);
-
-    const onNewPlaylist = (values: { name: string }) => {
+    const createNew = () =>
         startTransition(async () => {
-            const data = await createPlaylist(values.name);
-            setCurrentPlaylists(data);
-            setSelectedPlaylist(values.name);
+            const name = form.getValues("name");
+
+            const data = await createPlaylist(name);
+            setSelected(name);
+            handleUpdate(data);
         });
-    };
 
-    const onUpdatePlaylist = (name: string) => {
+    const update = () =>
         startTransition(async () => {
-            const current = currentPlaylists.find((p) => p.name === name);
+            const playlist = current.find((p) => p.name === selected);
 
-            if (!current) {
+            if (!playlist) {
+                // HANDLE ERROR
                 return;
             }
 
             await updatePlaylist({
-                ...current,
-                data: [
-                    ...current.data,
-                    {
-                        title: state.data[state.index].title,
-                        url: state.data[state.index].url,
-                        channelTitle: state.data[state.index].channelTitle,
-                        thumbnail: state.data[state.index].thumbnail,
-                    },
-                ],
+                ...playlist,
+                data: [...playlist.data, { ...state.data[state.index] }],
             });
-            setCurrentPlaylists(
-                filter(playlists, state.data[state.index].url),
-            );
+
+            handleUpdate(current.filter((p) => p.name !== selected));
         });
-    };
 
     return (
         <Popover open={open} onOpenChange={setOpen}>
@@ -125,20 +98,15 @@ const PlaylistMenu: React.FC<{
                     </Button>
                 </div>
                 <div className="space-y-2">
-                    <Select
-                        value={selectedPlaylist}
-                        onValueChange={(value) =>
-                            setSelectedPlaylist(value)
-                        }
-                    >
+                    <Select value={selected} onValueChange={setSelected}>
                         <SelectTrigger
                             className="w-full"
-                            disabled={!currentPlaylists.length}
+                            disabled={current.length === 0}
                         >
                             <SelectValue placeholder="Select playlist" />
                         </SelectTrigger>
                         <SelectContent>
-                            {currentPlaylists.map((playlist) => (
+                            {current.map((playlist) => (
                                 <SelectItem
                                     key={playlist.id}
                                     value={playlist.name}
@@ -152,7 +120,7 @@ const PlaylistMenu: React.FC<{
                     <Form {...form}>
                         <form
                             className="flex items-center gap-2"
-                            onSubmit={form.handleSubmit(onNewPlaylist)}
+                            onSubmit={form.handleSubmit(createNew)}
                         >
                             <FormField
                                 control={form.control}
@@ -187,8 +155,8 @@ const PlaylistMenu: React.FC<{
                         Cancel
                     </Button>
                     <Button
-                        disabled={pending || !selectedPlaylist}
-                        onClick={() => onUpdatePlaylist(selectedPlaylist)}
+                        disabled={pending || !selected}
+                        onClick={update}
                     >
                         Add to Playlist
                     </Button>
