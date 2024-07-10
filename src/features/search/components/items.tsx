@@ -4,10 +4,10 @@ import { type youtube_v3 as Youtube } from "googleapis";
 import Image from "next/image";
 
 import { BrowseMoreButton } from "@/app/browse/more";
-import { SongPlayButton } from "@/components/play";
 import { Title } from "@/components/title";
 import { Button } from "@/components/ui/button";
 import { LoaderCircleIcon } from "lucide-react";
+import { PlaySongButton } from "@/components/play-buttons";
 
 const Items: React.FC<{
     items: Youtube.Schema$SearchResult[];
@@ -32,7 +32,7 @@ const Items: React.FC<{
                             />
 
                             <div className="absolute inset-0 flex items-center justify-center rounded-lg bg-black/50 opacity-0 transition-opacity group-hover:cursor-pointer group-hover:opacity-100">
-                                <SongPlayButton
+                                <PlaySongButton
                                     song={{
                                         title: item.snippet?.title ?? "",
                                         channelTitle:
