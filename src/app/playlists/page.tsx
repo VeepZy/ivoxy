@@ -5,6 +5,7 @@ import { PlaylistPlayButton } from "@/components/play";
 import { Title } from "@/components/title";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { getPlaylists } from "@/db/queries";
+import { PlaylistMoreButton } from "@/components//playlist-more/more";
 
 const PlaylistsRoute: NextPage = async () => {
     const playlists = await getPlaylists();
@@ -40,7 +41,10 @@ const PlaylistsRoute: NextPage = async () => {
                                     {playlist.data.length} songs
                                 </p>
                             </div>
-                            {/* <SongMoreButton song={item} /> */}
+                            <PlaylistMoreButton
+                                playlists={playlists}
+                                playlist={playlist}
+                            />
                         </div>
                     </div>
                 ))}
