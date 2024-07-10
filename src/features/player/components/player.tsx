@@ -9,8 +9,13 @@ import {
     Volume2Icon,
     VolumeXIcon,
 } from "lucide-react";
-import { type MouseEvent, useContext, useEffect, useRef } from "react";
-import ReactPlayer from "react-player";
+import { ComponentType, useRef } from "react";
+import dynamic from "next/dynamic";
+import type ReactPlayer from "react-player";
+
+const Player = dynamic(() => import("react-player"), {
+    ssr: false,
+}) as unknown as ComponentType<ReactPlayerProps>;
 
 import { Title } from "@/components/title";
 import { Button } from "@/components/ui/button";
@@ -20,113 +25,33 @@ import { type Playlist, type Song } from "@/db/types";
 import { cn, formatDuration } from "@/lib/utils";
 
 import { AddSong } from "./add-song";
-import { PlayerContext } from "./context";
 import { CurrentSongs } from "./current-songs";
 import { PlaylistMenu } from "./playlist-menu";
+import { usePlayerStore } from "@/hooks/player";
+import { ReactPlayerProps } from "react-player";
 
 const VideoPlayer: React.FC<{ playlists: Playlist[]; songs: Song[] }> = ({
     playlists,
     songs,
 }) => {
-    const player = useRef<ReactPlayer>(null);
-    const { state, setState } = useContext(PlayerContext);
+    const player = useRef<ComponentType<ReactPlayerProps> & ReactPlayer>(
+        null,
+    );
 
-    useEffect(() => {
-        setState((prevState) => ({
-            ...prevState,
-            canNext: state.index < state.data.length - 1,
-            canPrev: state.index > 0,
-        }));
-    }, [state.data, state.index, setState]);
-
-    const onPlay = () =>
-        setState((prevState) => ({
-            ...prevState,
-            playing: true,
-        }));
-    const onPause = () =>
-        setState((prevState) => ({
-            ...prevState,
-            playing: false,
-        }));
-    const onEnded = () => {
-        setState((prevState) => {
-            const next = prevState.index + 1;
-
-            if (next >= prevState.data.length) {
-                return {
-                    ...prevState,
-                    playing: false,
-                };
-            }
-
-            return {
-                ...prevState,
-                index: state.index + 1,
-            };
-        });
-    };
-
-    const onProgress = (event: {
-        playedSeconds: number;
-        loadedSeconds: number;
-    }) => {
-        setState((prevState) => ({
-            ...prevState,
-            loaded: event.loadedSeconds,
-            played: event.playedSeconds,
-        }));
-    };
-    const onDuration = (duration: number) =>
-        setState((prevState) => ({
-            ...prevState,
-            duration,
-        }));
-    const onLoop = () => {
-        setState((prevState) => ({
-            ...prevState,
-            loop: !prevState.loop,
-        }));
-    };
-    const onVolume = (event: number[]) => {
-        setState((prevState) => ({
-            ...prevState,
-            volume: (prevState.volume = event[0]),
-        }));
-    };
-    const onMute = () => {
-        setState((prevState) => ({
-            ...prevState,
-            muted: !prevState.muted,
-        }));
-    };
-    const onProgressChange = (event: MouseEvent<HTMLDivElement>) => {
-        const x = event.clientX;
-        const width = event.currentTarget.clientWidth;
-
-        const progress = Math.floor((x / width) * state.duration);
-        player.current?.seekTo(progress, "seconds");
-    };
-    const onNext = () => {
-        if (!state.canNext) {
-            return;
-        }
-
-        setState((prevState) => ({
-            ...prevState,
-            index: state.index + 1,
-        }));
-    };
-    const onPrev = () => {
-        if (!state.canPrev) {
-            return;
-        }
-
-        setState((prevState) => ({
-            ...prevState,
-            index: state.index - 1,
-        }));
-    };
+    const state = usePlayerStore((store) => store.state);
+    const onPlay = usePlayerStore((store) => store.events.play);
+    const onPause = usePlayerStore((store) => store.events.pause);
+    const onEnded = usePlayerStore((store) => store.events.ended);
+    const onVolume = usePlayerStore((store) => store.events.volume);
+    const onDuration = usePlayerStore((store) => store.events.duration);
+    const onProgress = usePlayerStore((store) => store.events.progress);
+    const onProgressMouse = usePlayerStore(
+        (store) => store.events.progressMouse,
+    );
+    const onNext = usePlayerStore((store) => store.events.next);
+    const onPrev = usePlayerStore((store) => store.events.prev);
+    const onMute = usePlayerStore((store) => store.events.mute);
+    const onLoop = usePlayerStore((store) => store.events.loop);
 
     return (
         <div className="flex h-full flex-col">
@@ -137,7 +62,7 @@ const VideoPlayer: React.FC<{ playlists: Playlist[]; songs: Song[] }> = ({
                     { value: state.played },
                     { value: state.loaded, load: true },
                 ]}
-                onClick={onProgressChange}
+                onClick={(event) => onProgressMouse(event, player)}
             />
             <div className="flex w-full flex-1 items-center border-t bg-card px-4 shadow-lg">
                 <div className="space-y-1 text-sm">
@@ -211,7 +136,7 @@ const VideoPlayer: React.FC<{ playlists: Playlist[]; songs: Song[] }> = ({
                 </div>
 
                 <div className="absolute bottom-24 left-10 hidden">
-                    <ReactPlayer
+                    <Player
                         ref={player}
                         height="100%"
                         loop={state.loop}
