@@ -13,8 +13,7 @@ import {
     DropdownMenuSeparator,
     DropdownMenuTrigger,
 } from "../../components/ui/dropdown-menu";
-
-import { removeSong } from "./actions/remove";
+import { removeSong } from "@/db/actions";
 
 const SongMoreButton: React.FC<{ song: Song }> = ({ song }) => {
     const [pending, startTransition] = useTransition();
