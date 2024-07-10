@@ -1,11 +1,11 @@
 import { type NextPage } from "next";
 import Image from "next/image";
 
-import { PlaylistPlayButton } from "@/components/play";
 import { Title } from "@/components/title";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { getPlaylists } from "@/db/queries";
 import { PlaylistMoreButton } from "@/components//playlist-more/more";
+import { PlayPlaylistButton } from "@/components/play-buttons";
 
 const PlaylistsRoute: NextPage = async () => {
     const playlists = await getPlaylists();
@@ -28,7 +28,7 @@ const PlaylistsRoute: NextPage = async () => {
                             />
 
                             <div className="absolute inset-0 flex items-center justify-center rounded-lg bg-black/50 opacity-0 transition-opacity group-hover:cursor-pointer group-hover:opacity-100">
-                                <PlaylistPlayButton
+                                <PlayPlaylistButton
                                     playlist={playlist.data}
                                 />
                             </div>
