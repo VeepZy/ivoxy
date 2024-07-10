@@ -3,7 +3,7 @@
 import { revalidatePath } from "next/cache";
 import { createServerDBClient } from ".";
 import { getUser } from "./queries";
-import { Playlist } from "./types";
+import { Playlist, Song } from "./types";
 
 export const removePlaylist = async (playlist: Playlist) => {
     const db = createServerDBClient();
@@ -49,4 +49,20 @@ export const renamePlaylist = async (playlist: Playlist, name: string) => {
     }
 
     revalidatePath("/", "layout");
+};
+
+export const removeSong = async (song: Song) => {
+    const db = createServerDBClient();
+
+    const { error } = await db
+        .from("songs")
+        .delete()
+        .eq("id", song.id)
+        .eq("user", song.user);
+
+    if (error) {
+        throw new Error(`Unable to remove song: ${error.message}`);
+    }
+
+    revalidatePath("/songs");
 };
