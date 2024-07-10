@@ -2,9 +2,12 @@ import { PlayIcon } from "lucide-react";
 import { type NextPage } from "next";
 import Image from "next/image";
 
-import { PlaylistPlayButton, SongPlayButton } from "@/components/play";
 import { Title } from "@/components/title";
 import { getPlaylist } from "@/db/queries";
+import {
+    PlayPlaylistButton,
+    PlaySongButton,
+} from "@/components/play-buttons";
 
 const PlaylistRoute: NextPage<{ params: { id: string } }> = async ({
     params,
@@ -23,7 +26,7 @@ const PlaylistRoute: NextPage<{ params: { id: string } }> = async ({
                     </p>
                 </div>
 
-                <PlaylistPlayButton playlist={playlist.data} />
+                <PlayPlaylistButton playlist={playlist.data} />
             </div>
             <div className="grid gap-4">
                 {playlist.data.map((item) => (
@@ -50,7 +53,7 @@ const PlaylistRoute: NextPage<{ params: { id: string } }> = async ({
                             </p>
                         </div>
                         <div className="flex items-center gap-2">
-                            <SongPlayButton song={item} />
+                            <PlaySongButton song={item} />
                         </div>
                     </div>
                 ))}
