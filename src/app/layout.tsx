@@ -11,7 +11,6 @@ import {
 import { getUser } from "@/db/queries";
 import { Menu } from "@/features/menu/components/menu";
 import { SignIn } from "@/features/menu/components/sign-in";
-import { PlayerProvider } from "@/features/player/components/context";
 import { PlayerWrapper } from "@/features/player/components/player-wrapper";
 import { ThemeProvider } from "@/features/theme/components/context";
 
@@ -54,36 +53,34 @@ const RootLayout: NextPage<Readonly<{ children: ReactNode }>> = async ({
                 <body
                     className={`min-h-screen bg-background font-sans antialiased ${FontSans.variable}`}
                 >
-                    <PlayerProvider>
-                        <ResizablePanelGroup
-                            className="min-h-screen"
-                            direction="vertical"
+                    <ResizablePanelGroup
+                        className="min-h-screen"
+                        direction="vertical"
+                    >
+                        <ResizablePanel
+                            className="border-b"
+                            defaultSize={6}
+                            minSize={6}
                         >
-                            <ResizablePanel
-                                className="border-b"
-                                defaultSize={6}
-                                minSize={6}
-                            >
-                                <div className="flex h-full items-center">
-                                    <Menu />
-                                </div>
-                            </ResizablePanel>
+                            <div className="flex h-full items-center">
+                                <Menu />
+                            </div>
+                        </ResizablePanel>
 
-                            <ResizablePanel defaultSize={87}>
-                                <ResizablePanelGroup direction="horizontal">
-                                    <Content>{children}</Content>
-                                </ResizablePanelGroup>
-                            </ResizablePanel>
+                        <ResizablePanel defaultSize={87}>
+                            <ResizablePanelGroup direction="horizontal">
+                                <Content>{children}</Content>
+                            </ResizablePanelGroup>
+                        </ResizablePanel>
 
-                            <ResizablePanel
-                                className="border-t"
-                                defaultSize={7}
-                                minSize={7}
-                            >
-                                <PlayerWrapper />
-                            </ResizablePanel>
-                        </ResizablePanelGroup>
-                    </PlayerProvider>
+                        <ResizablePanel
+                            className="border-t"
+                            defaultSize={7}
+                            minSize={7}
+                        >
+                            <PlayerWrapper />
+                        </ResizablePanel>
+                    </ResizablePanelGroup>
                 </body>
             </ThemeProvider>
         </html>
