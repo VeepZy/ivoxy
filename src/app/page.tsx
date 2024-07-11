@@ -1,10 +1,14 @@
-import { PlaylistPlayButton, SongPlayButton } from "@/components/play";
+import { type NextPage } from "next";
+import Image from "next/image";
+
+import {
+    PlayPlaylistButton,
+    PlaySongButton,
+} from "@/components/play-buttons";
 import { Title } from "@/components/title";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { getPlaylists, getSongs } from "@/db/queries";
-import { Playlist, Song } from "@/db/types";
-import { type NextPage } from "next";
-import Image from "next/image";
+import { type Playlist, type Song } from "@/db/types";
 
 type CombinedItem = Song | Playlist;
 
@@ -30,12 +34,12 @@ const HomeRoute: NextPage = async () => {
                                     alt={item.data.title}
                                     className="aspect-square h-[180px] w-[320px] object-cover transition-all hover:scale-105"
                                     height={180}
-                                    width={320}
                                     src={item.data.thumbnail}
+                                    width={320}
                                 />
 
                                 <div className="absolute inset-0 flex items-center justify-center rounded-lg bg-black/50 opacity-0 transition-opacity group-hover:cursor-pointer group-hover:opacity-100">
-                                    <SongPlayButton
+                                    <PlaySongButton
                                         song={{
                                             title: item.data.title,
                                             channelTitle:
@@ -72,7 +76,7 @@ const HomeRoute: NextPage = async () => {
                                 />
 
                                 <div className="absolute inset-0 flex items-center justify-center rounded-lg bg-black/50 opacity-0 transition-opacity group-hover:cursor-pointer group-hover:opacity-100">
-                                    <PlaylistPlayButton
+                                    <PlayPlaylistButton
                                         playlist={item.data}
                                     />
                                 </div>
