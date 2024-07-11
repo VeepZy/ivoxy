@@ -1,7 +1,8 @@
 "use client";
 
 import { MoreVerticalIcon } from "lucide-react";
-import { type Playlist } from "@/db/types";
+import Link from "next/link";
+import { useState } from "react";
 
 import {
     DropdownMenu,
@@ -11,10 +12,12 @@ import {
     DropdownMenuSeparator,
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { PlaylistRemoveButton } from "./remove";
+import { type Playlist } from "@/db/types";
+
 import { Dialog, DialogTrigger } from "../ui/dialog";
+
 import { PlaylistRenameButton } from "./name";
-import { useRef, useState } from "react";
+import { PlaylistRemoveButton } from "./remove";
 
 const PlaylistMoreButton: React.FC<{
     playlists: Playlist[];
@@ -31,8 +34,11 @@ const PlaylistMoreButton: React.FC<{
                 <DropdownMenuContent>
                     <DropdownMenuLabel>Settings</DropdownMenuLabel>
                     <DropdownMenuSeparator />
-                    <DropdownMenuItem>Profile</DropdownMenuItem>
-                    <DropdownMenuItem>Billing</DropdownMenuItem>
+                    <DropdownMenuItem>
+                        <Link href={`/playlists/${playlist.id}`}>
+                            View
+                        </Link>
+                    </DropdownMenuItem>
                     <DialogTrigger asChild>
                         <DropdownMenuItem>Rename</DropdownMenuItem>
                     </DialogTrigger>
@@ -41,8 +47,8 @@ const PlaylistMoreButton: React.FC<{
                 </DropdownMenuContent>
             </DropdownMenu>
             <PlaylistRenameButton
-                playlists={playlists}
                 playlist={playlist}
+                playlists={playlists}
                 setOpen={setOpen}
             />
         </Dialog>
