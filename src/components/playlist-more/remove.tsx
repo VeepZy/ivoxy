@@ -1,46 +1,34 @@
 "use client";
 
-import { useEffect, useRef, useState, useTransition } from "react";
-import { DropdownMenuItem } from "../ui/dropdown-menu";
-import { removePlaylist } from "@/db/actions";
-import { Playlist } from "@/db/types";
 import { ClockArrowUpIcon } from "lucide-react";
+import { useEffect, useTransition } from "react";
+
+import { removePlaylist } from "@/db/actions";
+import { type Playlist } from "@/db/types";
+import { useRemoveStore } from "@/hooks/remove";
+
+import { DropdownMenuItem } from "../ui/dropdown-menu";
 
 const PlaylistRemoveButton: React.FC<{ playlist: Playlist }> = ({
     playlist,
 }) => {
-    const [isHolding, setIsHolding] = useState<boolean>(false);
-    const [fill, setFill] = useState<number>(0);
     const [pending, startTransition] = useTransition();
 
-    const intervalRef = useRef<NodeJS.Timeout>();
+    const fill = useRemoveStore((state) => state.fill);
+    const setIsHolding = useRemoveStore((state) => state.setIsHolding);
+    const setFill = useRemoveStore((state) => state.setFill);
+    const startTimeout = useRemoveStore((state) => state.startTimeout);
+    const cleanUpTimeout = useRemoveStore((state) => state.cleanUpTimeout);
 
-    const handleMouseDownOnRemove = () => {
+    const handleMouseDown = () => {
         setIsHolding(true);
+        startTimeout();
     };
 
-    const handleHoldTimeout = () => {
-        if (isHolding) {
-            const startTime = Date.now();
-
-            intervalRef.current = setInterval(() => {
-                const elapsedTime = Date.now() - startTime;
-                const fill = Math.min((elapsedTime / 2000) * 100, 100);
-                setFill(fill);
-                if (fill >= 100) {
-                    clearInterval(intervalRef.current);
-                }
-            }, 10);
-        } else {
-            setFill(0);
-            clearInterval(intervalRef.current);
-        }
-    };
-
-    const handleMouseUpOnRemove = () => {
+    const handleMouseUp = () => {
         setIsHolding(false);
         setFill(0);
-        clearInterval(intervalRef.current);
+        cleanUpTimeout();
     };
 
     useEffect(() => {
@@ -49,25 +37,21 @@ const PlaylistRemoveButton: React.FC<{ playlist: Playlist }> = ({
                 await removePlaylist(playlist);
             });
         }
-    }, [fill]);
+    }, [fill, playlist]);
 
     useEffect(() => {
-        if (isHolding) {
-            return handleHoldTimeout();
-        }
-
-        return () => handleMouseUpOnRemove();
-    }, [isHolding]);
+        return () => cleanUpTimeout();
+    }, [cleanUpTimeout]);
 
     return (
         <DropdownMenuItem
-            disabled={pending}
-            onMouseDown={() => handleMouseDownOnRemove()}
-            onMouseUp={() => handleMouseUpOnRemove()}
             className="relative flex justify-between text-destructive"
+            disabled={pending}
+            onMouseDown={handleMouseDown}
+            onMouseUp={handleMouseUp}
         >
             <div
-                className="absolute bottom-0 left-0 top-0 z-10 rounded-sm bg-primary/50 transition-all duration-100 ease-linear"
+                className="absolute bottom-0 left-0 top-0 z-10 rounded-sm bg-primary/50 "
                 style={{ width: `${fill}%` }}
             />
             Remove
