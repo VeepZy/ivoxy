@@ -76,7 +76,7 @@ const Search: React.FC = () => {
             ]);
             setNextPageToken(response.pageToken ?? null);
         });
-    }, [startTransition, form, nextPageToken, items]);
+    }, [startTransition, form, nextPageToken]);
 
     const onSubmit = (data: { search: string }) => {
         const url = `${pathname}?${createQueryString(data.search)}`;
