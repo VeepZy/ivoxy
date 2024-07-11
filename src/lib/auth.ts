@@ -4,30 +4,42 @@ import { OAuth2Client } from "google-auth-library";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 
-export const getAuthenticatedClient = async () => {
-    const client = await new OAuth2Client(
+export const getClient = async () => {
+    const client = new OAuth2Client(
         process.env.YOUTUBE_CLIENT_ID ?? "",
         process.env.YOUTUBE_CLIENT_SECRET ?? "",
         process.env.YOUTUBE_REDIRECT_URI ?? "",
     );
+    return client;
+};
 
-    const accessToken = cookies().get("google_access_token");
-    const refreshToken = cookies().get("google_refresh_token");
-    const expiryDate = cookies().get("google_expiry_date");
+export const getAuthenticatedClient = async () => {
+    const client = await getClient();
 
-    if (accessToken && refreshToken && expiryDate) {
-        client.setCredentials({
-            access_token: accessToken.value,
-            refresh_token: refreshToken.value,
-            expiry_date: Number(expiryDate.value),
-        });
+    const cookieStore = cookies();
+    const credentials = {
+        access_token: cookieStore.get("google_access_token")?.value,
+        refresh_token: cookieStore.get("google_refresh_token")?.value,
+        expiry_date: Number(
+            cookieStore.get("google_expiry_date")?.value ?? 0,
+        ),
+    };
+
+    if (!credentials.access_token || !credentials.refresh_token) {
+        redirect("/profile");
     }
+
+    client.setCredentials({
+        access_token: credentials.access_token,
+        refresh_token: credentials.refresh_token,
+        expiry_date: credentials.expiry_date,
+    });
 
     return client;
 };
 
 export const auth = async () => {
-    const client = await getAuthenticatedClient();
+    const client = await getClient();
 
     const scopes = [
         "https://www.googleapis.com/auth/youtube",
