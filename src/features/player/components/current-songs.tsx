@@ -2,7 +2,6 @@
 
 import { ListMusicIcon, PlayIcon } from "lucide-react";
 import Image from "next/image";
-import { useContext } from "react";
 
 import { Title } from "@/components/title";
 import { Button } from "@/components/ui/button";
@@ -13,19 +12,11 @@ import {
 } from "@/components/ui/popover";
 import { ScrollArea } from "@/components/ui/scroll-area";
 
-import { PlayerContext } from "./context";
-
-
+import { usePlayerStore } from "@/hooks/player";
 
 const CurrentSongs: React.FC = () => {
-    const { state, setState } = useContext(PlayerContext);
-
-    const onSubmit = (index: number) => {
-        setState((prevState) => ({
-            ...prevState,
-            index,
-        }));
-    };
+    const state = usePlayerStore((store) => store.state);
+    const setIndex = usePlayerStore((store) => store.control.setIndex);
 
     return (
         <Popover>
@@ -67,7 +58,7 @@ const CurrentSongs: React.FC = () => {
                                     <Button
                                         size="icon"
                                         variant="ghost"
-                                        onClick={() => onSubmit(index)}
+                                        onClick={() => setIndex(index)}
                                     >
                                         <PlayIcon className="h-4 w-4" />
                                     </Button>
