@@ -1,11 +1,11 @@
 "use server";
 
 import type { NextPage } from "next";
+import { cookies } from "next/headers";
+import { redirect } from "next/navigation";
 
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Search } from "@/features/search/components/search";
-import { cookies } from "next/headers";
-import { redirect } from "next/navigation";
 
 const BrowseRoute: NextPage = () => {
     const cookieStore = cookies();
