@@ -1,9 +1,11 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
-import { createServerDBClient } from ".";
+
 import { getUser } from "./queries";
-import { Playlist, Song } from "./types";
+import { type Playlist, type Song } from "./types";
+
+import { createServerDBClient } from ".";
 
 export const removePlaylist = async (playlist: Playlist) => {
     const db = createServerDBClient();
@@ -21,7 +23,7 @@ export const removePlaylist = async (playlist: Playlist) => {
         .eq("user", user.id);
 
     if (error) {
-        throw error;
+        throw new Error(`Unable to remove playlist: ${error.message}`);
     }
 
     revalidatePath("/", "layout");
@@ -45,7 +47,7 @@ export const renamePlaylist = async (playlist: Playlist, name: string) => {
         .eq("user", user.id);
 
     if (error) {
-        throw error;
+        throw new Error(`Unable to rename playlist: ${error.message}`);
     }
 
     revalidatePath("/", "layout");
