@@ -2,12 +2,12 @@ import { PlayIcon } from "lucide-react";
 import { type NextPage } from "next";
 import Image from "next/image";
 
-import { Title } from "@/components/title";
-import { getPlaylist } from "@/db/queries";
 import {
     PlayPlaylistButton,
     PlaySongButton,
 } from "@/components/play-buttons";
+import { Title } from "@/components/title";
+import { getPlaylist } from "@/db/queries";
 
 const PlaylistRoute: NextPage<{ params: { id: string } }> = async ({
     params,

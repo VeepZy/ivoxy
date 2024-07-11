@@ -1,7 +1,10 @@
 "use client";
 
-import { Playlist } from "@/db/types";
+import { useRouter } from "next/navigation";
+import { useState, useTransition } from "react";
 import { useForm } from "react-hook-form";
+
+import { Button } from "@/components/ui/button";
 import {
     DialogContent,
     DialogDescription,
@@ -9,7 +12,6 @@ import {
     DialogHeader,
     DialogTitle,
 } from "@/components/ui/dialog";
-import { useState, useTransition } from "react";
 import {
     Form,
     FormControl,
@@ -19,9 +21,8 @@ import {
     FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
+import { type Playlist } from "@/db/types";
 import { createPlaylist } from "@/features/player/api/create-playlist";
-import { useRouter } from "next/navigation";
 import { cn } from "@/lib/utils";
 
 const CreatePlaylist: React.FC<{ playlists: Playlist[] }> = ({
@@ -37,7 +38,7 @@ const CreatePlaylist: React.FC<{ playlists: Playlist[] }> = ({
         },
     });
 
-    const debounce = (func: Function, delay: number) => {
+    const debounce = (func: (...args: any) => void, delay: number) => {
         let timer: NodeJS.Timeout;
 
         return (...args: any) => {
@@ -46,7 +47,7 @@ const CreatePlaylist: React.FC<{ playlists: Playlist[] }> = ({
         };
     };
 
-    const onInputChange = debounce(async (name: string) => {
+    const onInputChange = debounce((name: string) => {
         const playlist = playlists.find((p) => p.name === name);
 
         playlist ? setExists(true) : setExists(false);
@@ -77,8 +78,8 @@ const CreatePlaylist: React.FC<{ playlists: Playlist[] }> = ({
             <Form {...form}>
                 <form>
                     <FormField
-                        name="name"
                         control={form.control}
+                        name="name"
                         render={({ field }) => (
                             <FormItem>
                                 <FormControl
@@ -111,8 +112,8 @@ const CreatePlaylist: React.FC<{ playlists: Playlist[] }> = ({
 
             <DialogFooter>
                 <Button
-                    type="submit"
                     disabled={pending || exists}
+                    type="submit"
                     onClick={() => onSubmit(form.getValues("name"))}
                 >
                     Create

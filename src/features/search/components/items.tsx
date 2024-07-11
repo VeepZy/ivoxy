@@ -1,13 +1,13 @@
 "use client";
 
 import { type youtube_v3 as Youtube } from "googleapis";
+import { LoaderCircleIcon } from "lucide-react";
 import Image from "next/image";
 
 import { BrowseMoreButton } from "@/app/browse/more";
+import { PlaySongButton } from "@/components/play-buttons";
 import { Title } from "@/components/title";
 import { Button } from "@/components/ui/button";
-import { LoaderCircleIcon } from "lucide-react";
-import { PlaySongButton } from "@/components/play-buttons";
 
 const Items: React.FC<{
     items: Youtube.Schema$SearchResult[];
@@ -61,7 +61,7 @@ const Items: React.FC<{
             </div>
             {items.length > 0 && (
                 <div className="flex justify-center">
-                    <Button onClick={more} disabled={pending}>
+                    <Button disabled={pending} onClick={more}>
                         {pending ? (
                             <LoaderCircleIcon className="h-4 w-4 animate-spin" />
                         ) : (

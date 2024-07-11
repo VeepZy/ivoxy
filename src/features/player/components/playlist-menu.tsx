@@ -1,13 +1,7 @@
 "use client";
 
 import { ListPlusIcon, PlusIcon, XIcon } from "lucide-react";
-import {
-    useCallback,
-    useContext,
-    useEffect,
-    useState,
-    useTransition,
-} from "react";
+import { useState, useTransition } from "react";
 import { useForm } from "react-hook-form";
 
 import { Button } from "@/components/ui/button";
@@ -34,8 +28,6 @@ import { type Playlist } from "@/db/types";
 
 import { createPlaylist } from "../api/create-playlist";
 import { updatePlaylist } from "../api/update-playlist";
-
-import { PlayerContext } from "./context";
 import { usePlaylists } from "../hooks/playlists";
 
 const PlaylistMenu: React.FC<{

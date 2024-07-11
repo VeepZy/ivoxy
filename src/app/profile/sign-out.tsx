@@ -2,8 +2,8 @@
 
 import { useRouter } from "next/navigation";
 
-import { createBrowserDBClient } from "@/db/browser";
 import { Button } from "@/components/ui/button";
+import { createBrowserDBClient } from "@/db/browser";
 
 const SignOut: React.FC = () => {
     const router = useRouter();

@@ -1,15 +1,18 @@
 import { type NextPage } from "next";
 import Image from "next/image";
 
+import { PlaySongButton } from "@/components/play-buttons";
+import { SongMoreButton } from "@/components/song-more/more";
 import { Title } from "@/components/title";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { getSongs } from "@/db/queries";
+import { getPlaylists, getSongs } from "@/db/queries";
 
-import { SongMoreButton } from "./more";
-import { PlaySongButton } from "@/components/play-buttons";
 
 const SongsRoute: NextPage = async () => {
-    const songs = await getSongs();
+    const [playlists, songs] = await Promise.all([
+        getPlaylists(),
+        getSongs(),
+    ]);
 
     return (
         <ScrollArea className="max-h-[calc(100vh-100px)] overflow-y-auto p-6">
@@ -40,7 +43,10 @@ const SongsRoute: NextPage = async () => {
                                     {item.data.channelTitle}
                                 </p>
                             </div>
-                            <SongMoreButton song={item} />
+                            <SongMoreButton
+                                playlists={playlists}
+                                song={item}
+                            />
                         </div>
                     </div>
                 ))}

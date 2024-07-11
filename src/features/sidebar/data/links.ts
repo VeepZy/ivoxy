@@ -3,7 +3,6 @@ import {
     LayoutGridIcon,
     ListMusicIcon,
     Music2Icon,
-    RadioIcon,
 } from "lucide-react";
 
 interface Playlist {

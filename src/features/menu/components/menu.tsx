@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 
+import { Dialog, DialogTrigger } from "@/components/ui/dialog";
 import {
     Menubar,
     MenubarContent,
@@ -15,12 +16,11 @@ import {
 } from "@/components/ui/menubar";
 import { getPlaylists, getUser } from "@/db/queries";
 
+import { CreatePlaylist } from "./create-playlist";
 import { SidebarToggle } from "./sidebar-toggle";
 import { SignIn } from "./sign-in";
 import { SignOut } from "./sign-out";
 import { ThemeToggle } from "./theme-toggle";
-import { CreatePlaylist } from "./create-playlist";
-import { Dialog, DialogTrigger } from "@/components/ui/dialog";
 
 const Menu: React.FC = async () => {
     const user = await getUser();
