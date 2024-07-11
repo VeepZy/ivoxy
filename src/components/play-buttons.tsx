@@ -4,10 +4,10 @@ import { PlayIcon } from "lucide-react";
 import { forwardRef } from "react";
 
 import type { PlaylistData, SongData } from "@/db/types";
-
-import { Button } from "./ui/button";
 import { usePlayerStore } from "@/hooks/player";
 import { cn } from "@/lib/utils";
+
+import { Button } from "./ui/button";
 
 interface PlaySongButtonProps
     extends React.HTMLAttributes<HTMLButtonElement> {
@@ -15,12 +15,13 @@ interface PlaySongButtonProps
     keep?: boolean;
 }
 
-const PlaySongButton = forwardRef<HTMLHeadingElement, PlaySongButtonProps>(
+const PlaySongButton = forwardRef<HTMLButtonElement, PlaySongButtonProps>(
     ({ className, song, keep = false }, ref) => {
         const setUrl = usePlayerStore((store) => store.control.setUrl);
 
         return (
             <Button
+                ref={ref}
                 className={cn("group-hover:bg-primary", className)}
                 size="icon"
                 variant="ghost"
@@ -42,13 +43,14 @@ interface PlayPlaylistButtonProps
 }
 
 const PlayPlaylistButton = forwardRef<
-    HTMLHeadingElement,
+    HTMLButtonElement,
     PlayPlaylistButtonProps
 >(({ className, playlist, keep = false }, ref) => {
     const setUrl = usePlayerStore((store) => store.control.setUrl);
 
     return (
         <Button
+            ref={ref}
             className={cn("group-hover:bg-primary", className)}
             size="icon"
             variant="ghost"
