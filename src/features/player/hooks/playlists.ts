@@ -1,14 +1,18 @@
 "use client";
 
-import { Playlist } from "@/db/types";
-import { useCallback, useContext, useEffect, useState } from "react";
-import { PlayerContext } from "../components/context";
+import { useCallback, useEffect, useState } from "react";
+
+import { type Playlist } from "@/db/types";
+import { usePlayerStore } from "@/hooks/player";
+
 import { filter } from "../util/filter";
 
+
 const usePlaylists = (playlists: Playlist[]) => {
-    const [current, setCurrent] = useState<Playlist[]>(playlists ?? []);
+    const [current, setCurrent] = useState<Playlist[]>(playlists);
     const [selected, setSelected] = useState<string>("");
-    const { state } = useContext(PlayerContext);
+
+    const state = usePlayerStore((store) => store.state);
 
     const handleUpdate = useCallback(
         (playlists: Playlist[]) => {
@@ -23,7 +27,7 @@ const usePlaylists = (playlists: Playlist[]) => {
                 setSelected(filtered[0].name);
             }
         },
-        [state.data, state.index, playlists, setCurrent],
+        [state.data, state.index, setCurrent],
     );
 
     useEffect(() => {
