@@ -21,8 +21,6 @@ export const searchQuery = cache(async (query: string) => {
         maxResults: 40,
     });
 
-    console.log("YOUTUBE API CALL", response);
-
     return {
         items: response.data.items,
         pageToken: response.data.nextPageToken,
@@ -46,8 +44,6 @@ export const searchMore = cache(
             maxResults: 40,
             pageToken,
         });
-
-        console.log("YOUTUBE API CALL", response);
 
         return {
             items: response.data.items,
