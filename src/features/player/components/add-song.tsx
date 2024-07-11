@@ -1,28 +1,25 @@
 "use client";
 
-import { useContext, useEffect, useState, useTransition } from "react";
+import { useEffect, useState, useTransition } from "react";
 
 import { Button } from "@/components/ui/button";
 import { type Song } from "@/db/types";
+import { usePlayerStore } from "@/hooks/player";
 
 import { addSong } from "../api/add-song";
-
-import { PlayerContext } from "./context";
+import { filterSongs } from "../util/filter";
 
 const AddSong: React.FC<{ songs: Song[] }> = ({ songs }) => {
     const [existing, setExisting] = useState<boolean>(false);
     const [pending, startTransition] = useTransition();
-    const { state } = useContext(PlayerContext);
+
+    const state = usePlayerStore((store) => store.state);
 
     useEffect(() => {
-        if (
-            songs.some(
-                (song) => song.data.url === state.data[state.index].url,
-            )
-        ) {
-            setExisting(true);
-        } else {
+        if (filterSongs(songs, state.data[state.index].url)) {
             setExisting(false);
+        } else {
+            setExisting(true);
         }
     }, [state.data, state.index, songs]);
 
