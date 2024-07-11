@@ -4,31 +4,32 @@ import {
     PauseIcon,
     PlayIcon,
     Repeat2Icon,
+    ShuffleIcon,
     SkipBackIcon,
     SkipForwardIcon,
     Volume2Icon,
     VolumeXIcon,
 } from "lucide-react";
-import { ComponentType, useRef } from "react";
 import dynamic from "next/dynamic";
+import { type ComponentType, useEffect, useRef } from "react";
 import type ReactPlayer from "react-player";
-
-const Player = dynamic(() => import("react-player"), {
-    ssr: false,
-}) as unknown as ComponentType<ReactPlayerProps>;
+import { type ReactPlayerProps } from "react-player";
 
 import { Title } from "@/components/title";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { Slider } from "@/components/ui/slider";
 import { type Playlist, type Song } from "@/db/types";
+import { usePlayerStore } from "@/hooks/player";
 import { cn, formatDuration } from "@/lib/utils";
 
 import { AddSong } from "./add-song";
 import { CurrentSongs } from "./current-songs";
 import { PlaylistMenu } from "./playlist-menu";
-import { usePlayerStore } from "@/hooks/player";
-import { ReactPlayerProps } from "react-player";
+
+const Player = dynamic(() => import("react-player"), {
+    ssr: false,
+}) as unknown as ComponentType<ReactPlayerProps>;
 
 const VideoPlayer: React.FC<{ playlists: Playlist[]; songs: Song[] }> = ({
     playlists,
@@ -52,6 +53,17 @@ const VideoPlayer: React.FC<{ playlists: Playlist[]; songs: Song[] }> = ({
     const onPrev = usePlayerStore((store) => store.events.prev);
     const onMute = usePlayerStore((store) => store.events.mute);
     const onLoop = usePlayerStore((store) => store.events.loop);
+    const onShuffle = usePlayerStore((store) => store.events.shuffle);
+    const setNextAndPrev = usePlayerStore(
+        (store) => store.events.setNextAndPrev,
+    );
+
+    useEffect(() => {
+        setNextAndPrev({
+            next: state.index < state.data.length - 1,
+            prev: state.index > 0,
+        });
+    }, [state.data, state.index, setNextAndPrev]);
 
     return (
         <div className="flex h-full flex-col">
@@ -101,6 +113,19 @@ const VideoPlayer: React.FC<{ playlists: Playlist[]; songs: Song[] }> = ({
                         <Repeat2Icon
                             className={cn(
                                 state.loop
+                                    ? "text-destructive"
+                                    : "text-muted-foreground",
+                            )}
+                        />
+                    </Button>
+                    <Button
+                        size="icon"
+                        variant="ghost"
+                        onClick={onShuffle}
+                    >
+                        <ShuffleIcon
+                            className={cn(
+                                state.shuffle
                                     ? "text-destructive"
                                     : "text-muted-foreground",
                             )}
