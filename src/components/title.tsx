@@ -1,6 +1,6 @@
 "use client";
 
-import { forwardRef, useCallback } from "react";
+import { forwardRef } from "react";
 
 import { useMounted } from "@/hooks/mounted";
 import { cn } from "@/lib/utils";
@@ -20,10 +20,9 @@ const Title = forwardRef<HTMLHeadingElement, TitleProps>(
 
             if (str.length > maxLength) {
                 const truncated = title.slice(0, maxLength).trim();
-                return `${truncated  }...`;
-            } 
-                return title;
-            
+                return `${truncated}...`;
+            }
+            return title;
         };
 
         if (!mounted) {
