@@ -15,7 +15,6 @@ import {
     DropdownMenuTrigger,
 } from "../../components/ui/dropdown-menu";
 
-
 const BrowseMoreButton: React.FC<{
     song: Youtube.Schema$SearchResult;
 }> = ({ song }) => {
@@ -26,7 +25,7 @@ const BrowseMoreButton: React.FC<{
             await addSong({
                 title: song.snippet?.title ?? "",
                 channelTitle: song.snippet?.channelTitle ?? "",
-                url: `https://www.youtube.com/embed/${song.id?.videoId}`,
+                url: `https://www.youtube.com/embed/${song.id?.videoId ?? ""}`,
                 thumbnail: song.snippet?.thumbnails?.medium?.url ?? "",
             });
         });
