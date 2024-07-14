@@ -12,3 +12,16 @@ export const formatDuration = (value: number) => {
     const formattedSeconds = seconds.toString().padStart(2, "0");
     return `${formattedMinutes}:${formattedSeconds}`;
 };
+
+export const generateRandomNumber: (
+    last: number,
+    max: number,
+) => number = (last, max) => {
+    const random = Math.floor(Math.random() * max);
+
+    if (random === last) {
+        return generateRandomNumber(last, max);
+    }
+
+    return random;
+};
