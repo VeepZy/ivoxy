@@ -1,91 +1,20 @@
 "use client";
 
-import type { ComponentType, MouseEvent, RefObject } from "react";
+import { type ComponentType, type RefObject } from "react";
+import {type ReactPlayerProps} from "react-player";
 import type ReactPlayer from "react-player";
-import { type ReactPlayerProps } from "react-player";
+import { type OnProgressProps } from "react-player/base";
 import { create } from "zustand";
 
-import type { SongData } from "@/db/types";
+import { type PlaylistData, type SongData } from "@/db/types";
+import { generateRandomNumber } from "@/lib/utils";
 
-interface PlayerEvents {
-    play: () => void;
-    pause: () => void;
-    mute: () => void;
-    loop: () => void;
-    shuffle: () => void;
-    next: () => void;
-    prev: () => void;
-    ended: () => void;
-    volume: (event: number[]) => void;
-    duration: (event: number) => void;
-    progress: (event: {
-        playedSeconds: number;
-        loadedSeconds: number;
-    }) => void;
-    progressMouse: (
-        event: MouseEvent<HTMLDivElement>,
-        player: RefObject<ComponentType<ReactPlayerProps> & ReactPlayer>,
-    ) => void;
-    canNext: (boolean: boolean) => void;
-    canPrev: (boolean: boolean) => void;
-    setNextAndPrev: ({
-        next,
-        prev,
-    }: {
-        next: boolean;
-        prev: boolean;
-    }) => void;
-}
-
-interface PlayerState {
-    playing: boolean;
-    duration: number;
-    loop: boolean;
-    shuffle: boolean;
-    data: {
-        title: string;
-        channelTitle: string;
-        url: string;
-        thumbnail: string;
-    }[];
-    index: number;
-    volume: number;
-    muted: boolean;
-    played: number;
-    loaded: number;
-    canNext: boolean;
-    canPrev: boolean;
-}
-
-interface PlayerControl {
-    setUrl: (
-        songs: SongData[],
-        keep?: boolean,
-        playlist?: boolean,
-    ) => void;
-    setIndex: (index: number) => void;
-    reset: () => void;
-}
-
-interface PlayerStore {
-    state: PlayerState;
-    events: PlayerEvents;
-    control: PlayerControl;
-}
-
-const initialState: PlayerState = {
+const initialState = {
     playing: false,
     duration: 0,
     loop: false,
     shuffle: false,
-    data: [
-        {
-            title: "Eminem - Tobey",
-            channelTitle: "Eminem",
-            url: "https://www.youtube.com/embed/cbuRqNCy5k8",
-            thumbnail: "https://i.ytimg.com/vi/cbuRqNCy5k8/hqdefault.jpg",
-        },
-    ],
+    data: null,
     index: 0,
     volume: 0.5,
     muted: false,
@@ -95,175 +24,119 @@ const initialState: PlayerState = {
     canPrev: false,
 };
 
-const generateRandomNumber = (last: number, max: number) => {
-    let random = Math.floor(Math.random() * max);
+interface PlayerStore {
+    playing: boolean;
+    duration: number;
+    loop: boolean;
+    shuffle: boolean;
+    data: SongData[] | null;
+    index: number;
+    volume: number;
+    muted: boolean;
+    played: number;
+    loaded: number;
+    canNext: boolean;
+    canPrev: boolean;
+}
 
-    if (random === last) {
-        return generateRandomNumber(last, max);
-    }
+export const usePlayerStore = create<PlayerStore>(() => ({
+    ...initialState,
+}));
 
-    return random;
+export const reset = () => {
+    const { volume, loop, shuffle, muted } = usePlayerStore.getState();
+    usePlayerStore.setState(() => ({
+        ...initialState,
+        volume,
+        loop,
+        shuffle,
+        muted,
+    }));
 };
 
-export const usePlayerStore = create<PlayerStore>((set, get) => ({
-    state: initialState,
-    control: {
-        reset: () => {
-            set((store) => ({
-                state: {
-                    ...store.state,
-                    loaded: 0,
-                    played: 0,
-                    playing: false,
-                },
-            }));
-        },
-        setUrl: (
-            songs: SongData[],
-            keep?: boolean,
-            playlist?: boolean,
-        ) => {
-            get().control.reset();
+export const togglePlay = () =>
+    usePlayerStore.setState((state) => ({ playing: !state.playing }));
+export const toggleLoop = () =>
+    usePlayerStore.setState((state) => ({ loop: !state.loop }));
+export const toggleShuffle = () =>
+    usePlayerStore.setState((state) => ({ shuffle: !state.shuffle }));
+export const toggleMute = () =>
+    usePlayerStore.setState((state) => ({ muted: !state.muted }));
 
-            set((store) => ({
-                state: {
-                    ...store.state,
-                    data: keep ? [...store.state.data, ...songs] : songs,
-                    index: playlist ? 0 : songs.length - 1,
-                    playing: true,
-                },
-            }));
-        },
-        setIndex: (index: number) =>
-            set((store) => ({
-                state: {
-                    ...store.state,
-                    index,
-                },
-            })),
-    },
-    events: {
-        play: () =>
-            set((store) => ({ state: { ...store.state, playing: true } })),
-        pause: () =>
-            set((store) => ({
-                state: { ...store.state, playing: false },
-            })),
-        volume: (event: number[]) =>
-            set((store) => ({
-                state: { ...store.state, volume: event[0] },
-            })),
-        duration: (event: number) =>
-            set((store) => ({
-                state: { ...store.state, duration: event },
-            })),
-        mute: () =>
-            set((store) => ({
-                state: { ...store.state, muted: !store.state.muted },
-            })),
-        loop: () =>
-            set((store) => ({
-                state: { ...store.state, loop: !store.state.loop },
-            })),
-        shuffle: () =>
-            set((store) => ({
-                state: { ...store.state, shuffle: !store.state.shuffle },
-            })),
-        next: () => {
-            const state = get().state;
+export const setVolume = (volume: number[]) =>
+    usePlayerStore.setState(() => ({ volume: volume[0] }));
+export const setPrev = () => {
+    const { canPrev, index } = usePlayerStore.getState();
 
-            if (state.canNext) {
-                set((store) => ({
-                    state: {
-                        ...store.state,
-                        index: state.index + 1,
-                    },
-                }));
-            }
-        },
+    if (canPrev) {
+        usePlayerStore.setState(() => ({ index: index - 1 }));
+    }
+};
+export const setNext = () => {
+    const { canNext, index } = usePlayerStore.getState();
 
-        prev: () => {
-            const state = get().state;
+    if (canNext) {
+        usePlayerStore.setState(() => ({ index: index + 1 }));
+    }
+};
+export const setCanNext = (canNext: boolean) =>
+    usePlayerStore.setState(() => ({ canNext }));
+export const setCanPrev = (canPrev: boolean) =>
+    usePlayerStore.setState(() => ({ canPrev }));
+export const setIndex = (index: number) =>
+    usePlayerStore.setState(() => ({ index }));
+export const setSeek = (
+    event: React.MouseEvent<HTMLDivElement>,
+    player: RefObject<ComponentType<ReactPlayerProps> & ReactPlayer>,
+) => {
+    const { duration } = usePlayerStore.getState();
+    const x = event.clientX;
+    const width = event.currentTarget.clientWidth;
 
-            if (state.canPrev) {
-                set((store) => ({
-                    state: {
-                        ...store.state,
-                        index: state.index - 1,
-                    },
-                }));
-            }
-        },
-        ended: () => {
-            if (get().state.loop) {
-                set((store) => ({
-                    state: { ...store.state, playing: true },
-                }));
-                return;
-            }
+    const progress = Math.floor((x / width) * duration);
+    player.current?.seekTo(progress, "seconds");
+};
+export const setPlaylist = (playlist: PlaylistData) =>
+    usePlayerStore.setState(() => ({ data: playlist }));
+export const setSong = (song: SongData) => {
+    reset();
+    usePlayerStore.setState(() => ({ data: [song], playing: true }));
+};
 
-            if (get().state.shuffle && get().state.data.length > 1) {
-                const random = generateRandomNumber(
-                    get().state.index,
-                    get().state.data.length,
-                );
+export const onDuration = (duration: number) =>
+    usePlayerStore.setState(() => ({ duration }));
+export const onPlay = () =>
+    usePlayerStore.setState(() => ({ playing: true }));
+export const onPause = () =>
+    usePlayerStore.setState(() => ({ playing: false }));
+export const onProgress = (progress: OnProgressProps) =>
+    usePlayerStore.setState(() => ({
+        played: progress.playedSeconds,
+        loaded: progress.loadedSeconds,
+    }));
+export const onEnded = () => {
+    const { loop, shuffle, data, index } = usePlayerStore.getState();
 
-                set((store) => ({
-                    state: {
-                        ...store.state,
-                        index: random,
-                    },
-                }));
-                return;
-            }
+    if (loop) {
+        usePlayerStore.setState(() => ({ playing: true }));
+    } else if (shuffle && data && data.length > 1) {
+        const random = generateRandomNumber(index, data.length);
+        usePlayerStore.setState(() => ({ index: random }));
+    } else if (data && index + 1 < data.length) {
+        usePlayerStore.setState(() => ({ index: index + 1 }));
+    } else {
+        usePlayerStore.setState(() => ({ playing: false }));
+    }
+};
 
-            if (get().state.index + 1 < get().state.data.length) {
-                set((store) => ({
-                    state: {
-                        ...store.state,
-                        index: store.state.index + 1,
-                    },
-                }));
+export const updateNextAndPrev = (canNext: boolean, canPrev: boolean) =>
+    usePlayerStore.setState(() => ({ canNext, canPrev }));
 
-                return;
-            }
-
-            set((store) => ({
-                state: { ...store.state, playing: false },
-            }));
-        },
-        progress: ({ loadedSeconds, playedSeconds }) =>
-            set((store) => ({
-                state: {
-                    ...store.state,
-                    loaded: loadedSeconds,
-                    played: playedSeconds,
-                },
-            })),
-        progressMouse: (event, player) => {
-            const x = event.clientX;
-            const width = event.currentTarget.clientWidth;
-
-            const progress = Math.floor(
-                (x / width) * get().state.duration,
-            );
-            player.current?.seekTo(progress, "seconds");
-        },
-        canNext: (boolean) =>
-            set((store) => ({
-                state: { ...store.state, canNext: boolean },
-            })),
-        canPrev: (boolean) =>
-            set((store) => ({
-                state: { ...store.state, canPrev: boolean },
-            })),
-        setNextAndPrev: ({ next, prev }) =>
-            set((store) => ({
-                state: {
-                    ...store.state,
-                    canNext: next,
-                    canPrev: prev,
-                },
-            })),
-    },
-}));
+export const addSongToCurrent = (song: SongData) =>
+    usePlayerStore.setState((state) => ({
+        data: state.data ? [...state.data, song] : [song],
+    }));
+export const addPlaylistToCurrent = (playlist: PlaylistData) =>
+    usePlayerStore.setState((state) => ({
+        data: state.data ? [...state.data, ...playlist] : playlist,
+    }));
