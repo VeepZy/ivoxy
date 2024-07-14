@@ -20,9 +20,6 @@ export const getAuthenticatedClient = async () => {
     const credentials = {
         access_token: cookieStore.get("google_access_token")?.value,
         refresh_token: cookieStore.get("google_refresh_token")?.value,
-        expiry_date: Number(
-            cookieStore.get("google_expiry_date")?.value ?? 0,
-        ),
     };
 
     if (!credentials.access_token || !credentials.refresh_token) {
@@ -32,7 +29,6 @@ export const getAuthenticatedClient = async () => {
     client.setCredentials({
         access_token: credentials.access_token,
         refresh_token: credentials.refresh_token,
-        expiry_date: credentials.expiry_date,
     });
 
     return client;
