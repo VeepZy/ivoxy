@@ -7,7 +7,6 @@ import { Title } from "@/components/title";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { getPlaylists, getSongs } from "@/db/queries";
 
-
 const SongsRoute: NextPage = async () => {
     const [playlists, songs] = await Promise.all([
         getPlaylists(),
@@ -15,7 +14,7 @@ const SongsRoute: NextPage = async () => {
     ]);
 
     return (
-        <ScrollArea className="max-h-[calc(100vh-100px)] overflow-y-auto p-6">
+        <ScrollArea className="max-h-full overflow-y-auto p-6">
             <div className="flex w-full flex-row flex-wrap gap-8">
                 {songs.map((item) => (
                     <div
