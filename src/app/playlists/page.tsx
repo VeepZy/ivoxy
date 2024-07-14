@@ -11,7 +11,7 @@ const PlaylistsRoute: NextPage = async () => {
     const playlists = await getPlaylists();
 
     return (
-        <ScrollArea className="max-h-[calc(100vh-100px)] overflow-y-auto p-6">
+        <ScrollArea className="max-h-full overflow-y-auto p-6">
             <div className="flex w-full flex-row flex-wrap gap-8">
                 {playlists.map((playlist) => (
                     <div key={playlist.id} className="w-[320px] space-y-3">
