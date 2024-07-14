@@ -28,9 +28,6 @@ export const GET = async (req: NextApiRequest) => {
     cookieStore.set("google_refresh_token", refreshToken, {
         expires: oneWeek,
     });
-    cookieStore.set("google_expiry_date", oneWeek.toString(), {
-        expires: Date.now() + 7 * 24 * 60 * 60 * 1000,
-    });
 
     client.setCredentials({
         access_token: accessToken,
