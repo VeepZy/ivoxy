@@ -13,21 +13,29 @@ const AddSong: React.FC<{ songs: Song[] }> = ({ songs }) => {
     const [existing, setExisting] = useState<boolean>(false);
     const [pending, startTransition] = useTransition();
 
-    const state = usePlayerStore((store) => store.state);
+    const data = usePlayerStore((store) => store.data);
+    const index = usePlayerStore((store) => store.index);
 
     useEffect(() => {
-        if (filterSongs(songs, state.data[state.index].url)) {
+        if (!data) {
             setExisting(false);
-        } else {
-            setExisting(true);
+            return;
         }
-    }, [state.data, state.index, songs]);
+
+        if (filterSongs(songs, data[index].url)) {
+            setExisting(true);
+        } else {
+            setExisting(false);
+        }
+    }, [data, index, songs]);
 
     const onSubmit = () => {
-        startTransition(async () => {
-            await addSong(state.data[state.index]);
-            setExisting(true);
-        });
+        if (data) {
+            startTransition(async () => {
+                await addSong(data[index]);
+                setExisting(true);
+            });
+        }
     };
 
     return (
