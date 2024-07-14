@@ -14,6 +14,7 @@ import {
     DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
 
+import { AddToCurrentSongs } from "./add-to-current";
 import { AddToPlaylist } from "./playlist-add";
 import { SongRemoveButton } from "./remove";
 
@@ -30,7 +31,7 @@ const SongMoreButton: React.FC<{ playlists: Playlist[]; song: Song }> = ({
                 <DropdownMenuLabel>Settings</DropdownMenuLabel>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem>Profile</DropdownMenuItem>
-                <DropdownMenuItem>Billing</DropdownMenuItem>
+                <AddToCurrentSongs song={song} />
                 <DropdownMenuSub>
                     <DropdownMenuSubTrigger>
                         Add To Playlist
