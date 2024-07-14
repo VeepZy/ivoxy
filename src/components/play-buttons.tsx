@@ -4,7 +4,12 @@ import { PlayIcon } from "lucide-react";
 import { forwardRef } from "react";
 
 import type { PlaylistData, SongData } from "@/db/types";
-import { usePlayerStore } from "@/hooks/player";
+import {
+    addPlaylistToCurrent,
+    addSongToCurrent,
+    setPlaylist,
+    setSong,
+} from "@/hooks/player";
 import { cn } from "@/lib/utils";
 
 import { Button } from "./ui/button";
@@ -17,7 +22,13 @@ interface PlaySongButtonProps
 
 const PlaySongButton = forwardRef<HTMLButtonElement, PlaySongButtonProps>(
     ({ className, song, keep = false }, ref) => {
-        const setUrl = usePlayerStore((store) => store.control.setUrl);
+        const onSubmit = () => {
+            if (keep) {
+                addSongToCurrent(song);
+            } else {
+                setSong(song);
+            }
+        };
 
         return (
             <Button
@@ -25,7 +36,7 @@ const PlaySongButton = forwardRef<HTMLButtonElement, PlaySongButtonProps>(
                 className={cn("group-hover:bg-primary", className)}
                 size="icon"
                 variant="ghost"
-                onClick={() => setUrl([song], keep)}
+                onClick={onSubmit}
             >
                 <span className="sr-only">Play</span>
                 <PlayIcon className="h-5 w-5" />
@@ -46,7 +57,13 @@ const PlayPlaylistButton = forwardRef<
     HTMLButtonElement,
     PlayPlaylistButtonProps
 >(({ className, playlist, keep = false }, ref) => {
-    const setUrl = usePlayerStore((store) => store.control.setUrl);
+    const onSubmit = () => {
+        if (keep) {
+            addPlaylistToCurrent(playlist);
+        } else {
+            setPlaylist(playlist);
+        }
+    };
 
     return (
         <Button
@@ -54,7 +71,7 @@ const PlayPlaylistButton = forwardRef<
             className={cn("group-hover:bg-primary", className)}
             size="icon"
             variant="ghost"
-            onClick={() => setUrl(playlist, keep, true)}
+            onClick={onSubmit}
         >
             <span className="sr-only">Play</span>
             <PlayIcon className="h-5 w-5" />
