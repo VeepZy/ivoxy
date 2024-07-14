@@ -11,6 +11,7 @@ import {
     VolumeXIcon,
 } from "lucide-react";
 import dynamic from "next/dynamic";
+import Image from "next/image";
 import { type ComponentType, useEffect, useRef } from "react";
 import type ReactPlayer from "react-player";
 import { type ReactPlayerProps } from "react-player";
@@ -20,7 +21,23 @@ import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { Slider } from "@/components/ui/slider";
 import { type Playlist, type Song } from "@/db/types";
-import { usePlayerStore } from "@/hooks/player";
+import {
+    onDuration,
+    onEnded,
+    onPause,
+    onPlay,
+    onProgress,
+    setNext,
+    setPrev,
+    setSeek,
+    setVolume,
+    toggleLoop,
+    toggleMute,
+    togglePlay,
+    toggleShuffle,
+    updateNextAndPrev,
+    usePlayerStore,
+} from "@/hooks/player";
 import { cn, formatDuration } from "@/lib/utils";
 
 import { AddSong } from "./add-song";
@@ -39,80 +56,88 @@ const VideoPlayer: React.FC<{ playlists: Playlist[]; songs: Song[] }> = ({
         null,
     );
 
-    const state = usePlayerStore((store) => store.state);
-    const onPlay = usePlayerStore((store) => store.events.play);
-    const onPause = usePlayerStore((store) => store.events.pause);
-    const onEnded = usePlayerStore((store) => store.events.ended);
-    const onVolume = usePlayerStore((store) => store.events.volume);
-    const onDuration = usePlayerStore((store) => store.events.duration);
-    const onProgress = usePlayerStore((store) => store.events.progress);
-    const onProgressMouse = usePlayerStore(
-        (store) => store.events.progressMouse,
-    );
-    const onNext = usePlayerStore((store) => store.events.next);
-    const onPrev = usePlayerStore((store) => store.events.prev);
-    const onMute = usePlayerStore((store) => store.events.mute);
-    const onLoop = usePlayerStore((store) => store.events.loop);
-    const onShuffle = usePlayerStore((store) => store.events.shuffle);
-    const setNextAndPrev = usePlayerStore(
-        (store) => store.events.setNextAndPrev,
-    );
+    const playing = usePlayerStore((store) => store.playing);
+    const duration = usePlayerStore((store) => store.duration);
+    const loop = usePlayerStore((store) => store.loop);
+    const shuffle = usePlayerStore((store) => store.shuffle);
+    const data = usePlayerStore((store) => store.data);
+    const index = usePlayerStore((store) => store.index);
+    const volume = usePlayerStore((store) => store.volume);
+    const muted = usePlayerStore((store) => store.muted);
+    const played = usePlayerStore((store) => store.played);
+    const loaded = usePlayerStore((store) => store.loaded);
+    const canNext = usePlayerStore((store) => store.canNext);
+    const canPrev = usePlayerStore((store) => store.canPrev);
 
     useEffect(() => {
-        setNextAndPrev({
-            next: state.index < state.data.length - 1,
-            prev: state.index > 0,
-        });
-    }, [state.data, state.index, setNextAndPrev]);
+        if (data) {
+            updateNextAndPrev(index < data.length - 1, index > 0);
+        }
+    }, [data, index]);
 
     return (
         <div className="flex h-full flex-col">
             <Progress
                 className="h-2 rounded-none border-none"
-                max={state.duration}
+                max={duration}
                 segments={[
-                    { value: state.played },
-                    { value: state.loaded, load: true },
+                    { value: played },
+                    { value: loaded, load: true },
                 ]}
-                onClick={(event) => onProgressMouse(event, player)}
+                onClick={(event) => setSeek(event, player)}
             />
             <div className="flex w-full flex-1 items-center border-t bg-card px-4 shadow-lg">
-                <div className="space-y-1 text-sm">
-                    <Title title={state.data[state.index].title} />
-                    <p className="text-xs text-muted-foreground">
-                        {state.data[state.index].channelTitle}
-                    </p>
-                </div>
+                {data ? (
+                    <>
+                        <div className="relative mr-2 h-10 w-10 overflow-hidden rounded-md border border-primary/50  shadow-lg dark:border-primary/30">
+                            <Image
+                                alt={data[index].title}
+                                className="aspect-square object-cover transition-all hover:scale-105"
+                                height={120}
+                                src={data[index].thumbnail}
+                                width={320}
+                            />
+                        </div>
+                        <div className="space-y-1 text-sm">
+                            <Title title={data[index].title} />
+                            <p className="text-xs text-muted-foreground">
+                                {data[index].channelTitle}
+                            </p>
+                        </div>{" "}
+                    </>
+                ) : null}
                 <div className="flex flex-1 items-center justify-center gap-4">
                     <Button
-                        disabled={!state.canPrev}
+                        disabled={!canPrev}
                         size="icon"
                         variant="ghost"
-                        onClick={onPrev}
+                        onClick={setPrev}
                     >
                         <SkipBackIcon className="h-4 w-4" />
                     </Button>
                     <Button
                         size="icon"
                         variant="ghost"
-                        onClick={() =>
-                            state.playing ? onPause() : onPlay()
-                        }
+                        onClick={togglePlay}
                     >
-                        {state.playing ? <PauseIcon /> : <PlayIcon />}
+                        {playing ? <PauseIcon /> : <PlayIcon />}
                     </Button>
                     <Button
-                        disabled={!state.canNext}
+                        disabled={!canNext}
                         size="icon"
                         variant="ghost"
-                        onClick={onNext}
+                        onClick={setNext}
                     >
                         <SkipForwardIcon className="h-4 w-4" />
                     </Button>
-                    <Button size="icon" variant="ghost" onClick={onLoop}>
+                    <Button
+                        size="icon"
+                        variant="ghost"
+                        onClick={toggleLoop}
+                    >
                         <Repeat2Icon
                             className={cn(
-                                state.loop
+                                loop
                                     ? "text-destructive"
                                     : "text-muted-foreground",
                             )}
@@ -121,11 +146,11 @@ const VideoPlayer: React.FC<{ playlists: Playlist[]; songs: Song[] }> = ({
                     <Button
                         size="icon"
                         variant="ghost"
-                        onClick={onShuffle}
+                        onClick={toggleShuffle}
                     >
                         <ShuffleIcon
                             className={cn(
-                                state.shuffle
+                                shuffle
                                     ? "text-destructive"
                                     : "text-muted-foreground",
                             )}
@@ -133,14 +158,18 @@ const VideoPlayer: React.FC<{ playlists: Playlist[]; songs: Song[] }> = ({
                     </Button>
                     <Slider
                         className="max-w-[150px]"
-                        defaultValue={[state.volume]}
+                        defaultValue={[volume]}
                         max={1}
                         min={0}
                         step={0.05}
-                        onValueChange={onVolume}
+                        onValueChange={setVolume}
                     />
-                    <Button size="icon" variant="ghost" onClick={onMute}>
-                        {state.muted ? (
+                    <Button
+                        size="icon"
+                        variant="ghost"
+                        onClick={toggleMute}
+                    >
+                        {muted ? (
                             <VolumeXIcon className="text-muted-foreground/40" />
                         ) : (
                             <Volume2Icon />
@@ -148,9 +177,9 @@ const VideoPlayer: React.FC<{ playlists: Playlist[]; songs: Song[] }> = ({
                     </Button>
 
                     <div className="flex gap-1">
-                        <p>{formatDuration(state.played)}</p>
+                        <p>{formatDuration(played)}</p>
                         <p>:</p>
-                        <p>{formatDuration(state.duration)}</p>
+                        <p>{formatDuration(duration)}</p>
                     </div>
                 </div>
 
@@ -164,11 +193,11 @@ const VideoPlayer: React.FC<{ playlists: Playlist[]; songs: Song[] }> = ({
                     <Player
                         ref={player}
                         height="100%"
-                        loop={state.loop}
-                        muted={state.muted}
-                        playing={state.playing}
-                        url={state.data[state.index].url}
-                        volume={state.volume}
+                        loop={loop}
+                        muted={muted}
+                        playing={playing}
+                        url={data?.[index].url ?? undefined}
+                        volume={volume}
                         width="100%"
                         onDuration={onDuration}
                         onEnded={onEnded}
