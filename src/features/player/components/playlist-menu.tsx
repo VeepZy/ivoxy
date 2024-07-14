@@ -36,7 +36,7 @@ const PlaylistMenu: React.FC<{
     const [pending, startTransition] = useTransition();
     const [open, setOpen] = useState<boolean>(false);
 
-    const { state, current, handleUpdate, selected, setSelected } =
+    const { data, index, current, handleUpdate, selected, setSelected } =
         usePlaylists(playlists);
 
     const form = useForm({
@@ -47,23 +47,23 @@ const PlaylistMenu: React.FC<{
         startTransition(async () => {
             const name = form.getValues("name");
 
-            const data = await createPlaylist(name);
+            const playlist = await createPlaylist(name);
             setSelected(name);
-            handleUpdate(data);
+            handleUpdate(playlist);
         });
 
     const update = () =>
         startTransition(async () => {
             const playlist = current.find((p) => p.name === selected);
 
-            if (!playlist) {
+            if (!playlist || !data) {
                 // HANDLE ERROR
                 return;
             }
 
             await updatePlaylist({
                 ...playlist,
-                data: [...playlist.data, { ...state.data[state.index] }],
+                data: [...playlist.data, { ...data[index] }],
             });
 
             handleUpdate(current.filter((p) => p.name !== selected));
