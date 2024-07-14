@@ -1,5 +1,7 @@
 "use server";
 
+import { revalidatePath } from "next/cache";
+
 import { createServerDBClient } from "@/db";
 import { getUser } from "@/db/queries";
 import { type Playlist } from "@/db/types";
@@ -24,4 +26,6 @@ export const updatePlaylist = async (playlist: Playlist) => {
     if (error) {
         throw new Error(error.message);
     }
+
+    revalidatePath("/");
 };
