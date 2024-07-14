@@ -7,18 +7,18 @@ import { usePlayerStore } from "@/hooks/player";
 
 import { filter } from "../util/filter";
 
-
 const usePlaylists = (playlists: Playlist[]) => {
     const [current, setCurrent] = useState<Playlist[]>(playlists);
     const [selected, setSelected] = useState<string>("");
 
-    const state = usePlayerStore((store) => store.state);
+    const data = usePlayerStore((store) => store.data);
+    const index = usePlayerStore((store) => store.index);
 
     const handleUpdate = useCallback(
         (playlists: Playlist[]) => {
             const filtered =
                 playlists.length > 0
-                    ? filter(playlists, state.data[state.index].url)
+                    ? filter(playlists, data?.[index].url ?? "")
                     : playlists;
 
             setCurrent(filtered);
@@ -27,13 +27,13 @@ const usePlaylists = (playlists: Playlist[]) => {
                 setSelected(filtered[0].name);
             }
         },
-        [state.data, state.index, setCurrent],
+        [data, index, setCurrent],
     );
 
     useEffect(() => {
         const filtered =
             playlists.length > 0
-                ? filter(playlists, state.data[state.index].url)
+                ? filter(playlists, data?.[index].url ?? "")
                 : playlists;
 
         setCurrent(filtered);
@@ -41,9 +41,9 @@ const usePlaylists = (playlists: Playlist[]) => {
         if (filtered.length > 0) {
             setSelected(filtered[0].name);
         }
-    }, [playlists, state.data, state.index, setCurrent]);
+    }, [playlists, data, index, setCurrent]);
 
-    return { state, current, selected, handleUpdate, setSelected };
+    return { data, index, current, selected, handleUpdate, setSelected };
 };
 
 export { usePlaylists };
