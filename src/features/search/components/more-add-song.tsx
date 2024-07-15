@@ -1,8 +1,8 @@
 "use client";
 
 import { DropdownMenuItem } from "@/components/ui/dropdown-menu";
+import { addSong } from "@/db/actions";
 import { Song, SongData } from "@/db/types";
-import { addSong } from "@/features/player/api/add-song";
 import { useTransition } from "react";
 
 const MoreAddSong: React.FC<{ song: SongData; songs: Song[] }> = ({
