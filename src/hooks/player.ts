@@ -1,7 +1,7 @@
 "use client";
 
 import { type ComponentType, type RefObject } from "react";
-import {type ReactPlayerProps} from "react-player";
+import { type ReactPlayerProps } from "react-player";
 import type ReactPlayer from "react-player";
 import { type OnProgressProps } from "react-player/base";
 import { create } from "zustand";
@@ -65,6 +65,8 @@ export const toggleMute = () =>
 
 export const setVolume = (volume: number[]) =>
     usePlayerStore.setState(() => ({ volume: volume[0] }));
+export const setDuration = (duration: number) =>
+    usePlayerStore.setState(() => ({ duration }));
 export const setPrev = () => {
     const { canPrev, index } = usePlayerStore.getState();
 
@@ -96,15 +98,20 @@ export const setSeek = (
     const progress = Math.floor((x / width) * duration);
     player.current?.seekTo(progress, "seconds");
 };
-export const setPlaylist = (playlist: PlaylistData) =>
+export const setPlaylist = (playlist: PlaylistData) => {
+    reset();
     usePlayerStore.setState(() => ({ data: playlist }));
+};
 export const setSong = (song: SongData) => {
     reset();
     usePlayerStore.setState(() => ({ data: [song], playing: true }));
 };
 
-export const onDuration = (duration: number) =>
+export const onDuration = (duration: number) => {
+    console.log("onDuration", duration);
     usePlayerStore.setState(() => ({ duration }));
+};
+
 export const onPlay = () =>
     usePlayerStore.setState(() => ({ playing: true }));
 export const onPause = () =>
@@ -127,6 +134,13 @@ export const onEnded = () => {
     } else {
         usePlayerStore.setState(() => ({ playing: false }));
     }
+};
+export const onBufferEnd = (
+    player: RefObject<ComponentType<ReactPlayerProps> & ReactPlayer>,
+) => {
+    const duration = Math.round(player.current?.getDuration() ?? 0);
+    console.log("onBufferEnd", duration);
+    usePlayerStore.setState(() => ({ duration }));
 };
 
 export const updateNextAndPrev = (canNext: boolean, canPrev: boolean) =>
