@@ -6,8 +6,8 @@ import { Button } from "@/components/ui/button";
 import { type Song } from "@/db/types";
 import { usePlayerStore } from "@/hooks/player";
 
-import { addSong } from "../api/add-song";
-import { filterSongs } from "../util/filter";
+import { isSavedSong } from "../util/filter";
+import { addSong } from "@/db/actions";
 
 const AddSong: React.FC<{ songs: Song[] }> = ({ songs }) => {
     const [existing, setExisting] = useState<boolean>(false);
@@ -22,25 +22,25 @@ const AddSong: React.FC<{ songs: Song[] }> = ({ songs }) => {
             return;
         }
 
-        if (filterSongs(songs, data[index].url)) {
+        if (isSavedSong(songs, data[index].url)) {
             setExisting(true);
-        } else {
-            setExisting(false);
+            return;
         }
+
+        setExisting(false);
     }, [data, index, songs]);
 
     const onSubmit = () => {
         if (data) {
             startTransition(async () => {
                 await addSong(data[index]);
-                setExisting(true);
             });
         }
     };
 
     return (
         <Button
-            disabled={pending || existing}
+            disabled={pending || existing || !data}
             variant="outline"
             onClick={onSubmit}
         >
