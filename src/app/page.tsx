@@ -9,6 +9,8 @@ import { Title } from "@/components/title";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { getPlaylists, getSongs } from "@/db/queries";
 import { type Playlist, type Song } from "@/db/types";
+import { SongMoreButton } from "@/components/song-more/more";
+import { PlaylistMoreButton } from "@/components/playlist-more/more";
 
 type CombinedItem = Song | Playlist;
 
@@ -58,7 +60,10 @@ const HomeRoute: NextPage = async () => {
                                         {item.data.channelTitle}
                                     </p>
                                 </div>
-                                {/* <BrowseMoreButton song={item} /> */}
+                                <SongMoreButton
+                                    song={item}
+                                    playlists={playlists}
+                                />
                             </div>
                         </div>
                     ) : (
@@ -89,7 +94,10 @@ const HomeRoute: NextPage = async () => {
                                         {item.data.length} songs
                                     </p>
                                 </div>
-                                {/* <BrowseMoreButton song={item} /> */}
+                                <PlaylistMoreButton
+                                    playlist={item}
+                                    playlists={playlists}
+                                />
                             </div>
                         </div>
                     ),
