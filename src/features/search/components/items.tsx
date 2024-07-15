@@ -1,65 +1,57 @@
 "use client";
 
-import { type youtube_v3 as Youtube } from "googleapis";
 import { LoaderCircleIcon } from "lucide-react";
 import Image from "next/image";
 
-import { BrowseMoreButton } from "@/app/browse/more";
 import { PlaySongButton } from "@/components/play-buttons";
 import { Title } from "@/components/title";
 import { Button } from "@/components/ui/button";
+import { Playlist, Song, SongData } from "@/db/types";
+import { BrowseMoreButton } from "./more";
 
 const Items: React.FC<{
-    items: Youtube.Schema$SearchResult[];
+    items: SongData[] | null;
+    playlists: Playlist[];
+    songs: Song[];
     pending: boolean;
     more: () => void;
-}> = ({ items, more, pending }) => {
+}> = ({ items, playlists, songs, more, pending }) => {
     return (
         <>
             <div className="flex w-full flex-row flex-wrap gap-8">
-                {items.map((item) => (
-                    <div key={item.etag} className="w-[320px] space-y-3">
+                {items?.map((item) => (
+                    <div key={item.url} className="w-[320px] space-y-3">
                         <div className="group relative overflow-hidden rounded-md border border-primary/50 shadow-lg">
                             <Image
-                                alt={item.snippet?.title ?? ""}
+                                alt={item.title}
                                 className="aspect-square h-[180px] w-[320px] object-cover transition-all hover:scale-105"
                                 height={180}
                                 width={320}
-                                src={
-                                    item.snippet?.thumbnails?.medium
-                                        ?.url ?? ""
-                                }
+                                src={item.thumbnail}
                             />
 
                             <div className="absolute inset-0 flex items-center justify-center rounded-lg bg-black/50 opacity-0 transition-opacity group-hover:cursor-pointer group-hover:opacity-100">
-                                <PlaySongButton
-                                    song={{
-                                        title: item.snippet?.title ?? "",
-                                        channelTitle:
-                                            item.snippet?.channelTitle ??
-                                            "",
-                                        url: `https://www.youtube.com/embed/${item.id?.videoId ?? ""}`,
-                                        thumbnail:
-                                            item.snippet?.thumbnails
-                                                ?.medium?.url ?? "",
-                                    }}
-                                />
+                                <PlaySongButton song={item} />
                             </div>
                         </div>
 
                         <div className="flex items-center">
                             <div className="flex-1 space-y-1 text-sm">
-                                <Title title={item.snippet?.title ?? ""} />
+                                <Title title={item.title} />
                                 <p className="text-xs text-muted-foreground">
-                                    {item.snippet?.channelTitle ?? ""}
+                                    {item.channelTitle}
                                 </p>
                             </div>
-                            <BrowseMoreButton song={item} />
+                            <BrowseMoreButton
+                                playlists={playlists}
+                                song={item}
+                                songs={songs}
+                            />
                         </div>
                     </div>
                 ))}
             </div>
-            {items.length > 0 && (
+            {items && items.length > 0 && (
                 <div className="flex justify-center">
                     <Button disabled={pending} onClick={more}>
                         {pending ? (
