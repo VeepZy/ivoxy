@@ -25,13 +25,17 @@ import { Input } from "@/components/ui/input";
 import { searchMore, searchQuery } from "../api/search";
 
 import { Items } from "./items";
+import { Playlist, Song, SongData } from "@/db/types";
 
-const Search: React.FC = () => {
+const Search: React.FC<{ playlists: Playlist[]; songs: Song[] }> = ({
+    playlists,
+    songs,
+}) => {
     const searchParams = useSearchParams();
     const pathname = usePathname();
 
     const [pending, startTransition] = useTransition();
-    const [items, setItems] = useState<Youtube.Schema$SearchResult[]>([]);
+    const [items, setItems] = useState<SongData[] | null>(null);
     const [nextPageToken, setNextPageToken] = useState<string | null>(
         null,
     );
@@ -57,8 +61,12 @@ const Search: React.FC = () => {
             startTransition(async () => {
                 const response = await searchQuery(query);
 
-                setItems(response.items ?? []);
-                setNextPageToken(response.pageToken ?? null);
+                if (!response) {
+                    return;
+                }
+
+                setItems(response.items);
+                setNextPageToken(response?.pageToken ?? null);
             });
         },
         [startTransition],
@@ -70,9 +78,13 @@ const Search: React.FC = () => {
         startTransition(async () => {
             const response = await searchMore(query, nextPageToken ?? "");
 
+            if (!response) {
+                return;
+            }
+
             setItems((prevState) => [
-                ...prevState,
-                ...(response.items ?? []),
+                ...(prevState ?? []),
+                ...response.items,
             ]);
             setNextPageToken(response.pageToken ?? null);
         });
@@ -132,7 +144,13 @@ const Search: React.FC = () => {
                 </form>
             </Form>
 
-            <Items items={items} more={handleMore} pending={pending} />
+            <Items
+                items={items}
+                more={handleMore}
+                pending={pending}
+                playlists={playlists}
+                songs={songs}
+            />
         </div>
     );
 };
