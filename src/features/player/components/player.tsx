@@ -22,11 +22,13 @@ import { Progress } from "@/components/ui/progress";
 import { Slider } from "@/components/ui/slider";
 import { type Playlist, type Song } from "@/db/types";
 import {
+    onBufferEnd,
     onDuration,
     onEnded,
     onPause,
     onPlay,
     onProgress,
+    setDuration,
     setNext,
     setPrev,
     setSeek,
@@ -199,10 +201,10 @@ const VideoPlayer: React.FC<{ playlists: Playlist[]; songs: Song[] }> = ({
                         url={data?.[index].url ?? undefined}
                         volume={volume}
                         width="100%"
-                        onDuration={onDuration}
                         onEnded={onEnded}
                         onPause={onPause}
                         onPlay={onPlay}
+                        onBufferEnd={() => onBufferEnd(player)}
                         onProgress={onProgress}
                     />
                 </div>
