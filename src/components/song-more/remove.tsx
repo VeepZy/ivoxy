@@ -33,13 +33,14 @@ const SongRemoveButton: React.FC<{ song: Song }> = ({ song }) => {
         if (fill === 100) {
             startTransition(async () => {
                 await removeSong(song);
+                handleMouseUp();
             });
         }
     }, [fill, song]);
 
     useEffect(() => {
-        return () => cleanUpTimeout();
-    }, [cleanUpTimeout]);
+        return () => handleMouseUp();
+    }, [handleMouseUp]);
 
     return (
         <DropdownMenuItem

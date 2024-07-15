@@ -35,13 +35,14 @@ const PlaylistRemoveButton: React.FC<{ playlist: Playlist }> = ({
         if (fill === 100) {
             startTransition(async () => {
                 await removePlaylist(playlist);
+                handleMouseUp();
             });
         }
     }, [fill, playlist]);
 
     useEffect(() => {
-        return () => cleanUpTimeout();
-    }, [cleanUpTimeout]);
+        return () => handleMouseUp();
+    }, [handleMouseUp]);
 
     return (
         <DropdownMenuItem
