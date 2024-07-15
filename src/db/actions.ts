@@ -3,7 +3,7 @@
 import { revalidatePath } from "next/cache";
 
 import { getUser } from "./queries";
-import { type Playlist, type Song } from "./types";
+import { SongData, type Playlist, type Song } from "./types";
 
 import { createServerDBClient } from ".";
 
@@ -48,6 +48,27 @@ export const renamePlaylist = async (playlist: Playlist, name: string) => {
 
     if (error) {
         throw new Error(`Unable to rename playlist: ${error.message}`);
+    }
+
+    revalidatePath("/", "layout");
+};
+
+export const addSong = async (song: SongData) => {
+    const db = createServerDBClient();
+
+    const user = await getUser();
+
+    if (!user) {
+        throw new Error("User not found");
+    }
+
+    const { error } = await db.from("songs").insert({
+        data: song,
+        user: user.id,
+    });
+
+    if (error) {
+        throw new Error(`Unable to add song: ${error.message}`);
     }
 
     revalidatePath("/", "layout");
