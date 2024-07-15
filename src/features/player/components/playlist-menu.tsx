@@ -72,7 +72,7 @@ const PlaylistMenu: React.FC<{
     return (
         <Popover open={open} onOpenChange={setOpen}>
             <PopoverTrigger asChild>
-                <Button variant="outline">
+                <Button variant="outline" disabled={!data}>
                     <ListPlusIcon className="h-4 w-4" />
                 </Button>
             </PopoverTrigger>
