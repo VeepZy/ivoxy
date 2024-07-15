@@ -19,8 +19,11 @@ const Items: React.FC<{
     return (
         <>
             <div className="flex w-full flex-row flex-wrap gap-8">
-                {items?.map((item) => (
-                    <div key={item.url} className="w-[320px] space-y-3">
+                {items?.map((item, index) => (
+                    <div
+                        key={`${item.title}-${index}`}
+                        className="w-[320px] space-y-3"
+                    >
                         <div className="group relative overflow-hidden rounded-md border border-primary/50 shadow-lg">
                             <Image
                                 alt={item.title}
