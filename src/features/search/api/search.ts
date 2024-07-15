@@ -4,6 +4,7 @@ import { google } from "googleapis";
 import { cache } from "react";
 
 import { getAuthenticatedClient } from "@/lib/auth";
+import { mapToItem } from "../entities/item";
 
 export const searchQuery = cache(async (query: string) => {
     const client = await getAuthenticatedClient();
@@ -21,8 +22,14 @@ export const searchQuery = cache(async (query: string) => {
         maxResults: 40,
     });
 
+    if (!response.data.items) {
+        return null;
+    }
+
+    const items = response.data.items.map(mapToItem);
+
     return {
-        items: response.data.items,
+        items,
         pageToken: response.data.nextPageToken,
     };
 });
@@ -45,8 +52,14 @@ export const searchMore = cache(
             pageToken,
         });
 
+        if (!response.data.items) {
+            return null;
+        }
+
+        const items = response.data.items.map(mapToItem);
+
         return {
-            items: response.data.items,
+            items,
             pageToken: response.data.nextPageToken,
         };
     },
