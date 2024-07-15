@@ -9,3 +9,7 @@ export const filter = (playlists: Playlist[], current: string) => {
 export const filterSongs = (songs: Song[], current: string) => {
     return songs.some((p) => p.data.url !== current);
 };
+
+export const isSavedSong = (songs: Song[], current: string) => {
+    return songs.some((p) => p.data.url === current);
+};
