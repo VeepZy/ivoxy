@@ -6,6 +6,25 @@ import { getUser } from "./queries";
 import { SongData, type Playlist, type Song } from "./types";
 
 import { createServerDBClient } from ".";
+import { redirect } from "next/navigation";
+
+export const authSignIn = async () => {
+    const db = createServerDBClient();
+    const { data, error } = await db.auth.signInWithOAuth({
+        provider: "github",
+        options: {
+            redirectTo: "http://localhost:3000/api/auth/callback",
+        },
+    });
+
+    if (error) {
+        throw new Error(error.message);
+    }
+
+    if (data.url) {
+        redirect(data.url);
+    }
+};
 
 export const removePlaylist = async (playlist: Playlist) => {
     const db = createServerDBClient();
@@ -88,4 +107,49 @@ export const removeSong = async (song: Song) => {
     }
 
     revalidatePath("/songs");
+};
+
+export const updatePlaylist = async (playlist: Playlist) => {
+    const db = createServerDBClient();
+    const user = await getUser();
+
+    if (!user) {
+        throw new Error("User not found");
+    }
+
+    const { error } = await db
+        .from("playlists")
+        .update({
+            name: playlist.name,
+            data: playlist.data,
+        })
+        .eq("user", user.id)
+        .eq("id", playlist.id);
+
+    if (error) {
+        throw new Error(error.message);
+    }
+
+    revalidatePath("/");
+};
+
+export const createPlaylist = async (name: string) => {
+    const db = createServerDBClient();
+    const user = await getUser();
+
+    if (!user) {
+        throw new Error("User not found");
+    }
+
+    const { error } = await db.from("playlists").insert({
+        name,
+        data: [],
+        user: user.id,
+    });
+
+    if (error) {
+        throw new Error(error.message);
+    }
+
+    revalidatePath("/");
 };
