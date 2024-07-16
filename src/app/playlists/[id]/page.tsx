@@ -1,22 +1,25 @@
-import { PlayIcon } from "lucide-react";
+"use client";
+
 import { type NextPage } from "next";
-import Image from "next/image";
 
-import {
-    PlayPlaylistButton,
-    PlaySongButton,
-} from "@/components/play-buttons";
-import { Title } from "@/components/title";
-import { getPlaylist } from "@/db/queries";
+import { PlayPlaylistButton } from "@/components/app-playlists/playlist-play";
+import { PlaylistCompact } from "@/components/app-playlists/playlist-compact";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import { useDataStore } from "@/hooks/use-data";
 
-const PlaylistRoute: NextPage<{ params: { id: string } }> = async ({
+const PlaylistRoute: NextPage<{ params: { id: string } }> = ({
     params,
 }) => {
-    const playlist = await getPlaylist(params.id);
+    const { playlists } = useDataStore();
+    const playlist = playlists.find((p) => p.id === Number(params.id));
+
+    if (!playlist) {
+        return <div>Playlist not found</div>;
+    }
 
     return (
-        <div className="mx-auto w-full px-4 py-8 md:px-6 md:py-12">
-            <div className="mb-12 flex items-center justify-between">
+        <div className="flex flex-col gap-4 py-6">
+            <div className="flex items-center justify-between px-6">
                 <div className="space-y-1">
                     <h2 className="text-2xl font-bold tracking-tight md:text-3xl">
                         {playlist.name}
@@ -28,36 +31,12 @@ const PlaylistRoute: NextPage<{ params: { id: string } }> = async ({
 
                 <PlayPlaylistButton playlist={playlist.data} />
             </div>
-            <div className="grid gap-4">
+
+            <ScrollArea className="max-h-full overflow-y-auto px-3">
                 {playlist.data.map((item) => (
-                    <div
-                        key={item.title}
-                        className="grid grid-cols-[48px_1fr_auto] items-center gap-4"
-                    >
-                        <div className="relative overflow-hidden rounded-md border border-primary/50 shadow-lg dark:border-primary/30">
-                            <Image
-                                alt={item.title}
-                                className="aspect-square h-14 w-14 object-cover transition-all hover:scale-105"
-                                height={120}
-                                src={item.thumbnail}
-                                width={312}
-                            />
-                            <div className="absolute inset-0 flex items-center justify-center rounded-lg bg-black/50 opacity-0 transition-opacity group-hover:opacity-100">
-                                <PlayIcon className="h-10 w-10 text-white" />
-                            </div>
-                        </div>
-                        <div className="grid gap-1">
-                            <Title title={item.title} />
-                            <p className="text-xs text-muted-foreground">
-                                {item.channelTitle}
-                            </p>
-                        </div>
-                        <div className="flex items-center gap-2">
-                            <PlaySongButton song={item} />
-                        </div>
-                    </div>
+                    <PlaylistCompact key={item.title} song={item} />
                 ))}
-            </div>
+            </ScrollArea>
         </div>
     );
 };
