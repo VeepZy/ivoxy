@@ -20,10 +20,13 @@ const config = {
         extend: {
             colors: {
                 border: "hsl(var(--border))",
+                borderSwitch: "hsl(var(--border-switch))",
                 input: "hsl(var(--input))",
                 ring: "hsl(var(--ring))",
                 background: "hsl(var(--background))",
                 foreground: "hsl(var(--foreground))",
+                backgroundSwitch: "hsl(var(--background-switch))",
+                foregroundSwitch: "hsl(var(--foreground-switch))",
                 primary: {
                     DEFAULT: "hsl(var(--primary))",
                     foreground: "hsl(var(--primary-foreground))",
