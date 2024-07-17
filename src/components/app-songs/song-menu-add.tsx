@@ -5,6 +5,7 @@ import { DropdownMenuItem } from "../ui/dropdown-menu";
 import { ArrowDownToLineIcon, LoaderCircleIcon } from "lucide-react";
 import { useRef, useTransition, MouseEvent } from "react";
 import { addSong } from "@/db/actions";
+import { useToast } from "../ui/use-toast";
 
 const DropdownMenuAddSong: React.FC<{
     song: SongData;
@@ -13,11 +14,18 @@ const DropdownMenuAddSong: React.FC<{
     const [pending, startTransition] = useTransition();
     const ref = useRef<HTMLDivElement>(null);
 
+    const { toast } = useToast();
+
     const handleSave = (event: MouseEvent<HTMLDivElement>) => {
         event.preventDefault();
 
         startTransition(async () => {
             await addSong(song);
+
+            toast({
+                title: "Success",
+                description: `${song.title} has been saved.`,
+            });
         });
     };
 
