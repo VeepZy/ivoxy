@@ -3,9 +3,11 @@
 import { ListVideoIcon } from "lucide-react";
 
 import { DropdownMenuItem } from "@/components/ui/dropdown-menu";
-import { type Song } from "@/db/types";
+import { type SongData } from "@/db/types";
 
-const DropdownMenuAddToCurrent: React.FC<{ song: Song }> = ({ song }) => {
+const DropdownMenuAddToCurrent: React.FC<{ song: SongData }> = ({
+    song,
+}) => {
     return (
         <DropdownMenuItem
             className="hover:cursor-pointer hover:bg-secondary"
