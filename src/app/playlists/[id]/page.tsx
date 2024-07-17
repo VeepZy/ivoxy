@@ -18,7 +18,7 @@ const PlaylistRoute: NextPage<{ params: { id: string } }> = ({
     }
 
     return (
-        <div className="flex flex-col gap-4 py-6">
+        <div className="flex max-h-full flex-col gap-4 py-6">
             <div className="flex items-center justify-between px-6">
                 <div className="space-y-1">
                     <h2 className="text-2xl font-bold tracking-tight md:text-3xl">
@@ -32,7 +32,7 @@ const PlaylistRoute: NextPage<{ params: { id: string } }> = ({
                 <PlayPlaylistButton playlist={playlist.data} />
             </div>
 
-            <ScrollArea className="max-h-full overflow-y-auto px-3">
+            <ScrollArea className="overflow-y-auto px-3">
                 {playlist.data.map((item) => (
                     <PlaylistCompact key={item.title} song={item} />
                 ))}
