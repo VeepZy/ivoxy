@@ -1,4 +1,4 @@
-import { ListPlusIcon } from "lucide-react";
+import { ListPlusIcon, LoaderCircleIcon } from "lucide-react";
 
 import {
     DropdownMenuItem,
@@ -12,19 +12,30 @@ import { type Playlist, type SongData } from "@/db/types";
 import { useDataStore } from "@/hooks/use-data";
 import { cn } from "@/lib/utils";
 import { filterPlaylists } from "@/utils/filter";
+import { useTransition, MouseEvent } from "react";
 
 const DropdownMenuAddToPlaylist: React.FC<{ song: SongData }> = ({
     song,
 }) => {
+    const [pending, startTransition] = useTransition();
+
     const { playlists } = useDataStore();
 
     const filtered = filterPlaylists(playlists, song.url);
 
-    const onSubmit = async (playlist: Playlist) =>
-        await updatePlaylist({
-            ...playlist,
-            data: [...playlist.data, { ...song }],
+    const onSubmit = (
+        event: MouseEvent<HTMLDivElement>,
+        playlist: Playlist,
+    ) => {
+        event.preventDefault();
+
+        startTransition(async () => {
+            await updatePlaylist({
+                ...playlist,
+                data: [...playlist.data, { ...song }],
+            });
         });
+    };
 
     return (
         <DropdownMenuSub>
@@ -43,10 +54,14 @@ const DropdownMenuAddToPlaylist: React.FC<{ song: SongData }> = ({
                     {filtered.map((playlist) => (
                         <DropdownMenuItem
                             key={playlist.id}
+                            disabled={pending}
                             className="hover:cursor-pointer hover:bg-secondary"
-                            onClick={() => onSubmit(playlist)}
+                            onClick={(event) => onSubmit(event, playlist)}
                         >
                             {playlist.name}
+                            {pending && (
+                                <LoaderCircleIcon className="ml-auto h-5 w-5 animate-spin text-primary" />
+                            )}
                         </DropdownMenuItem>
                     ))}
                 </DropdownMenuSubContent>
