@@ -16,7 +16,7 @@ import {
 import { Input } from "@/components/ui/input";
 
 import { searchMore, searchQuery } from "../api/search";
-import { useSearchStore } from "../stores/items";
+import { useSearchStore } from "../stores/search";
 
 const AppSearch: React.FC = () => {
     const [pending, startTransition] = useTransition();

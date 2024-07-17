@@ -5,7 +5,7 @@ import { LoaderCircleIcon } from "lucide-react";
 import { Song } from "@/components/app-songs/song";
 import { Button } from "@/components/ui/button";
 
-import { useSearchStore } from "../stores/items";
+import { useSearchStore } from "../stores/search";
 
 const AppSearchItems: React.FC = () => {
     const items = useSearchStore((state) => state.items);
