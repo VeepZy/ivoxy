@@ -1,5 +1,6 @@
 "use client";
 
+import { useToast } from "@/components/ui/use-toast";
 import { useEffect, useRef, useState, useTransition } from "react";
 
 const useRemove = (action: () => Promise<void>) => {
@@ -7,6 +8,8 @@ const useRemove = (action: () => Promise<void>) => {
     const [fill, setFill] = useState(0);
 
     const intervalRef = useRef<NodeJS.Timeout>();
+
+    const { toast } = useToast();
 
     const startTimeout = () => {
         if (intervalRef.current) return;
@@ -29,12 +32,17 @@ const useRemove = (action: () => Promise<void>) => {
     };
 
     useEffect(() => {
-        if (fill === 100) {
+        if (fill === 100 && !pending) {
             stopTimeout();
 
             startTransition(async () => {
                 await action();
                 setFill(0);
+
+                toast({
+                    title: "Success",
+                    description: "Song removed",
+                });
             });
         }
     }, [action, fill]);
