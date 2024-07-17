@@ -8,20 +8,22 @@ import {
     DropdownMenuSubTrigger,
 } from "@/components/ui/dropdown-menu";
 import { updatePlaylist } from "@/db/actions";
-import { type Playlist, type Song } from "@/db/types";
+import { type Playlist, type SongData } from "@/db/types";
 import { useDataStore } from "@/hooks/use-data";
 import { cn } from "@/lib/utils";
 import { filterPlaylists } from "@/utils/filter";
 
-const DropdownMenuAddToPlaylist: React.FC<{ song: Song }> = ({ song }) => {
+const DropdownMenuAddToPlaylist: React.FC<{ song: SongData }> = ({
+    song,
+}) => {
     const { playlists } = useDataStore();
 
-    const filtered = filterPlaylists(playlists, song.data.url);
+    const filtered = filterPlaylists(playlists, song.url);
 
     const onSubmit = async (playlist: Playlist) =>
         await updatePlaylist({
             ...playlist,
-            data: [...playlist.data, { ...song.data }],
+            data: [...playlist.data, { ...song }],
         });
 
     return (
