@@ -13,6 +13,7 @@ import { isSavedSong } from "@/utils/filter";
 import { DropdownMenuAddToCurrent } from "./song-menu-current";
 import { DropdownMenuAddToPlaylist } from "./song-menu-playlist";
 import { DropdownMenuRemove } from "./song-menu-remove";
+import { DropdownMenuAddSong } from "./song-menu-add";
 
 const SongMenu: React.FC<{ song: Song | SongData }> = ({ song }) => {
     const { songs } = useDataStore();
@@ -20,7 +21,7 @@ const SongMenu: React.FC<{ song: Song | SongData }> = ({ song }) => {
     const isSong = typeof song === "object" && "data" in song;
     const data = isSong ? song.data : song;
 
-    const isSaved = isSong ? isSavedSong(songs, data.url) : false;
+    const isSaved = isSavedSong(songs, data.url);
 
     return (
         <DropdownMenu>
@@ -28,6 +29,7 @@ const SongMenu: React.FC<{ song: Song | SongData }> = ({ song }) => {
                 <MoreVerticalIcon className="h-4 w-4" />
             </DropdownMenuTrigger>
             <DropdownMenuContent className="w-72">
+                <DropdownMenuAddSong song={data} isSaved={isSaved} />
                 <DropdownMenuAddToCurrent song={data} />
                 <DropdownMenuAddToPlaylist song={data} />
                 {isSaved ? (
