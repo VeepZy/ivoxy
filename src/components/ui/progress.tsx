@@ -29,7 +29,7 @@ const Progress = React.forwardRef<
                     segment.load ? `bg-primary/20` : "bg-primary",
                 )}
                 style={{
-                    transform: `translateX(-${100 - ((segment.value || 0) / (max || 100)) * 100}%)`,
+                    transform: `translateX(-${100 - (segment.value / (max || 100)) * 100}%)`,
                     zIndex: segments.length - index,
                 }}
             />
