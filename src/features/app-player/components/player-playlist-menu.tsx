@@ -95,7 +95,7 @@ const AppPlayerPlaylistMenu = () => {
             : [];
 
         setFiltered(filter);
-        setSelected(filter[0].name);
+        setSelected(filter[0]?.name ?? "");
     }, [playlists, data, index]);
 
     return (
