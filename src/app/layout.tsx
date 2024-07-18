@@ -1,18 +1,21 @@
 import type { Metadata, NextPage } from "next";
 import { DM_Sans as dmSans } from "next/font/google";
 import "./globals.css";
-import { type ReactNode } from "react";
+import { Suspense, type ReactNode } from "react";
 
-import { Content } from "@/components/content";
 import {
+    ResizableHandle,
     ResizablePanel,
     ResizablePanelGroup,
 } from "@/components/ui/resizable";
-import { getUser } from "@/db/queries";
-import { Menu } from "@/features/menu/components/menu";
-import { SignIn } from "@/features/menu/components/sign-in";
-import { PlayerWrapper } from "@/features/player/components/player-wrapper";
-import { ThemeProvider } from "@/features/theme/components/context";
+import { getPlaylists, getSongs, getUser } from "@/db/queries";
+import { ThemeProvider } from "@/features/context-theme/components/provider";
+import { AppSidebar } from "@/features/app-sidebar/components/sidebar";
+import { AppMenu } from "@/components/app-menu/menu";
+import { DataProvider } from "@/features/context-data/components/provider";
+import { Toaster } from "@/components/ui/toaster";
+import { AppPlayer } from "@/features/app-player/components/player";
+import { SignIn } from "@/components/sign-in";
 
 const FontSans = dmSans({
     variable: "--font-sans",
@@ -29,7 +32,11 @@ export const metadata: Metadata = {
 const RootLayout: NextPage<Readonly<{ children: ReactNode }>> = async ({
     children,
 }) => {
-    const user = await getUser();
+    const [user, songs, playlists] = await Promise.all([
+        getUser(),
+        getSongs(),
+        getPlaylists(),
+    ]);
 
     if (!user) {
         return (
@@ -51,36 +58,51 @@ const RootLayout: NextPage<Readonly<{ children: ReactNode }>> = async ({
         <html lang="en">
             <ThemeProvider>
                 <body
-                    className={`min-h-screen bg-background font-sans antialiased ${FontSans.variable}`}
+                    className={`min-h-screen overflow-x-hidden bg-background font-sans antialiased ${FontSans.variable}`}
                 >
-                    <ResizablePanelGroup
-                        className="min-h-screen"
-                        direction="vertical"
+                    <DataProvider
+                        user={user}
+                        songs={songs}
+                        playlists={playlists}
                     >
-                        <ResizablePanel
-                            className="border-b"
-                            defaultSize={6}
-                            minSize={6}
+                        <ResizablePanelGroup
+                            className="min-h-screen"
+                            direction="vertical"
                         >
-                            <div className="flex h-full items-center">
-                                <Menu />
-                            </div>
-                        </ResizablePanel>
+                            <ResizablePanel
+                                className="flex items-center border-b"
+                                defaultSize={7}
+                                maxSize={7}
+                            >
+                                <AppMenu />
+                            </ResizablePanel>
 
-                        <ResizablePanel defaultSize={87}>
-                            <ResizablePanelGroup direction="horizontal">
-                                <Content>{children}</Content>
-                            </ResizablePanelGroup>
-                        </ResizablePanel>
+                            <ResizablePanel defaultSize={85} minSize={85}>
+                                <ResizablePanelGroup direction="horizontal">
+                                    <AppSidebar />
+                                    <ResizablePanel
+                                        defaultSize={80}
+                                        minSize={70}
+                                    >
+                                        {children}
+                                    </ResizablePanel>
+                                </ResizablePanelGroup>
+                            </ResizablePanel>
 
-                        <ResizablePanel
-                            className="border-t"
-                            defaultSize={7}
-                            minSize={7}
-                        >
-                            <PlayerWrapper />
-                        </ResizablePanel>
-                    </ResizablePanelGroup>
+                            <ResizablePanel
+                                className="flex flex-col border-t"
+                                defaultSize={8}
+                                minSize={8}
+                            >
+                                <AppPlayer />
+                            </ResizablePanel>
+                            <ResizableHandle />
+                        </ResizablePanelGroup>
+                    </DataProvider>
+
+                    <Suspense>
+                        <Toaster />
+                    </Suspense>
                 </body>
             </ThemeProvider>
         </html>
