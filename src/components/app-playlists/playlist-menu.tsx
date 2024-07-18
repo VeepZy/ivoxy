@@ -40,7 +40,7 @@ const PlaylistMenu: React.FC<{ playlist: Playlist }> = ({ playlist }) => {
                             Rename
                         </DropdownMenuItem>
                     </DialogTrigger>
-                    <DropdownMenuAddToCurrent playlist={playlist} />
+                    <DropdownMenuAddToCurrent data={playlist.data} />
 
                     <DropdownMenuSeparator />
                     <DropdownMenuRemove playlist={playlist} />
