@@ -1,25 +1,33 @@
+"use client";
+
 import { UnescapedTitle } from "@/features/unescaped-title/components";
+import { usePlayerStore } from "@/stores/player";
 import Image from "next/image";
 
 const AppPlayerData = () => {
+    const data = usePlayerStore((store) => store.data);
+    const index = usePlayerStore((store) => store.currentIndex);
+    const song = data?.[index];
+
+    if (!song) {
+        return null;
+    }
+
     return (
         <div className="hidden md:flex md:items-center md:gap-2">
             <div className="relative h-10 w-10 overflow-hidden rounded-md border-2 border-foreground drop-shadow-md">
                 <Image
-                    alt="Song title"
+                    alt={song.title}
                     className="aspect-square object-cover transition-all hover:scale-105"
                     height={120}
-                    src="/thumbnail-placeholder.jpg"
+                    src={song.thumbnail}
                     width={320}
                 />
             </div>
             <div>
-                <UnescapedTitle
-                    title="Eminem - Love The Way You Lie ft. Rihanna"
-                    className="text-sm"
-                />
+                <UnescapedTitle title={song.title} className="text-sm" />
                 <p className="text-xs text-muted-foreground">
-                    Channel title
+                    {song.channelTitle}
                 </p>
             </div>
         </div>
