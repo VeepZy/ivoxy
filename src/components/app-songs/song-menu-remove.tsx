@@ -1,3 +1,5 @@
+"use client";
+
 import { ClockArrowUpIcon } from "lucide-react";
 
 import { DropdownMenuItem } from "@/components/ui/dropdown-menu";

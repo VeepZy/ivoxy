@@ -1,3 +1,5 @@
+"use client";
+
 import { ListPlusIcon, LoaderCircleIcon } from "lucide-react";
 
 import {
