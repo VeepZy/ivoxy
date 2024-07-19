@@ -1,12 +1,12 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
+import { redirect } from "next/navigation";
 
 import { getUser } from "./queries";
-import { SongData, type Playlist, type Song } from "./types";
+import { type Playlist, type Song, type SongData } from "./types";
 
 import { createServerDBClient } from ".";
-import { redirect } from "next/navigation";
 
 export const authSignIn = async () => {
     const db = createServerDBClient();

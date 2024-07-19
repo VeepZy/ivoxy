@@ -1,7 +1,7 @@
 import { type NextPage } from "next";
 
-import { ScrollArea } from "@/components/ui/scroll-area";
 import { PlaylistContainer } from "@/components/app-playlists/container";
+import { ScrollArea } from "@/components/ui/scroll-area";
 
 const PlaylistsRoute: NextPage = () => {
     return (

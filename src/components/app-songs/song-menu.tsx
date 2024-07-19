@@ -10,11 +10,11 @@ import { type Song, type SongData } from "@/db/types";
 import { useDataStore } from "@/hooks/use-data";
 import { isSavedSong } from "@/utils/filter";
 
+import { DropdownMenuAddSong } from "./song-menu-add";
 import { DropdownMenuAddToCurrent } from "./song-menu-current";
+import { DropdownMenuDeleteFromPlaylist } from "./song-menu-delete";
 import { DropdownMenuAddToPlaylist } from "./song-menu-playlist";
 import { DropdownMenuRemove } from "./song-menu-remove";
-import { DropdownMenuAddSong } from "./song-menu-add";
-import { DropdownMenuDeleteFromPlaylist } from "./song-menu-delete";
 
 const SongMenu: React.FC<{ song: Song | SongData }> = ({ song }) => {
     const { songs } = useDataStore();
@@ -26,14 +26,15 @@ const SongMenu: React.FC<{ song: Song | SongData }> = ({ song }) => {
 
     return (
         <DropdownMenu>
-            <DropdownMenuTrigger>
+            <DropdownMenuTrigger asChild>
                 <MoreVerticalIcon className="h-4 w-4" />
             </DropdownMenuTrigger>
             <DropdownMenuContent
+                align="end"
                 className="w-72"
                 onClick={(event) => event.stopPropagation()}
             >
-                <DropdownMenuAddSong song={data} isSaved={isSaved} />
+                <DropdownMenuAddSong isSaved={isSaved} song={data} />
                 <DropdownMenuAddToCurrent song={data} />
                 <DropdownMenuAddToPlaylist song={data} />
                 <DropdownMenuDeleteFromPlaylist song={data} />

@@ -1,4 +1,4 @@
-import { PlaylistData, SongData } from "@/db/types";
+import { type PlaylistData, type SongData } from "@/db/types";
 
 interface OnProgressProps {
     playedSeconds: number;

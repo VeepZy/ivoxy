@@ -65,7 +65,7 @@ const AppSearch: React.FC = () => {
                 setNextPageToken(response.pageToken);
             });
         },
-        [searchParams, startTransition, setItems, setNextPageToken],
+        [startTransition, setItems, setNextPageToken],
     );
 
     const handleMore = useMemo(

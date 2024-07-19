@@ -1,13 +1,14 @@
 "use client";
 
-import { SongData } from "@/db/types";
-import { DropdownMenuItem } from "@/components/ui/dropdown-menu";
 import { ArrowDownToLineIcon, LoaderCircleIcon } from "lucide-react";
-import { useRef, useTransition, MouseEvent } from "react";
-import { addSong } from "@/db/actions";
+import { type MouseEvent, useRef, useTransition } from "react";
+
+import { DropdownMenuItem } from "@/components/ui/dropdown-menu";
 import { useToast } from "@/components/ui/use-toast";
-import { isSavedSong } from "@/utils/filter";
+import { addSong } from "@/db/actions";
+import { type SongData } from "@/db/types";
 import { useDataStore } from "@/hooks/use-data";
+import { isSavedSong } from "@/utils/filter";
 
 const AppPlayerMixSongMenuAddSong: React.FC<{
     song: SongData;
@@ -36,15 +37,13 @@ const AppPlayerMixSongMenuAddSong: React.FC<{
     return (
         <DropdownMenuItem
             ref={ref}
-            disabled={isSaved || pending}
             className="hover:cursor-pointer hover:bg-secondary"
+            disabled={isSaved || pending}
             onClick={handleSave}
         >
             <ArrowDownToLineIcon className="mr-2 h-5 w-5" />
             {isSaved ? "Already saved" : "Save Song"}
-            {pending && (
-                <LoaderCircleIcon className="ml-auto h-5 w-5 animate-spin text-primary" />
-            )}
+            {pending ? <LoaderCircleIcon className="ml-auto h-5 w-5 animate-spin text-primary" /> : null}
         </DropdownMenuItem>
     );
 };

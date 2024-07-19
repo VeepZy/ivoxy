@@ -1,9 +1,11 @@
 "use client";
 
+import { type MouseEvent, useMemo } from "react";
+
 import { Progress } from "@/components/ui/progress";
-import { PlayerRef } from "../types/player-ref";
 import { usePlayerStore } from "@/stores/player";
-import { MouseEvent, useMemo } from "react";
+
+import { type PlayerRef } from "../types/player-ref";
 
 const AppPlayerProgress: React.FC<{ player: PlayerRef }> = ({
     player,
@@ -27,8 +29,8 @@ const AppPlayerProgress: React.FC<{ player: PlayerRef }> = ({
         <Progress
             className="h-2 rounded-none border-none"
             max={duration}
-            onClick={seekTo}
             segments={[{ value: played }, { value: loaded, load: true }]}
+            onClick={seekTo}
         />
     );
 };

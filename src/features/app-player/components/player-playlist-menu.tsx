@@ -1,5 +1,9 @@
 "use client";
 
+import { ListPlusIcon, PlusIcon, XIcon } from "lucide-react";
+import { useEffect, useState, useTransition } from "react";
+import { useForm } from "react-hook-form";
+
 import { Button } from "@/components/ui/button";
 import {
     Form,
@@ -23,13 +27,10 @@ import {
 } from "@/components/ui/select";
 import { useToast } from "@/components/ui/use-toast";
 import { createPlaylist, updatePlaylist } from "@/db/actions";
-import { Playlist } from "@/db/types";
+import { type Playlist } from "@/db/types";
 import { useDataStore } from "@/hooks/use-data";
 import { usePlayerStore } from "@/stores/player";
 import { filterPlaylists } from "@/utils/filter";
-import { ListPlusIcon, PlusIcon, XIcon } from "lucide-react";
-import { useEffect, useState, useTransition } from "react";
-import { useForm } from "react-hook-form";
 
 const AppPlayerPlaylistMenu = () => {
     const [pending, startTransition] = useTransition();
@@ -85,11 +86,6 @@ const AppPlayerPlaylistMenu = () => {
         });
 
     useEffect(() => {
-        if (!playlists) {
-            setFiltered([]);
-            return;
-        }
-
         const filter = data
             ? filterPlaylists(playlists, data[index].url)
             : [];
@@ -102,9 +98,9 @@ const AppPlayerPlaylistMenu = () => {
         <Popover open={open} onOpenChange={setOpen}>
             <PopoverTrigger asChild>
                 <Button
+                    className="flex-shrink-0"
                     size="icon"
                     variant="outline"
-                    className="flex-shrink-0"
                 >
                     <ListPlusIcon className="h-5 w-5" />
                 </Button>
@@ -164,10 +160,10 @@ const AppPlayerPlaylistMenu = () => {
                             />
 
                             <Button
-                                type="submit"
-                                size="icon"
-                                variant="outline"
                                 disabled={pending}
+                                size="icon"
+                                type="submit"
+                                variant="outline"
                             >
                                 <PlusIcon className="h-4 w-4" />
                             </Button>
@@ -180,8 +176,8 @@ const AppPlayerPlaylistMenu = () => {
                         Cancel
                     </Button>
                     <Button
-                        onClick={addToPlaylist}
                         disabled={pending || !selected}
+                        onClick={addToPlaylist}
                     >
                         Add to Playlist
                     </Button>

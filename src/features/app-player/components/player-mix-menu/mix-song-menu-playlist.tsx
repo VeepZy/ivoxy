@@ -1,4 +1,5 @@
 import { ListPlusIcon, LoaderCircleIcon } from "lucide-react";
+import { type MouseEvent, useTransition } from "react";
 
 import {
     DropdownMenuItem,
@@ -12,7 +13,6 @@ import { type Playlist, type SongData } from "@/db/types";
 import { useDataStore } from "@/hooks/use-data";
 import { cn } from "@/lib/utils";
 import { filterPlaylists } from "@/utils/filter";
-import { useTransition, MouseEvent } from "react";
 
 const AppPlayerMixSongMenuPlaylist: React.FC<{ song: SongData }> = ({
     song,
@@ -54,14 +54,12 @@ const AppPlayerMixSongMenuPlaylist: React.FC<{ song: SongData }> = ({
                     {filtered.map((playlist) => (
                         <DropdownMenuItem
                             key={playlist.id}
-                            disabled={pending}
                             className="hover:cursor-pointer hover:bg-secondary"
+                            disabled={pending}
                             onClick={(event) => onSubmit(event, playlist)}
                         >
                             {playlist.name}
-                            {pending && (
-                                <LoaderCircleIcon className="ml-auto h-5 w-5 animate-spin text-primary" />
-                            )}
+                            {pending ? <LoaderCircleIcon className="ml-auto h-5 w-5 animate-spin text-primary" /> : null}
                         </DropdownMenuItem>
                     ))}
                 </DropdownMenuSubContent>

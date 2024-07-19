@@ -1,7 +1,8 @@
 "use client";
 
-import { DataContext } from "@/features/context-data/stores/context";
 import { useContext } from "react";
+
+import { DataContext } from "@/features/context-data/stores/context";
 
 const useDataStore = () => {
     const store = useContext(DataContext);

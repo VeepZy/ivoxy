@@ -1,8 +1,5 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
-import { Slider } from "@/components/ui/slider";
-import { usePlayerStore } from "@/stores/player";
 import {
     PauseIcon,
     PlayIcon,
@@ -12,6 +9,10 @@ import {
     SkipForwardIcon,
     Volume2Icon,
 } from "lucide-react";
+
+import { Button } from "@/components/ui/button";
+import { Slider } from "@/components/ui/slider";
+import { usePlayerStore } from "@/stores/player";
 
 const AppPlayerControls: React.FC = () => {
     const isPlaying = usePlayerStore((store) => store.isPlaying);
@@ -36,18 +37,18 @@ const AppPlayerControls: React.FC = () => {
     return (
         <div className="flex gap-2">
             <Button
-                size="icon"
-                variant="ghost"
                 className="flex-shrink-0"
                 disabled={!canPrevious}
+                size="icon"
+                variant="ghost"
                 onClick={setPrev}
             >
                 <SkipBackIcon className="h-5 w-5" />
             </Button>
             <Button
+                className="flex-shrink-0"
                 size="icon"
                 variant="ghost"
-                className="flex-shrink-0"
                 onClick={togglePlay}
             >
                 {isPlaying ? (
@@ -57,26 +58,26 @@ const AppPlayerControls: React.FC = () => {
                 )}
             </Button>
             <Button
-                size="icon"
-                variant="ghost"
                 className="flex-shrink-0"
                 disabled={!canNext}
+                size="icon"
+                variant="ghost"
                 onClick={setNext}
             >
                 <SkipForwardIcon className="h-5 w-5" />
             </Button>
             <Button
+                className="flex-shrink-0"
                 size="icon"
                 variant={isLooped ? "secondary" : "ghost"}
-                className="flex-shrink-0"
                 onClick={toggleLoop}
             >
                 <Repeat2Icon className="h-6 w-6" />
             </Button>
             <Button
+                className="flex-shrink-0"
                 size="icon"
                 variant={isShuffled ? "secondary" : "ghost"}
-                className="flex-shrink-0"
                 onClick={toggleShuffle}
             >
                 <ShuffleIcon className="h-6 w-6" />
@@ -84,15 +85,15 @@ const AppPlayerControls: React.FC = () => {
             <Slider
                 className="min-w-[120px]"
                 defaultValue={[volume]}
-                onValueChange={setVolume}
-                min={0}
                 max={1}
+                min={0}
                 step={0.05}
+                onValueChange={setVolume}
             />
             <Button
+                className="flex-shrink-0"
                 size="icon"
                 variant={isMuted ? "secondary" : "ghost"}
-                className="flex-shrink-0"
                 onClick={toggleMute}
             >
                 <Volume2Icon className="h-6 w-6" />

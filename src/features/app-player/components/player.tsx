@@ -1,16 +1,19 @@
 "use client";
 
 import dynamic from "next/dynamic";
-import { AppPlayerProgress } from "./player-progress";
-import type { Player } from "../types/player-ref";
-import { AppPlayerData } from "./player-data";
-import { AppPlayerControls } from "./player-controls";
-import { AppPlayerDuration } from "./player-duration";
 import { useEffect, useRef } from "react";
-import { AppPlayerSave } from "./player-save";
-import { AppPlayerPlaylistMenu } from "./player-playlist-menu";
-import { AppPlayerMixMenu } from "./player-mix-menu/mix";
+
 import { usePlayerStore } from "@/stores/player";
+
+import type { Player } from "../types/player-ref";
+
+import { AppPlayerControls } from "./player-controls";
+import { AppPlayerData } from "./player-data";
+import { AppPlayerDuration } from "./player-duration";
+import { AppPlayerMixMenu } from "./player-mix-menu/mix";
+import { AppPlayerPlaylistMenu } from "./player-playlist-menu";
+import { AppPlayerProgress } from "./player-progress";
+import { AppPlayerSave } from "./player-save";
 
 const Player = dynamic(() => import("react-player"), {
     ssr: false,
@@ -27,8 +30,6 @@ const AppPlayer = () => {
     const setDuration = usePlayerStore((store) => store.setDuration);
     const setCanNext = usePlayerStore((store) => store.setCanNext);
     const setCanPrevious = usePlayerStore((store) => store.setCanPrevious);
-
-    const togglePlay = usePlayerStore((store) => store.togglePlay);
 
     const isPlaying = usePlayerStore((store) => store.isPlaying);
     const isLooped = usePlayerStore((store) => store.isLooped);
@@ -47,13 +48,11 @@ const AppPlayer = () => {
             return;
         }
 
-        if (!isPlaying) {
-            togglePlay();
-        }
+        onPlay();
 
         setCanNext(index < data.length - 1);
         setCanPrevious(index > 0);
-    }, [data, index]);
+    }, [data, index, onPlay, setCanNext, setCanPrevious]);
 
     if (!data) {
         return (
@@ -86,16 +85,11 @@ const AppPlayer = () => {
                 <Player
                     ref={playerRef}
                     height="100%"
-                    width="100%"
-                    url={data?.[index].url ?? undefined}
-                    onEnded={onEnded}
-                    onProgress={onProgress}
-                    onBufferEnd={onBufferEnd}
-                    onPlay={onPlay}
-                    onPause={onPause}
-                    volume={volume}
-                    playing={isPlaying}
                     loop={isLooped}
+                    playing={isPlaying}
+                    url={data[index].url}
+                    volume={volume}
+                    width="100%"
                     config={{
                         youtube: {
                             playerVars: {
@@ -103,6 +97,11 @@ const AppPlayer = () => {
                             },
                         },
                     }}
+                    onBufferEnd={onBufferEnd}
+                    onEnded={onEnded}
+                    onPause={onPause}
+                    onPlay={onPlay}
+                    onProgress={onProgress}
                 />
             </div>
         </div>

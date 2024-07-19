@@ -1,9 +1,10 @@
+import { create } from "zustand";
+
 import type {
     PlayerStoreActions,
     PlayerStoreState,
 } from "@/types/player-store";
 import { generateRandomNumber } from "@/utils/random-number";
-import { create } from "zustand";
 
 const initialState: PlayerStoreState = {
     isPlaying: false,
@@ -101,17 +102,9 @@ const usePlayerStore = create<PlayerStoreState & PlayerStoreActions>(
                 loaded: loadedSeconds,
             })),
         onEnded: () => {
-            const {
-                isLooped,
-                isShuffled,
-                data,
-                currentIndex,
-                played,
-                loaded,
-            } = get();
-            console.log(played, loaded);
+            const { isLooped, isShuffled, data, currentIndex } = get();
             if (isLooped) {
-                return; // Handled by react-player
+                // Handled by react-player
             } else if (isShuffled && data && data.length > 1) {
                 const random = generateRandomNumber(
                     currentIndex,

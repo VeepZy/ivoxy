@@ -1,3 +1,5 @@
+import { ListMusicIcon } from "lucide-react";
+
 import { Button } from "@/components/ui/button";
 import {
     Popover,
@@ -5,9 +7,9 @@ import {
     PopoverTrigger,
 } from "@/components/ui/popover";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { ListMusicIcon } from "lucide-react";
-import { AppPlayerMixMenuSong } from "./mix-song";
 import { usePlayerStore } from "@/stores/player";
+
+import { AppPlayerMixMenuSong } from "./mix-song";
 
 const AppPlayerMixMenu: React.FC = () => {
     const data = usePlayerStore((store) => store.data);
@@ -16,9 +18,9 @@ const AppPlayerMixMenu: React.FC = () => {
         <Popover>
             <PopoverTrigger asChild>
                 <Button
+                    className="flex-shrink-0"
                     size="icon"
                     variant="outline"
-                    className="flex-shrink-0"
                 >
                     <ListMusicIcon className="h-5 w-5" />
                 </Button>
@@ -28,7 +30,7 @@ const AppPlayerMixMenu: React.FC = () => {
                     <ul className="space-y-2 p-2">
                         {data?.map((song, i) => (
                             <AppPlayerMixMenuSong
-                                key={i}
+                                key={`${song.url}+${song.title}`}
                                 index={i}
                                 song={song}
                             />

@@ -15,8 +15,8 @@ const AppSearchItems: React.FC = () => {
     return (
         <>
             <div className="flex w-full flex-row flex-wrap gap-8">
-                {items.map((item, index) => (
-                    <Song key={`${item.url}-${index}`} song={item} />
+                {items.map((item) => (
+                    <Song key={`${item.url}+${item.title}`} song={item} />
                 ))}
             </div>
             {items.length > 0 && (

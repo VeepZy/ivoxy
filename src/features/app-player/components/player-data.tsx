@@ -1,8 +1,9 @@
 "use client";
 
+import Image from "next/image";
+
 import { UnescapedTitle } from "@/features/unescaped-title/components";
 import { usePlayerStore } from "@/stores/player";
-import Image from "next/image";
 
 const AppPlayerData = () => {
     const data = usePlayerStore((store) => store.data);
@@ -25,7 +26,10 @@ const AppPlayerData = () => {
                 />
             </div>
             <div>
-                <UnescapedTitle title={song.title} className="text-sm" />
+                <UnescapedTitle
+                    className="text-sm leading-tight"
+                    title={song.title}
+                />
                 <p className="text-xs text-muted-foreground">
                     {song.channelTitle}
                 </p>

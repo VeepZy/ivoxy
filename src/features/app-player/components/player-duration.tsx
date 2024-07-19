@@ -1,8 +1,10 @@
 "use client";
 
-import { usePlayerStore } from "@/stores/player";
-import { formatDuration } from "../utils/format-duration";
 import { useMemo } from "react";
+
+import { usePlayerStore } from "@/stores/player";
+
+import { formatDuration } from "../utils/format-duration";
 
 const AppPlayerDuration: React.FC = () => {
     const played = usePlayerStore((store) => store.played);

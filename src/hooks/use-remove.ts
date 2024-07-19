@@ -1,7 +1,8 @@
 "use client";
 
-import { useToast } from "@/components/ui/use-toast";
 import { useEffect, useRef, useState, useTransition } from "react";
+
+import { useToast } from "@/components/ui/use-toast";
 
 const useRemove = (action: () => Promise<void>) => {
     const [pending, startTransition] = useTransition();
@@ -45,7 +46,7 @@ const useRemove = (action: () => Promise<void>) => {
                 });
             });
         }
-    }, [action, fill]);
+    }, [action, fill, pending, toast]);
 
     useEffect(() => {
         return () => stopTimeout();

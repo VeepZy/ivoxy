@@ -1,10 +1,12 @@
 "use client";
 
-import { SongData } from "@/db/types";
-import { DropdownMenuItem } from "../ui/dropdown-menu";
 import { ArrowDownToLineIcon, LoaderCircleIcon } from "lucide-react";
-import { useRef, useTransition, MouseEvent } from "react";
+import { type MouseEvent, useRef, useTransition } from "react";
+
 import { addSong } from "@/db/actions";
+import { type SongData } from "@/db/types";
+
+import { DropdownMenuItem } from "../ui/dropdown-menu";
 import { useToast } from "../ui/use-toast";
 
 const DropdownMenuAddSong: React.FC<{
@@ -32,15 +34,13 @@ const DropdownMenuAddSong: React.FC<{
     return (
         <DropdownMenuItem
             ref={ref}
-            disabled={isSaved || pending}
             className="hover:cursor-pointer hover:bg-secondary"
+            disabled={isSaved || pending}
             onClick={handleSave}
         >
             <ArrowDownToLineIcon className="mr-2 h-5 w-5" />
             {isSaved ? "Already saved" : "Save Song"}
-            {pending && (
-                <LoaderCircleIcon className="ml-auto h-5 w-5 animate-spin text-primary" />
-            )}
+            {pending ? <LoaderCircleIcon className="ml-auto h-5 w-5 animate-spin text-primary" /> : null}
         </DropdownMenuItem>
     );
 };

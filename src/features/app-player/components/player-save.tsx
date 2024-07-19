@@ -1,13 +1,14 @@
 "use client";
 
+import { ArrowDownToLineIcon } from "lucide-react";
+import { useTransition } from "react";
+
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/components/ui/use-toast";
 import { addSong } from "@/db/actions";
 import { useDataStore } from "@/hooks/use-data";
 import { usePlayerStore } from "@/stores/player";
 import { isSavedSong } from "@/utils/filter";
-import { ArrowDownToLineIcon } from "lucide-react";
-import { useTransition } from "react";
 
 const AppPlayerSave = () => {
     const [pending, startTransition] = useTransition();
@@ -36,11 +37,11 @@ const AppPlayerSave = () => {
 
     return (
         <Button
+            className="flex-shrink-0"
+            disabled={pending || isSaved}
             size="icon"
             variant="outline"
-            className="flex-shrink-0"
             onClick={onSave}
-            disabled={pending || isSaved}
         >
             <ArrowDownToLineIcon className="h-5 w-5" />
         </Button>

@@ -1,14 +1,13 @@
 import url from "node:url";
 
-import { type NextApiRequest } from "next";
 import { cookies } from "next/headers";
-import { NextResponse } from "next/server";
+import { type NextRequest, NextResponse } from "next/server";
 
 import { getClient } from "@/lib/auth";
 
-export const GET = async (req: NextApiRequest) => {
+export const GET = async (req: NextRequest) => {
     const cookieStore = cookies();
-    const query = url.parse(req.url ?? "", true).query;
+    const query = url.parse(req.url, true).query;
 
     if (query.error) {
         return NextResponse.json({ error: query.error }, { status: 400 });

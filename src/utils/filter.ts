@@ -1,4 +1,4 @@
-import { Playlist, Song } from "@/db/types";
+import { type Playlist, type Song } from "@/db/types";
 
 export const filterPlaylists = (
     playlists: Playlist[],

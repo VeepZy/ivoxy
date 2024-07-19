@@ -1,6 +1,7 @@
+import { ListMinusIcon } from "lucide-react";
+
 import { DropdownMenuItem } from "@/components/ui/dropdown-menu";
 import { usePlayerStore } from "@/stores/player";
-import { ListMinusIcon } from "lucide-react";
 
 const AppPlayerMixSongMenuRemove: React.FC<{
     index: number;
@@ -10,8 +11,8 @@ const AppPlayerMixSongMenuRemove: React.FC<{
 
     return (
         <DropdownMenuItem
-            onClick={() => removeFromMix(index)}
             disabled={!data || data.length === 1}
+            onClick={() => removeFromMix(index)}
         >
             <ListMinusIcon className="mr-2 h-5 w-5" />
             Remove from mix
