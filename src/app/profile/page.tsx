@@ -19,7 +19,7 @@ const ProfileRoute: NextPage = async () => {
             <Avatar>
                 <AvatarImage
                     sizes="xl"
-                    src={user?.user_metadata.avatar_url ?? ""}
+                    src={String(user?.user_metadata.avatar_url)}
                 />
                 <AvatarFallback>P</AvatarFallback>
             </Avatar>
