@@ -28,6 +28,8 @@ const AppPlayer = () => {
     const setCanNext = usePlayerStore((store) => store.setCanNext);
     const setCanPrevious = usePlayerStore((store) => store.setCanPrevious);
 
+    const togglePlay = usePlayerStore((store) => store.togglePlay);
+
     const isPlaying = usePlayerStore((store) => store.isPlaying);
     const isLooped = usePlayerStore((store) => store.isLooped);
 
@@ -45,9 +47,21 @@ const AppPlayer = () => {
             return;
         }
 
+        if (!isPlaying) {
+            togglePlay();
+        }
+
         setCanNext(index < data.length - 1);
         setCanPrevious(index > 0);
     }, [data, index]);
+
+    if (!data) {
+        return (
+            <div className="flex flex-1 items-center justify-center">
+                <h3>Select a song or playlist</h3>
+            </div>
+        );
+    }
 
     return (
         <div className="flex-1">
@@ -76,7 +90,6 @@ const AppPlayer = () => {
                     url={data?.[index].url ?? undefined}
                     onEnded={onEnded}
                     onProgress={onProgress}
-                    onBuffer={() => console.log("onBuffer")}
                     onBufferEnd={onBufferEnd}
                     onPlay={onPlay}
                     onPause={onPause}
