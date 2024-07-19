@@ -15,6 +15,7 @@ import { useDataStore } from "@/hooks/use-data";
 import { cn } from "@/lib/utils";
 import { filterPlaylists } from "@/utils/filter";
 import { useTransition, MouseEvent } from "react";
+import { useToast } from "../ui/use-toast";
 
 const DropdownMenuAddToPlaylist: React.FC<{ song: SongData }> = ({
     song,
@@ -22,6 +23,7 @@ const DropdownMenuAddToPlaylist: React.FC<{ song: SongData }> = ({
     const [pending, startTransition] = useTransition();
 
     const { playlists } = useDataStore();
+    const { toast } = useToast();
 
     const filtered = filterPlaylists(playlists, song.url);
 
@@ -32,9 +34,14 @@ const DropdownMenuAddToPlaylist: React.FC<{ song: SongData }> = ({
         event.preventDefault();
 
         startTransition(async () => {
-            await updatePlaylist({
-                ...playlist,
-                data: [...playlist.data, { ...song }],
+            const newData = [...playlist.data, { ...song }];
+            const newArray = { ...playlist, data: newData };
+
+            await updatePlaylist(newArray);
+
+            toast({
+                title: "Success",
+                description: `${song.title} added to ${playlist.name}`,
             });
         });
     };
