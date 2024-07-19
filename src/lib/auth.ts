@@ -10,6 +10,9 @@ export const getClient = async () => {
         process.env.YOUTUBE_CLIENT_SECRET ?? "",
         process.env.YOUTUBE_REDIRECT_URI ?? "",
     );
+
+    await Promise.resolve(() => client);
+
     return client;
 };
 
