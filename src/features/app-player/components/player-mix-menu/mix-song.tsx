@@ -4,7 +4,7 @@ import { UnescapedTitle } from "@/features/unescaped-title/components";
 import { AppPlayerMixSongMenu } from "./mix-song-menu";
 import { cn } from "@/lib/utils";
 import { usePlayerStore } from "@/stores/player";
-import { AudioLinesIcon } from "../audio-icon";
+import { AudioLinesIcon } from "../../../../components/audio-icon";
 
 const AppPlayerMixMenuSong: React.FC<{
     song: SongData;
