@@ -15,7 +15,7 @@ const PlayPlaylistButton: React.FC<{ playlist: PlaylistData }> = ({
         <Button
             className="group-hover:bg-primary"
             size="icon"
-            variant="ghost"
+            disabled={playlist.length === 0}
             onClick={() => setData(playlist)}
         >
             <span className="sr-only">Play</span>
