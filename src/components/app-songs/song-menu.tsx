@@ -14,6 +14,7 @@ import { DropdownMenuAddToCurrent } from "./song-menu-current";
 import { DropdownMenuAddToPlaylist } from "./song-menu-playlist";
 import { DropdownMenuRemove } from "./song-menu-remove";
 import { DropdownMenuAddSong } from "./song-menu-add";
+import { DropdownMenuDeleteFromPlaylist } from "./song-menu-delete";
 
 const SongMenu: React.FC<{ song: Song | SongData }> = ({ song }) => {
     const { songs } = useDataStore();
@@ -28,10 +29,14 @@ const SongMenu: React.FC<{ song: Song | SongData }> = ({ song }) => {
             <DropdownMenuTrigger>
                 <MoreVerticalIcon className="h-4 w-4" />
             </DropdownMenuTrigger>
-            <DropdownMenuContent className="w-72">
+            <DropdownMenuContent
+                className="w-72"
+                onClick={(event) => event.stopPropagation()}
+            >
                 <DropdownMenuAddSong song={data} isSaved={isSaved} />
                 <DropdownMenuAddToCurrent song={data} />
                 <DropdownMenuAddToPlaylist song={data} />
+                <DropdownMenuDeleteFromPlaylist song={data} />
                 {isSaved ? (
                     <>
                         <DropdownMenuSeparator />
