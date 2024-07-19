@@ -2,8 +2,8 @@
 
 import { type NextPage } from "next";
 
-import { PlayPlaylistButton } from "@/components/app-playlists/playlist-play";
 import { PlaylistCompact } from "@/components/app-playlists/playlist-compact";
+import { PlayPlaylistButton } from "@/components/app-playlists/playlist-play";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { useDataStore } from "@/hooks/use-data";
 
@@ -34,9 +34,9 @@ const PlaylistRoute: NextPage<{ params: { id: string } }> = ({
 
             <ScrollArea className="overflow-y-auto pb-6 pl-3 pr-6">
                 <ul className="space-y-2">
-                    {playlist.data.map((item, index) => (
+                    {playlist.data.map((item) => (
                         <PlaylistCompact
-                            key={`${index}-${item.title}`}
+                            key={`${item.url}-${item.title}`}
                             song={item}
                         />
                     ))}
