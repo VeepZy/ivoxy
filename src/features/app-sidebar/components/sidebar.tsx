@@ -22,9 +22,9 @@ const AppSidebar: React.FC = () => {
     return (
         <>
             <ResizablePanel
-                className="hidden md:block"
                 ref={ref}
                 collapsible
+                className="hidden md:block"
                 defaultSize={20}
                 minSize={15}
             >

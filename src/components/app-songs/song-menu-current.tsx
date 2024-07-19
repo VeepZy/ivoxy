@@ -19,8 +19,8 @@ const DropdownMenuAddToCurrent: React.FC<{ song: SongData }> = ({
     return (
         <DropdownMenuItem
             className="hover:cursor-pointer hover:bg-secondary"
-            onClick={() => addToMix(song)}
             disabled={existsInMix}
+            onClick={() => addToMix(song)}
         >
             <ListVideoIcon className="mr-2 h-5 w-5" />
             Add to current mix
