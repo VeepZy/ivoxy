@@ -12,9 +12,7 @@ const ProfileRoute: NextPage = async () => {
     const user = await getUser();
     const cookieStore = cookies();
 
-    const isAuthenticated = Boolean(
-        cookieStore.get("google_access_token"),
-    );
+    const isAuthenticated = cookieStore.has("google_access_token");
 
     return (
         <div className="relative flex h-full flex-col items-center justify-center space-y-4 overflow-hidden p-6">
