@@ -16,6 +16,7 @@ import { AppPlayer } from "@/features/app-player/components/player";
 import { AppSidebar } from "@/features/app-sidebar/components/sidebar";
 import { DataProvider } from "@/features/context-data/components/provider";
 import { ThemeProvider } from "@/features/context-theme/components/provider";
+import { createUrl } from "@/utils/url";
 
 const FontSans = dmSans({
     variable: "--font-sans",
@@ -55,6 +56,7 @@ const RootLayout: NextPage<Readonly<{ children: ReactNode }>> = async ({
     ]);
 
     if (!user) {
+        console.log(createUrl("/api/auth/callback"));
         return (
             <html lang="en">
                 <ThemeProvider>
