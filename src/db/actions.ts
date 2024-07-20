@@ -7,14 +7,13 @@ import { getUser } from "./queries";
 import { type Playlist, type Song, type SongData } from "./types";
 
 import { createServerDBClient } from ".";
-import { createUrl } from "@/utils/url";
 
-export const authSignIn = async () => {
+export const authSignIn = async (origin: string) => {
     const db = createServerDBClient();
     const { data, error } = await db.auth.signInWithOAuth({
         provider: "github",
         options: {
-            redirectTo: createUrl("/api/auth/callback"),
+            redirectTo: `${origin}/api/auth/callback`,
         },
     });
 
