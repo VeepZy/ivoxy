@@ -56,7 +56,6 @@ const RootLayout: NextPage<Readonly<{ children: ReactNode }>> = async ({
     ]);
 
     if (!user) {
-        console.log(createUrl("/api/auth/callback"));
         return (
             <html lang="en">
                 <ThemeProvider>
