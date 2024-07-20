@@ -9,7 +9,7 @@ const createUrl: (path: string) => string = (path) => {
     const trimmedPath = path.replace(/^\/+/, "");
 
     // Concatenate the URL and the path.
-    return trimmedPath ? `${url}/${path}` : url;
+    return trimmedPath ? `${url}/${trimmedPath}` : url;
 };
 
 export { createUrl };
