@@ -1,6 +1,6 @@
 import "server-only";
 
-import { createServerClient } from "@supabase/ssr";
+import { type CookieOptions, createServerClient } from "@supabase/ssr";
 import { createClient } from "@supabase/supabase-js";
 import { cookies } from "next/headers";
 import { type NextRequest, NextResponse } from "next/server";
@@ -28,7 +28,13 @@ export const createServerDBClient = () => {
             getAll() {
                 return cookieStore.getAll();
             },
-            setAll(cookiesToSet) {
+            setAll(
+                cookiesToSet: {
+                    name: string;
+                    value: string;
+                    options?: CookieOptions;
+                }[],
+            ) {
                 cookiesToSet.forEach(({ name, value, options }) =>
                     cookieStore.set({ name, value, ...options }),
                 );
@@ -49,7 +55,13 @@ export const updateSession = async (request: NextRequest) => {
             getAll() {
                 return request.cookies.getAll();
             },
-            setAll(cookiesToSet) {
+            setAll(
+                cookiesToSet: {
+                    name: string;
+                    value: string;
+                    options?: CookieOptions;
+                }[],
+            ) {
                 cookiesToSet.forEach(({ name, value }) =>
                     request.cookies.set(name, value),
                 );
