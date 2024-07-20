@@ -14,8 +14,7 @@ export const authSignIn = async () => {
     const { data, error } = await db.auth.signInWithOAuth({
         provider: "github",
         options: {
-            // redirectTo: "http://localhost:3000/api/auth/callback",
-            redirectTo: `${createUrl("/api/auth/callback")}`,
+            redirectTo: createUrl("/api/auth/callback"),
         },
     });
 
