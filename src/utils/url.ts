@@ -1,5 +1,6 @@
 const createUrl: (path: string) => string = (path) => {
-    let url = process.env.VERCEL_URL ?? "http://localhost:3000/";
+    let url =
+        process.env.NEXT_PUBLIC_VERCEL_URL ?? "http://localhost:3000/";
 
     // Trim the URL and remove trailing slash if exists.
     url = url.replace(/\/+$/, "");
