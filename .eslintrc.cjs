@@ -9,7 +9,11 @@ const project = resolve(__dirname, "tsconfig.json");
 /** @type {import('eslint').Linter.Config} */
 module.exports = {
     root: true,
-    ignorePatterns: ["src/components/ui/**", "src/db/schema.ts"],
+    ignorePatterns: [
+        "src/components/ui/**",
+        "src/db/schema.ts",
+        "src/db/index.ts",
+    ],
     extends: [
         require.resolve("@vercel/style-guide/eslint/browser"),
         require.resolve("@vercel/style-guide/eslint/node"),
