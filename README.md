@@ -10,6 +10,7 @@ Ivoxy is a web application built with Next.js that showcases how to integrate Yo
 -   [Introduction](#introduction)
 -   [Features](#features)
 -   [Technologies Used](#technologies-used)
+-   [Known Issues](#known-issues)
 -   [License](#license)
 
 ## Introduction
@@ -38,6 +39,7 @@ This project demonstrates the implementation of a music app using Next.js and Yo
 -   Player sometimes doesn't autoplay when it should
 -   Progress bar bugs out when duration is too long
 -   Saving a song in the mix menu also plays it
+-   Title in the mix menu hides button when it's too long
 
 ## License
 
