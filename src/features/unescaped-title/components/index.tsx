@@ -9,7 +9,7 @@ import { type TitleProps } from "../types/title-props";
 import { truncate } from "../utils/truncate";
 
 const UnescapedTitle = forwardRef<HTMLHeadingElement, TitleProps>(
-    ({ className, title }, ref) => {
+    ({ className, title, limit }, ref) => {
         const mounted = useMounted();
 
         return (
@@ -17,7 +17,7 @@ const UnescapedTitle = forwardRef<HTMLHeadingElement, TitleProps>(
                 ref={ref}
                 className={cn("font-semibold tracking-tight", className)}
             >
-                {mounted ? truncate(title) : "Loading..."}
+                {mounted ? truncate(title, limit) : "Loading..."}
             </h3>
         );
     },
