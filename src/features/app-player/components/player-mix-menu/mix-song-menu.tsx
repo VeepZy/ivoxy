@@ -1,6 +1,5 @@
 import { MoreVerticalIcon } from "lucide-react";
 
-import { Button } from "@/components/ui/button";
 import {
     DropdownMenu,
     DropdownMenuContent,
@@ -14,22 +13,15 @@ import { AppPlayerMixSongMenuRemove } from "./mix-song-menu-remove";
 
 const AppPlayerMixSongMenu: React.FC<{
     song: SongData;
-    index: number;
-}> = ({ song, index }) => {
+}> = ({ song }) => {
     return (
         <DropdownMenu>
             <DropdownMenuTrigger asChild>
-                <Button
-                    className="flex-shrink-0"
-                    size="icon"
-                    variant="outline"
-                >
-                    <MoreVerticalIcon className="h-5 w-5" />
-                </Button>
+                <MoreVerticalIcon className="h-5 w-5" />
             </DropdownMenuTrigger>
             <DropdownMenuContent className="w-52">
                 <AppPlayerMixSongMenuAddSong song={song} />
-                <AppPlayerMixSongMenuRemove index={index} />
+                <AppPlayerMixSongMenuRemove song={song} />
                 <AppPlayerMixSongMenuPlaylist song={song} />
             </DropdownMenuContent>
         </DropdownMenu>
