@@ -1,36 +1,35 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/create-next-app).
+# Ivoxy
 
-## Getting Started
+Ivoxy is a web application built with Next.js that showcases how to integrate YouTube's API to search for and play music videos. This project is intended for learning purposes to illustrate the use of Next.js and YouTube's API.
 
-First, run the development server:
+![Ivoxy Screenshot](./public/readme.png)
+![Ivoxy Screenshot](./public/readme-dark.png)
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## Table of Contents
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+-   [Introduction](#introduction)
+-   [Features](#features)
+-   [Technologies Used](#technologies-used)
+-   [License](#license)
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Introduction
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load Inter, a custom Google Font.
+This project demonstrates the implementation of a music app using Next.js and YouTube's API. Users can search for music videos and play them directly within the app, save songs and create playlists to organize their music library.
+**This project is intended for learning purposes only and should not be used for commercial purposes.**
 
-## Learn More
+## Features
 
-To learn more about Next.js, take a look at the following resources:
+-   Search for music videos using YouTube's API
+-   Play music videos directly in the app
+-   Save songs and create playlists to organize your music library
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Technologies Used
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+-   [Next.js 15 RC](https://nextjs.org/)
+-   [React 19 RC](https://reactjs.org/)
+-   [Supabase](https://supabase.com/)
+-   [YouTube Data API v3](https://developers.google.com/youtube/v3)
 
-## Deploy on Vercel
+## License
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+This project is licensed under the MIT License. See the [LICENSE](https://en.wikipedia.org/wiki/MIT_License) for more information.
