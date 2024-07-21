@@ -16,6 +16,7 @@ interface PlayerStoreState {
     volume: number;
     currentIndex: number;
     data: SongData[] | null;
+    removedElements: SongData[] | null;
     canNext: boolean;
     canPrevious: boolean;
 }
@@ -39,7 +40,8 @@ interface PlayerStoreActions {
     onProgress: (progress: OnProgressProps) => void;
     onEnded: () => void;
     addToMix: (newData: SongData | PlaylistData) => void;
-    removeFromMix: (index: number) => void;
+    addToRemoved: (removed: SongData) => void;
+    removeFromMix: (elements: SongData[]) => void;
 }
 
 export type { PlayerStoreState, PlayerStoreActions };
