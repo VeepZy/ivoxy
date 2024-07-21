@@ -30,6 +30,14 @@ This project demonstrates the implementation of a music app using Next.js and Yo
 -   [Supabase](https://supabase.com/)
 -   [YouTube Data API v3](https://developers.google.com/youtube/v3)
 -   [Shadcn/ui](https://ui.shadcn.com/)
+-   [React Player](https://www.npmjs.com/package/react-player)
+-   [Zustand](https://www.npmjs.com/package/zustand)
+
+## Known Issues
+
+-   Player sometimes doesn't autoplay when it should
+-   Progress bar bugs out when duration is too long
+-   Saving a song in the mix menu also plays it
 
 ## License
 
