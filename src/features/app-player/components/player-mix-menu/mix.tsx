@@ -13,6 +13,13 @@ import { AppPlayerMixMenuSong } from "./mix-song";
 
 const AppPlayerMixMenu: React.FC = () => {
     const data = usePlayerStore((store) => store.data);
+    const removedElements = usePlayerStore(
+        (store) => store.removedElements,
+    );
+
+    const filtered = data?.filter(
+        (song) => !removedElements?.includes(song),
+    );
 
     return (
         <Popover>
@@ -28,7 +35,7 @@ const AppPlayerMixMenu: React.FC = () => {
             <PopoverContent align="end" className="w-96 min-w-60 p-0">
                 <ScrollArea className="max-h-72 overflow-y-auto">
                     <ul className="space-y-2 p-2">
-                        {data?.map((song, i) => (
+                        {filtered?.map((song, i) => (
                             <AppPlayerMixMenuSong
                                 key={`${song.url}+${song.title}`}
                                 index={i}
