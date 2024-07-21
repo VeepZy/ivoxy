@@ -17,6 +17,7 @@ const initialState: PlayerStoreState = {
     volume: 0.5,
     currentIndex: 0,
     data: null,
+    removedElements: null,
     canNext: false,
     canPrevious: false,
 };
@@ -102,7 +103,19 @@ const usePlayerStore = create<PlayerStoreState & PlayerStoreActions>(
                 loaded: loadedSeconds,
             })),
         onEnded: () => {
-            const { isLooped, isShuffled, data, currentIndex } = get();
+            const {
+                isLooped,
+                isShuffled,
+                data,
+                currentIndex,
+                removedElements,
+                removeFromMix,
+            } = get();
+
+            if (removedElements) {
+                removeFromMix(removedElements);
+            }
+
             if (isLooped) {
                 // Handled by react-player
             } else if (isShuffled && data && data.length > 1) {
@@ -133,16 +146,28 @@ const usePlayerStore = create<PlayerStoreState & PlayerStoreActions>(
 
             set({ data: [...data, newData] });
         },
-        removeFromMix: (index) => {
+        addToRemoved: (removed) => {
+            const { removedElements } = get();
+
+            if (!removedElements) {
+                set({ removedElements: [removed] });
+                return;
+            }
+
+            set({ removedElements: [...removedElements, removed] });
+        },
+        removeFromMix: (elements) => {
             const { data } = get();
 
             if (!data) {
                 return;
             }
 
-            const newArray = data.splice(index, 1);
+            const newArray = data.filter(
+                (song) => !elements.includes(song),
+            );
 
-            set({ data: newArray });
+            set({ data: newArray, removedElements: null });
         },
     }),
 );
