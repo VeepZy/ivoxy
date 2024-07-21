@@ -29,6 +29,7 @@ This project demonstrates the implementation of a music app using Next.js and Yo
 -   [React 19 RC](https://reactjs.org/)
 -   [Supabase](https://supabase.com/)
 -   [YouTube Data API v3](https://developers.google.com/youtube/v3)
+-   [Shadcn/ui](https://ui.shadcn.com/)
 
 ## License
 
