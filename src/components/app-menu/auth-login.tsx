@@ -1,9 +1,9 @@
 "use client";
 
 import { authSignIn } from "@/db/actions";
+import { useMounted } from "@/hooks/mounted";
 
 import { MenubarItem } from "../ui/menubar";
-import { useMounted } from "@/hooks/mounted";
 
 const MenubarAuthLogin: React.FC = () => {
     const mounted = useMounted();

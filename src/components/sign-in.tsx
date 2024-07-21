@@ -1,9 +1,9 @@
 "use client";
 
 import { authSignIn } from "@/db/actions";
+import { useMounted } from "@/hooks/mounted";
 
 import { Button } from "./ui/button";
-import { useMounted } from "@/hooks/mounted";
 
 const SignIn: React.FC = () => {
     const mounted = useMounted();
