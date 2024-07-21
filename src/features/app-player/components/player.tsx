@@ -54,7 +54,7 @@ const AppPlayer = () => {
         setCanPrevious(index > 0);
     }, [data, index, onPlay, setCanNext, setCanPrevious]);
 
-    if (!data) {
+    if (!data?.[index]) {
         return (
             <div className="flex flex-1 items-center justify-center">
                 <h3>Select a song or playlist</h3>
