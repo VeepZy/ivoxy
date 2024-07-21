@@ -41,6 +41,7 @@ const AppPlayerMixMenuSong: React.FC<{
                     <div className="text-left">
                         <UnescapedTitle
                             className="text-xs tracking-tight"
+                            limit={40}
                             title={song.title}
                         />
                         <p className="text-xs text-muted-foreground">
@@ -52,7 +53,7 @@ const AppPlayerMixMenuSong: React.FC<{
                         {isCurrentPlaying ? (
                             <AudioLinesIcon className="h-5 w-5" />
                         ) : null}
-                        <AppPlayerMixSongMenu index={index} song={song} />
+                        <AppPlayerMixSongMenu song={song} />
                     </div>
                 </div>
             </Button>
